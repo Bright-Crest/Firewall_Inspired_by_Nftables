@@ -1,4 +1,3 @@
-/*rule management*/
 #include "core.h"
 
 #include "common.h"
@@ -7,6 +6,9 @@
 // for test
 // #include <string.h>
 
+/**
+ * Used to initialize `Chain`.
+ */
 void chain_instantiate(Chain *self, Argument *argument, ReturnT *ret)
 {
   switch (self->type)
@@ -22,6 +24,9 @@ void chain_instantiate(Chain *self, Argument *argument, ReturnT *ret)
   }
 }
 
+/**
+ * Used to initialize `Stmt`.
+ */
 void stmt_instantiate(Stmt *self, Argument *argument, ReturnT *ret)
 {
   switch (self->type)
@@ -43,17 +48,20 @@ void stmt_instantiate(Stmt *self, Argument *argument, ReturnT *ret)
   }
 }
 
+/**
+ * Used to initialize `VerdictStmt`.
+ */
 void verdict_instantiate(VerdictStmt *self, Argument *argument, ReturnT *ret)
 {
   switch (self->type)
   {
   case VERDICT_ACCEPT:
-    argument->package->state = PACKAGE_ACCEPT;
-    ret->state = PACKAGE_ACCEPT;
+    argument->packet->state = PACKET_ACCEPT;
+    ret->state = PACKET_ACCEPT;
     break;
   case VERDICT_DROP:
-    argument->package->state = PACKAGE_DROP;
-    ret->state = PACKAGE_DROP;
+    argument->packet->state = PACKET_DROP;
+    ret->state = PACKET_DROP;
     break;
   case VERDICT_CONTINUE: // do nothing
     break;

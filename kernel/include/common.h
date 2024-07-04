@@ -1,6 +1,9 @@
 #ifndef _FIREWALL_COMMON_H
 #define _FIREWALL_COMMON_H
 
+/**
+ * Log level.
+ */
 #ifndef FIREWALL_INFO
 #define FIREWALL_INFO 1
 #endif
@@ -41,18 +44,18 @@
 typedef char Name[MAX_NAME_LENGTH];
 typedef char Comment[MAX_COMMENT_LENGTH];
 
-typedef enum {PACKAGE_UNDECIDED, PACKAGE_ACCEPT, PACKAGE_DROP} PackageState;
+typedef enum {PACKET_UNDECIDED, PACKET_ACCEPT, PACKET_DROP} PacketState;
 typedef struct {
-  PackageState state;
-} Package;
+  PacketState state;
+} Packet;
 
 typedef struct {
-  Package *package;
+  Packet *packet;
 } Argument;
 
 typedef enum {OP_NONE, OP_RETURN, OP_JUMP, OP_GOTO} Operation;
 typedef struct {
-  PackageState state;
+  PacketState state;
   Operation op;
   Name name;
 } ReturnT;

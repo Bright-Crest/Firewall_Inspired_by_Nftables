@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Firewall: kernel/include/core.h 源文件</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Firewall
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d5/dc4/core_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">core.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../d5/dc4/core_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// The core and hierarchy of rule management.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ifndef _FIREWALL_RULE_H</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#define _FIREWALL_RULE_H</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d54/common_8h.html">common.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;linux/netfilter.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;linux/list.h&gt;</span>       <span class="comment">// for doubly linked list</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// copied from &lt;linux/netfilter.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// enum nf_inet_hooks {</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">//  NF_INET_PRE_ROUTING,</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">//  NF_INET_LOCAL_IN,</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">//  NF_INET_FORWARD,</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">//  NF_INET_LOCAL_OUT,</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">//  NF_INET_POST_ROUTING,</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">//  NF_INET_NUMHOOKS,</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">//  NF_INET_INGRESS = NF_INET_NUMHOOKS,</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// };</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// Since the enum values are store in global scope, they have to be globally</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// unique. The usual methods to prevent name collision in enum is to add the</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// name enum&#39;s name as prefix for each of the enum values. </span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// Top level types.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7a3b7c75724ad5b3e136fd334323815092">   27</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {<a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7a3b7c75724ad5b3e136fd334323815092">CHAIN_FILTER</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7a59f591864b53696804dc57c2304aa97f">CHAIN_NAT</a>} <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7">ChainType</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a747637046be33d7273262104aad8069daf70d4477f7b871c029faf6e5e6fa7a3b">   28</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {<a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a747637046be33d7273262104aad8069daf70d4477f7b871c029faf6e5e6fa7a3b">MATCH_TODO</a>} <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a747637046be33d7273262104aad8069d">MatchType</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab">   29</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {<a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba1d5c41f5363945e19731c95246d9d766">STMT_VERDICT</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba565b4ee1d9da45bcf95019acf9fe2636">STMT_LOG</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba353bf4936aa48a73160f70293d317ad4">STMT_COUNTER</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba348b58cefe92314264699ebc89eedd2c">STMT_NAT</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab">STMT_CONNTRACK</a>} <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3db">StmtType</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// Second level types.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24a683831a4d1b2fc9c8425c68a850fdcde">   32</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {<a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24a683831a4d1b2fc9c8425c68a850fdcde">VERDICT_ACCEPT</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24a4d7d934242b8a78bf6db2857f58976dc">VERDICT_DROP</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24ad42a0ccf1408d4d7cfc82f4f3d48e6bc">VERDICT_CONTINUE</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24acfcdfdcb97c38c48e47037c4a54b2da1">VERDICT_RETURN</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24acffed4a543c5cb046a304faa7390af68">VERDICT_JUMP</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24a7483f77413267aabd930f3181881939e">VERDICT_GOTO</a>} <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24">VerdictStmtType</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// Other useful types.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a80f9830fd926261ff87ab844b1f28441">   35</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {<a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#a80f9830fd926261ff87ab844b1f28441a742dfc10a86951f69cf32c727b047ce5">CP_TODO</a>} <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a80f9830fd926261ff87ab844b1f28441">ChainPriority</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776aa15be83cc3bfcf77d638ccf998665a170">   36</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {<a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776aa15be83cc3bfcf77d638ccf998665a170">CHAIN_ACCEPT</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776aa6d0aca0784ca367dc79627251dd896b6">CHAIN_DROP</a>} <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776a">ChainPolicy</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2ca1155ee5305ebe5bb9407faa9d395ae93">   37</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {<a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2ca1155ee5305ebe5bb9407faa9d395ae93">MATCH</a>, <a class="code hl_enumvalue" href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2ca5f6cc7b0161a4933f17fc59020c18b67">NOT_MATCH</a>} <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2c">MatchResult</a>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#aca7b85c406273f077d8ee78a2f481709">   39</a></span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_typedef" href="../../d5/dc4/core_8h.html#aca7b85c406273f077d8ee78a2f481709">Handle</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// pre-definitions</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">struct </span><a class="code hl_struct" href="../../dc/dcb/structTable.html">Table</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">struct </span><a class="code hl_struct" href="../../d8/d03/structChain.html">Chain</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">struct </span><a class="code hl_struct" href="../../dc/d7a/structRule.html">Rule</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">struct </span><a class="code hl_struct" href="../../d2/db6/structMatch.html">Match</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">struct </span><a class="code hl_struct" href="../../df/d9f/structStmt.html">Stmt</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">struct </span><a class="code hl_struct" href="../../d2/d29/structFilterChain.html">FilterChain</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">struct </span><a class="code hl_struct" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">// make it simpler</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#aaa5713bb2ecdf81c430009179b806232">   55</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../dc/dcb/structTable.html">Table</a> <a class="code hl_struct" href="../../dc/dcb/structTable.html">Table</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a41856aa78a7ce06313bef77e72354ff2">   56</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../d8/d03/structChain.html">Chain</a> <a class="code hl_struct" href="../../d8/d03/structChain.html">Chain</a>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a683d0414d3752753074b14f91eb79cca">   57</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../dc/d7a/structRule.html">Rule</a> <a class="code hl_struct" href="../../dc/d7a/structRule.html">Rule</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a27178adf78f09fdcc56bba7cc8d32df8">   58</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../d2/db6/structMatch.html">Match</a> <a class="code hl_struct" href="../../d2/db6/structMatch.html">Match</a>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a8d06b072dd455e686bfe1d436dce286c">   59</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../df/d9f/structStmt.html">Stmt</a> <a class="code hl_struct" href="../../df/d9f/structStmt.html">Stmt</a>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a27f8a8e78b3a2a965afdcbd09426c1e2">   61</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../d2/d29/structFilterChain.html">FilterChain</a> <a class="code hl_struct" href="../../d2/d29/structFilterChain.html">FilterChain</a>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d5/dc4/core_8h.html#a9792282cb1f9e285e0b3d52fb2093251">   63</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> <a class="code hl_struct" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">// Top level structs.</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="};">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../dc/dcb/structTable.html">   71</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../dc/dcb/structTable.html">Table</a> {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../dc/dcb/structTable.html#a1931fca4112d5ee079ee126051183aea">   72</a></span>  <a class="code hl_typedef" href="../../dc/d54/common_8h.html#a821d19489ba18d7377849aff65357771">Name</a> <a class="code hl_variable" href="../../dc/dcb/structTable.html#a1931fca4112d5ee079ee126051183aea">name</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../dc/dcb/structTable.html#a145a2af10f10d4fd3fbaf7b9e88cf575">   73</a></span>  <a class="code hl_typedef" href="../../dc/d54/common_8h.html#a7b6191db88859f404248792e978c5d9f">Comment</a> <a class="code hl_variable" href="../../dc/dcb/structTable.html#a145a2af10f10d4fd3fbaf7b9e88cf575">comment</a>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../dc/dcb/structTable.html#a6da8ac1ec869491774b100e5ecc8751b">   74</a></span>  <span class="keyword">struct </span>list_head <a class="code hl_variable" href="../../dc/dcb/structTable.html#a6da8ac1ec869491774b100e5ecc8751b">list</a>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="../../dc/dcb/structTable.html#a0ec74a713920b371320d68c80fa0ac11">   75</a></span>  <a class="code hl_struct" href="../../d8/d03/structChain.html">Chain</a> *<a class="code hl_variable" href="../../dc/dcb/structTable.html#a0ec74a713920b371320d68c80fa0ac11">chain_head</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="foldopen" id="foldopen00081" data-start="{" data-end="};">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html">   81</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d8/d03/structChain.html">Chain</a> {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a005a1e773424ac94036eead4d74611b3">   82</a></span>  <a class="code hl_typedef" href="../../dc/d54/common_8h.html#a821d19489ba18d7377849aff65357771">Name</a> <a class="code hl_variable" href="../../d8/d03/structChain.html#a005a1e773424ac94036eead4d74611b3">name</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a9c3cded6f9c96c7db4be4a7ec01e641d">   83</a></span>  <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7">ChainType</a> <a class="code hl_variable" href="../../d8/d03/structChain.html#a9c3cded6f9c96c7db4be4a7ec01e641d">type</a>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a34a1c635f4c1f1640cc745e76023c5d0">   84</a></span>  <span class="keyword">enum</span> nf_inet_hooks <a class="code hl_variable" href="../../d8/d03/structChain.html#a34a1c635f4c1f1640cc745e76023c5d0">hook</a>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a17db6ce15dd42a2142c8bda361c38744">   85</a></span>  <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a80f9830fd926261ff87ab844b1f28441">ChainPriority</a> <a class="code hl_variable" href="../../d8/d03/structChain.html#a17db6ce15dd42a2142c8bda361c38744">priority</a>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#ad962162f864bc48b42b57235fdc15d74">   86</a></span>  <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776a">ChainPolicy</a> <a class="code hl_variable" href="../../d8/d03/structChain.html#ad962162f864bc48b42b57235fdc15d74">policy</a>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a079837b01d88e8ff1d5cad2ecd2c9e32">   87</a></span>  <a class="code hl_typedef" href="../../dc/d54/common_8h.html#a7b6191db88859f404248792e978c5d9f">Comment</a> <a class="code hl_variable" href="../../d8/d03/structChain.html#a079837b01d88e8ff1d5cad2ecd2c9e32">comment</a>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a31bf8db253981992241ef63188fa7c04">   88</a></span>  <span class="keyword">struct </span>list_head <a class="code hl_variable" href="../../d8/d03/structChain.html#a31bf8db253981992241ef63188fa7c04">list</a>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a25918e19859ee06c5bf55beba05e5ccb">   89</a></span>  <a class="code hl_struct" href="../../dc/d7a/structRule.html">Rule</a> *<a class="code hl_variable" href="../../d8/d03/structChain.html#a25918e19859ee06c5bf55beba05e5ccb">rule_head</a>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a6fdb2d1a486355df6486f8c6556df01e">   90</a></span>  <span class="keywordtype">void</span> *<a class="code hl_variable" href="../../d8/d03/structChain.html#a6fdb2d1a486355df6486f8c6556df01e">chain</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d8/d03/structChain.html#a80254e3d31f9835ae2b81d624540655a">   91</a></span>  void (*<a class="code hl_variable" href="../../d8/d03/structChain.html#a80254e3d31f9835ae2b81d624540655a">instantiate</a>)(<a class="code hl_struct" href="../../d8/d03/structChain.html">Chain</a> *self, <a class="code hl_struct" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="code hl_struct" href="../../d9/d9d/structReturnT.html">ReturnT</a> *);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>};</div>
+</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="};">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="../../dc/d7a/structRule.html">   97</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../dc/d7a/structRule.html">Rule</a> {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="../../dc/d7a/structRule.html#ad7a6e625d300b9a3bb327f6536228c93">   98</a></span>  <a class="code hl_typedef" href="../../d5/dc4/core_8h.html#aca7b85c406273f077d8ee78a2f481709">Handle</a> <a class="code hl_variable" href="../../dc/d7a/structRule.html#ad7a6e625d300b9a3bb327f6536228c93">handle</a>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../dc/d7a/structRule.html#ace39307787b24f7bd4351dde8d53eb03">   99</a></span>  <a class="code hl_typedef" href="../../dc/d54/common_8h.html#a7b6191db88859f404248792e978c5d9f">Comment</a> <a class="code hl_variable" href="../../dc/d7a/structRule.html#ace39307787b24f7bd4351dde8d53eb03">comment</a>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="../../dc/d7a/structRule.html#a987d4a3ba6e9fbecefe6b58759ec9d65">  100</a></span>  <span class="keyword">struct </span>list_head <a class="code hl_variable" href="../../dc/d7a/structRule.html#a987d4a3ba6e9fbecefe6b58759ec9d65">list</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="../../dc/d7a/structRule.html#a5856438679e3d51258e081ad97e38944">  101</a></span>  <a class="code hl_struct" href="../../d2/db6/structMatch.html">Match</a> *<a class="code hl_variable" href="../../dc/d7a/structRule.html#a5856438679e3d51258e081ad97e38944">match_head</a>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../dc/d7a/structRule.html#a430af0666e4b3fb5062b3cfd96cb83e2">  102</a></span>  <a class="code hl_struct" href="../../df/d9f/structStmt.html">Stmt</a> *<a class="code hl_variable" href="../../dc/d7a/structRule.html#a430af0666e4b3fb5062b3cfd96cb83e2">stmt_head</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>};</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="};">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="../../d2/db6/structMatch.html">  108</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d2/db6/structMatch.html">Match</a> {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="../../d2/db6/structMatch.html#a8058c502beebb1542107f062abd9ff5d">  109</a></span>  <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a747637046be33d7273262104aad8069d">MatchType</a> <a class="code hl_variable" href="../../d2/db6/structMatch.html#a8058c502beebb1542107f062abd9ff5d">type</a>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d2/db6/structMatch.html#a1023e1c18bce38fa06f01affb00c30f3">  110</a></span>  <span class="keyword">struct </span>list_head <a class="code hl_variable" href="../../d2/db6/structMatch.html#a1023e1c18bce38fa06f01affb00c30f3">list</a>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="../../d2/db6/structMatch.html#ac54b63347d4e13f245b84378e972d89c">  111</a></span>  <span class="keywordtype">void</span> *<a class="code hl_variable" href="../../d2/db6/structMatch.html#ac54b63347d4e13f245b84378e972d89c">match</a>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="../../d2/db6/structMatch.html#a237c06c1747f7d485f1c6c829715c132">  112</a></span>  <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2c">MatchResult</a> (*<a class="code hl_variable" href="../../d2/db6/structMatch.html#a237c06c1747f7d485f1c6c829715c132">instantiate</a>)(<a class="code hl_struct" href="../../d2/db6/structMatch.html">Match</a> *self, <a class="code hl_struct" href="../../dc/d8f/structArgument.html">Argument</a> *);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>};</div>
+</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="};">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="../../df/d9f/structStmt.html">  118</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../df/d9f/structStmt.html">Stmt</a> {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="../../df/d9f/structStmt.html#a778c64c2e15567db25e3b247d9ade03a">  119</a></span>  <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3db">StmtType</a> <a class="code hl_variable" href="../../df/d9f/structStmt.html#a778c64c2e15567db25e3b247d9ade03a">type</a>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../df/d9f/structStmt.html#abfde4749c43c73e23a50604bd463b49a">  120</a></span>  <span class="keyword">struct </span>list_head <a class="code hl_variable" href="../../df/d9f/structStmt.html#abfde4749c43c73e23a50604bd463b49a">list</a>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="../../df/d9f/structStmt.html#a66840a4e1db7123f0c28d0f7397fa4cd">  121</a></span>  <span class="keywordtype">void</span> *<a class="code hl_variable" href="../../df/d9f/structStmt.html#a66840a4e1db7123f0c28d0f7397fa4cd">stmt</a>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="../../df/d9f/structStmt.html#abfc34569e4b3fe2723bb3e77c3e13d16">  122</a></span>  void (*<a class="code hl_variable" href="../../df/d9f/structStmt.html#abfc34569e4b3fe2723bb3e77c3e13d16">instantiate</a>)(<a class="code hl_struct" href="../../df/d9f/structStmt.html">Stmt</a> *self, <a class="code hl_struct" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="code hl_struct" href="../../d9/d9d/structReturnT.html">ReturnT</a> *);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>};</div>
+</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">// Second level `Chain`s.</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="foldopen" id="foldopen00131" data-start="{" data-end="};">
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="../../d2/d29/structFilterChain.html">  131</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d2/d29/structFilterChain.html">FilterChain</a> {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="comment">// TODO: filter</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>};</div>
+</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">// Second level `Stmt`s.</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="foldopen" id="foldopen00140" data-start="{" data-end="};">
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="../../d5/d0e/structVerdictStmt.html">  140</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> {</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="../../d5/d0e/structVerdictStmt.html#acd8ce632bd239eb9de64dbae8df7f9da">  141</a></span>  <a class="code hl_enumeration" href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24">VerdictStmtType</a> <a class="code hl_variable" href="../../d5/d0e/structVerdictStmt.html#acd8ce632bd239eb9de64dbae8df7f9da">type</a>;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="../../d5/d0e/structVerdictStmt.html#a1f1a502a436adfc23a0d28948f317adb">  142</a></span>  <a class="code hl_typedef" href="../../dc/d54/common_8h.html#a821d19489ba18d7377849aff65357771">Name</a> <a class="code hl_variable" href="../../d5/d0e/structVerdictStmt.html#a1f1a502a436adfc23a0d28948f317adb">name_for_jump_or_goto</a>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="../../d5/d0e/structVerdictStmt.html#a7fcddc2583bf1918f991f27be070a0c4">  143</a></span>  void (*<a class="code hl_variable" href="../../d5/d0e/structVerdictStmt.html#a7fcddc2583bf1918f991f27be070a0c4">instantiate</a>)(<a class="code hl_struct" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> *self, <a class="code hl_struct" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="code hl_struct" href="../../d9/d9d/structReturnT.html">ReturnT</a> *);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>};</div>
+</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/dc4/core_8h.html#a9b8c695ecb87014ca65a9e08b1ae4c65">chain_instantiate</a>(<a class="code hl_struct" href="../../d8/d03/structChain.html">Chain</a> *self, <a class="code hl_struct" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="code hl_struct" href="../../d9/d9d/structReturnT.html">ReturnT</a> *);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/dc4/core_8h.html#a270c6fcee6938f18462f45a6bbf4874e">stmt_instantiate</a>(<a class="code hl_struct" href="../../df/d9f/structStmt.html">Stmt</a> *self, <a class="code hl_struct" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="code hl_struct" href="../../d9/d9d/structReturnT.html">ReturnT</a> *);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d5/dc4/core_8h.html#a00cb5321dc14d84ece7f512072778dde">verdict_instantiate</a>(<a class="code hl_struct" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> *self, <a class="code hl_struct" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="code hl_struct" href="../../d9/d9d/structReturnT.html">ReturnT</a> *);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">#endif </span><span class="comment">/*_FIREWALL_RULE_H*/</span><span class="preprocessor"> </span></div>
+<div class="ttc" id="acommon_8h_html"><div class="ttname"><a href="../../dc/d54/common_8h.html">common.h</a></div></div>
+<div class="ttc" id="acommon_8h_html_a7b6191db88859f404248792e978c5d9f"><div class="ttname"><a href="../../dc/d54/common_8h.html#a7b6191db88859f404248792e978c5d9f">Comment</a></div><div class="ttdeci">char Comment[MAX_COMMENT_LENGTH]</div><div class="ttdef"><b>定义</b> common.h:45</div></div>
+<div class="ttc" id="acommon_8h_html_a821d19489ba18d7377849aff65357771"><div class="ttname"><a href="../../dc/d54/common_8h.html#a821d19489ba18d7377849aff65357771">Name</a></div><div class="ttdeci">char Name[MAX_NAME_LENGTH]</div><div class="ttdef"><b>定义</b> common.h:44</div></div>
+<div class="ttc" id="acore_8h_html_a00cb5321dc14d84ece7f512072778dde"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a00cb5321dc14d84ece7f512072778dde">verdict_instantiate</a></div><div class="ttdeci">void verdict_instantiate(VerdictStmt *self, Argument *, ReturnT *)</div><div class="ttdef"><b>定义</b> core.c:54</div></div>
+<div class="ttc" id="acore_8h_html_a270c6fcee6938f18462f45a6bbf4874e"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a270c6fcee6938f18462f45a6bbf4874e">stmt_instantiate</a></div><div class="ttdeci">void stmt_instantiate(Stmt *self, Argument *, ReturnT *)</div><div class="ttdef"><b>定义</b> core.c:30</div></div>
+<div class="ttc" id="acore_8h_html_a50c0e86aef78e208432278567a7edf24"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24">VerdictStmtType</a></div><div class="ttdeci">VerdictStmtType</div><div class="ttdef"><b>定义</b> core.h:32</div></div>
+<div class="ttc" id="acore_8h_html_a50c0e86aef78e208432278567a7edf24a4d7d934242b8a78bf6db2857f58976dc"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24a4d7d934242b8a78bf6db2857f58976dc">VERDICT_DROP</a></div><div class="ttdeci">@ VERDICT_DROP</div><div class="ttdef"><b>定义</b> core.h:32</div></div>
+<div class="ttc" id="acore_8h_html_a50c0e86aef78e208432278567a7edf24a683831a4d1b2fc9c8425c68a850fdcde"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24a683831a4d1b2fc9c8425c68a850fdcde">VERDICT_ACCEPT</a></div><div class="ttdeci">@ VERDICT_ACCEPT</div><div class="ttdef"><b>定义</b> core.h:32</div></div>
+<div class="ttc" id="acore_8h_html_a50c0e86aef78e208432278567a7edf24a7483f77413267aabd930f3181881939e"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24a7483f77413267aabd930f3181881939e">VERDICT_GOTO</a></div><div class="ttdeci">@ VERDICT_GOTO</div><div class="ttdef"><b>定义</b> core.h:32</div></div>
+<div class="ttc" id="acore_8h_html_a50c0e86aef78e208432278567a7edf24acfcdfdcb97c38c48e47037c4a54b2da1"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24acfcdfdcb97c38c48e47037c4a54b2da1">VERDICT_RETURN</a></div><div class="ttdeci">@ VERDICT_RETURN</div><div class="ttdef"><b>定义</b> core.h:32</div></div>
+<div class="ttc" id="acore_8h_html_a50c0e86aef78e208432278567a7edf24acffed4a543c5cb046a304faa7390af68"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24acffed4a543c5cb046a304faa7390af68">VERDICT_JUMP</a></div><div class="ttdeci">@ VERDICT_JUMP</div><div class="ttdef"><b>定义</b> core.h:32</div></div>
+<div class="ttc" id="acore_8h_html_a50c0e86aef78e208432278567a7edf24ad42a0ccf1408d4d7cfc82f4f3d48e6bc"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a50c0e86aef78e208432278567a7edf24ad42a0ccf1408d4d7cfc82f4f3d48e6bc">VERDICT_CONTINUE</a></div><div class="ttdeci">@ VERDICT_CONTINUE</div><div class="ttdef"><b>定义</b> core.h:32</div></div>
+<div class="ttc" id="acore_8h_html_a697252c7d3bf770f98b0fa46f338d5a7"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7">ChainType</a></div><div class="ttdeci">ChainType</div><div class="ttdef"><b>定义</b> core.h:27</div></div>
+<div class="ttc" id="acore_8h_html_a697252c7d3bf770f98b0fa46f338d5a7a3b7c75724ad5b3e136fd334323815092"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7a3b7c75724ad5b3e136fd334323815092">CHAIN_FILTER</a></div><div class="ttdeci">@ CHAIN_FILTER</div><div class="ttdef"><b>定义</b> core.h:27</div></div>
+<div class="ttc" id="acore_8h_html_a697252c7d3bf770f98b0fa46f338d5a7a59f591864b53696804dc57c2304aa97f"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a697252c7d3bf770f98b0fa46f338d5a7a59f591864b53696804dc57c2304aa97f">CHAIN_NAT</a></div><div class="ttdeci">@ CHAIN_NAT</div><div class="ttdef"><b>定义</b> core.h:27</div></div>
+<div class="ttc" id="acore_8h_html_a747637046be33d7273262104aad8069d"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a747637046be33d7273262104aad8069d">MatchType</a></div><div class="ttdeci">MatchType</div><div class="ttdef"><b>定义</b> core.h:28</div></div>
+<div class="ttc" id="acore_8h_html_a747637046be33d7273262104aad8069daf70d4477f7b871c029faf6e5e6fa7a3b"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a747637046be33d7273262104aad8069daf70d4477f7b871c029faf6e5e6fa7a3b">MATCH_TODO</a></div><div class="ttdeci">@ MATCH_TODO</div><div class="ttdef"><b>定义</b> core.h:28</div></div>
+<div class="ttc" id="acore_8h_html_a80f9830fd926261ff87ab844b1f28441"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a80f9830fd926261ff87ab844b1f28441">ChainPriority</a></div><div class="ttdeci">ChainPriority</div><div class="ttdef"><b>定义</b> core.h:35</div></div>
+<div class="ttc" id="acore_8h_html_a80f9830fd926261ff87ab844b1f28441a742dfc10a86951f69cf32c727b047ce5"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a80f9830fd926261ff87ab844b1f28441a742dfc10a86951f69cf32c727b047ce5">CP_TODO</a></div><div class="ttdeci">@ CP_TODO</div><div class="ttdef"><b>定义</b> core.h:35</div></div>
+<div class="ttc" id="acore_8h_html_a9b8c695ecb87014ca65a9e08b1ae4c65"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a9b8c695ecb87014ca65a9e08b1ae4c65">chain_instantiate</a></div><div class="ttdeci">void chain_instantiate(Chain *self, Argument *, ReturnT *)</div><div class="ttdef"><b>定义</b> core.c:12</div></div>
+<div class="ttc" id="acore_8h_html_a9c1bfaf3c0a28d12826afa7bd1b0a3db"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3db">StmtType</a></div><div class="ttdeci">StmtType</div><div class="ttdef"><b>定义</b> core.h:29</div></div>
+<div class="ttc" id="acore_8h_html_a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab">STMT_CONNTRACK</a></div><div class="ttdeci">@ STMT_CONNTRACK</div><div class="ttdef"><b>定义</b> core.h:29</div></div>
+<div class="ttc" id="acore_8h_html_a9c1bfaf3c0a28d12826afa7bd1b0a3dba1d5c41f5363945e19731c95246d9d766"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba1d5c41f5363945e19731c95246d9d766">STMT_VERDICT</a></div><div class="ttdeci">@ STMT_VERDICT</div><div class="ttdef"><b>定义</b> core.h:29</div></div>
+<div class="ttc" id="acore_8h_html_a9c1bfaf3c0a28d12826afa7bd1b0a3dba348b58cefe92314264699ebc89eedd2c"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba348b58cefe92314264699ebc89eedd2c">STMT_NAT</a></div><div class="ttdeci">@ STMT_NAT</div><div class="ttdef"><b>定义</b> core.h:29</div></div>
+<div class="ttc" id="acore_8h_html_a9c1bfaf3c0a28d12826afa7bd1b0a3dba353bf4936aa48a73160f70293d317ad4"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba353bf4936aa48a73160f70293d317ad4">STMT_COUNTER</a></div><div class="ttdeci">@ STMT_COUNTER</div><div class="ttdef"><b>定义</b> core.h:29</div></div>
+<div class="ttc" id="acore_8h_html_a9c1bfaf3c0a28d12826afa7bd1b0a3dba565b4ee1d9da45bcf95019acf9fe2636"><div class="ttname"><a href="../../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba565b4ee1d9da45bcf95019acf9fe2636">STMT_LOG</a></div><div class="ttdeci">@ STMT_LOG</div><div class="ttdef"><b>定义</b> core.h:29</div></div>
+<div class="ttc" id="acore_8h_html_aca7b85c406273f077d8ee78a2f481709"><div class="ttname"><a href="../../d5/dc4/core_8h.html#aca7b85c406273f077d8ee78a2f481709">Handle</a></div><div class="ttdeci">unsigned int Handle</div><div class="ttdef"><b>定义</b> core.h:39</div></div>
+<div class="ttc" id="acore_8h_html_ae2708749d6ad42b5e9b7ffade143776a"><div class="ttname"><a href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776a">ChainPolicy</a></div><div class="ttdeci">ChainPolicy</div><div class="ttdef"><b>定义</b> core.h:36</div></div>
+<div class="ttc" id="acore_8h_html_ae2708749d6ad42b5e9b7ffade143776aa15be83cc3bfcf77d638ccf998665a170"><div class="ttname"><a href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776aa15be83cc3bfcf77d638ccf998665a170">CHAIN_ACCEPT</a></div><div class="ttdeci">@ CHAIN_ACCEPT</div><div class="ttdef"><b>定义</b> core.h:36</div></div>
+<div class="ttc" id="acore_8h_html_ae2708749d6ad42b5e9b7ffade143776aa6d0aca0784ca367dc79627251dd896b6"><div class="ttname"><a href="../../d5/dc4/core_8h.html#ae2708749d6ad42b5e9b7ffade143776aa6d0aca0784ca367dc79627251dd896b6">CHAIN_DROP</a></div><div class="ttdeci">@ CHAIN_DROP</div><div class="ttdef"><b>定义</b> core.h:36</div></div>
+<div class="ttc" id="acore_8h_html_aff52e9d9ee5dc357de01943832391b2c"><div class="ttname"><a href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2c">MatchResult</a></div><div class="ttdeci">MatchResult</div><div class="ttdef"><b>定义</b> core.h:37</div></div>
+<div class="ttc" id="acore_8h_html_aff52e9d9ee5dc357de01943832391b2ca1155ee5305ebe5bb9407faa9d395ae93"><div class="ttname"><a href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2ca1155ee5305ebe5bb9407faa9d395ae93">MATCH</a></div><div class="ttdeci">@ MATCH</div><div class="ttdef"><b>定义</b> core.h:37</div></div>
+<div class="ttc" id="acore_8h_html_aff52e9d9ee5dc357de01943832391b2ca5f6cc7b0161a4933f17fc59020c18b67"><div class="ttname"><a href="../../d5/dc4/core_8h.html#aff52e9d9ee5dc357de01943832391b2ca5f6cc7b0161a4933f17fc59020c18b67">NOT_MATCH</a></div><div class="ttdeci">@ NOT_MATCH</div><div class="ttdef"><b>定义</b> core.h:37</div></div>
+<div class="ttc" id="astructArgument_html"><div class="ttname"><a href="../../dc/d8f/structArgument.html">Argument</a></div><div class="ttdef"><b>定义</b> common.h:52</div></div>
+<div class="ttc" id="astructChain_html"><div class="ttname"><a href="../../d8/d03/structChain.html">Chain</a></div><div class="ttdef"><b>定义</b> core.h:81</div></div>
+<div class="ttc" id="astructChain_html_a005a1e773424ac94036eead4d74611b3"><div class="ttname"><a href="../../d8/d03/structChain.html#a005a1e773424ac94036eead4d74611b3">Chain::name</a></div><div class="ttdeci">Name name</div><div class="ttdef"><b>定义</b> core.h:82</div></div>
+<div class="ttc" id="astructChain_html_a079837b01d88e8ff1d5cad2ecd2c9e32"><div class="ttname"><a href="../../d8/d03/structChain.html#a079837b01d88e8ff1d5cad2ecd2c9e32">Chain::comment</a></div><div class="ttdeci">Comment comment</div><div class="ttdef"><b>定义</b> core.h:87</div></div>
+<div class="ttc" id="astructChain_html_a17db6ce15dd42a2142c8bda361c38744"><div class="ttname"><a href="../../d8/d03/structChain.html#a17db6ce15dd42a2142c8bda361c38744">Chain::priority</a></div><div class="ttdeci">ChainPriority priority</div><div class="ttdef"><b>定义</b> core.h:85</div></div>
+<div class="ttc" id="astructChain_html_a25918e19859ee06c5bf55beba05e5ccb"><div class="ttname"><a href="../../d8/d03/structChain.html#a25918e19859ee06c5bf55beba05e5ccb">Chain::rule_head</a></div><div class="ttdeci">Rule * rule_head</div><div class="ttdef"><b>定义</b> core.h:89</div></div>
+<div class="ttc" id="astructChain_html_a31bf8db253981992241ef63188fa7c04"><div class="ttname"><a href="../../d8/d03/structChain.html#a31bf8db253981992241ef63188fa7c04">Chain::list</a></div><div class="ttdeci">struct list_head list</div><div class="ttdef"><b>定义</b> core.h:88</div></div>
+<div class="ttc" id="astructChain_html_a34a1c635f4c1f1640cc745e76023c5d0"><div class="ttname"><a href="../../d8/d03/structChain.html#a34a1c635f4c1f1640cc745e76023c5d0">Chain::hook</a></div><div class="ttdeci">enum nf_inet_hooks hook</div><div class="ttdef"><b>定义</b> core.h:84</div></div>
+<div class="ttc" id="astructChain_html_a6fdb2d1a486355df6486f8c6556df01e"><div class="ttname"><a href="../../d8/d03/structChain.html#a6fdb2d1a486355df6486f8c6556df01e">Chain::chain</a></div><div class="ttdeci">void * chain</div><div class="ttdef"><b>定义</b> core.h:90</div></div>
+<div class="ttc" id="astructChain_html_a80254e3d31f9835ae2b81d624540655a"><div class="ttname"><a href="../../d8/d03/structChain.html#a80254e3d31f9835ae2b81d624540655a">Chain::instantiate</a></div><div class="ttdeci">void(* instantiate)(Chain *self, Argument *, ReturnT *)</div><div class="ttdef"><b>定义</b> core.h:91</div></div>
+<div class="ttc" id="astructChain_html_a9c3cded6f9c96c7db4be4a7ec01e641d"><div class="ttname"><a href="../../d8/d03/structChain.html#a9c3cded6f9c96c7db4be4a7ec01e641d">Chain::type</a></div><div class="ttdeci">ChainType type</div><div class="ttdef"><b>定义</b> core.h:83</div></div>
+<div class="ttc" id="astructChain_html_ad962162f864bc48b42b57235fdc15d74"><div class="ttname"><a href="../../d8/d03/structChain.html#ad962162f864bc48b42b57235fdc15d74">Chain::policy</a></div><div class="ttdeci">ChainPolicy policy</div><div class="ttdef"><b>定义</b> core.h:86</div></div>
+<div class="ttc" id="astructFilterChain_html"><div class="ttname"><a href="../../d2/d29/structFilterChain.html">FilterChain</a></div><div class="ttdef"><b>定义</b> core.h:131</div></div>
+<div class="ttc" id="astructMatch_html"><div class="ttname"><a href="../../d2/db6/structMatch.html">Match</a></div><div class="ttdef"><b>定义</b> core.h:108</div></div>
+<div class="ttc" id="astructMatch_html_a1023e1c18bce38fa06f01affb00c30f3"><div class="ttname"><a href="../../d2/db6/structMatch.html#a1023e1c18bce38fa06f01affb00c30f3">Match::list</a></div><div class="ttdeci">struct list_head list</div><div class="ttdef"><b>定义</b> core.h:110</div></div>
+<div class="ttc" id="astructMatch_html_a237c06c1747f7d485f1c6c829715c132"><div class="ttname"><a href="../../d2/db6/structMatch.html#a237c06c1747f7d485f1c6c829715c132">Match::instantiate</a></div><div class="ttdeci">MatchResult(* instantiate)(Match *self, Argument *)</div><div class="ttdef"><b>定义</b> core.h:112</div></div>
+<div class="ttc" id="astructMatch_html_a8058c502beebb1542107f062abd9ff5d"><div class="ttname"><a href="../../d2/db6/structMatch.html#a8058c502beebb1542107f062abd9ff5d">Match::type</a></div><div class="ttdeci">MatchType type</div><div class="ttdef"><b>定义</b> core.h:109</div></div>
+<div class="ttc" id="astructMatch_html_ac54b63347d4e13f245b84378e972d89c"><div class="ttname"><a href="../../d2/db6/structMatch.html#ac54b63347d4e13f245b84378e972d89c">Match::match</a></div><div class="ttdeci">void * match</div><div class="ttdef"><b>定义</b> core.h:111</div></div>
+<div class="ttc" id="astructReturnT_html"><div class="ttname"><a href="../../d9/d9d/structReturnT.html">ReturnT</a></div><div class="ttdef"><b>定义</b> common.h:57</div></div>
+<div class="ttc" id="astructRule_html"><div class="ttname"><a href="../../dc/d7a/structRule.html">Rule</a></div><div class="ttdef"><b>定义</b> core.h:97</div></div>
+<div class="ttc" id="astructRule_html_a430af0666e4b3fb5062b3cfd96cb83e2"><div class="ttname"><a href="../../dc/d7a/structRule.html#a430af0666e4b3fb5062b3cfd96cb83e2">Rule::stmt_head</a></div><div class="ttdeci">Stmt * stmt_head</div><div class="ttdef"><b>定义</b> core.h:102</div></div>
+<div class="ttc" id="astructRule_html_a5856438679e3d51258e081ad97e38944"><div class="ttname"><a href="../../dc/d7a/structRule.html#a5856438679e3d51258e081ad97e38944">Rule::match_head</a></div><div class="ttdeci">Match * match_head</div><div class="ttdef"><b>定义</b> core.h:101</div></div>
+<div class="ttc" id="astructRule_html_a987d4a3ba6e9fbecefe6b58759ec9d65"><div class="ttname"><a href="../../dc/d7a/structRule.html#a987d4a3ba6e9fbecefe6b58759ec9d65">Rule::list</a></div><div class="ttdeci">struct list_head list</div><div class="ttdef"><b>定义</b> core.h:100</div></div>
+<div class="ttc" id="astructRule_html_ace39307787b24f7bd4351dde8d53eb03"><div class="ttname"><a href="../../dc/d7a/structRule.html#ace39307787b24f7bd4351dde8d53eb03">Rule::comment</a></div><div class="ttdeci">Comment comment</div><div class="ttdef"><b>定义</b> core.h:99</div></div>
+<div class="ttc" id="astructRule_html_ad7a6e625d300b9a3bb327f6536228c93"><div class="ttname"><a href="../../dc/d7a/structRule.html#ad7a6e625d300b9a3bb327f6536228c93">Rule::handle</a></div><div class="ttdeci">Handle handle</div><div class="ttdef"><b>定义</b> core.h:98</div></div>
+<div class="ttc" id="astructStmt_html"><div class="ttname"><a href="../../df/d9f/structStmt.html">Stmt</a></div><div class="ttdef"><b>定义</b> core.h:118</div></div>
+<div class="ttc" id="astructStmt_html_a66840a4e1db7123f0c28d0f7397fa4cd"><div class="ttname"><a href="../../df/d9f/structStmt.html#a66840a4e1db7123f0c28d0f7397fa4cd">Stmt::stmt</a></div><div class="ttdeci">void * stmt</div><div class="ttdef"><b>定义</b> core.h:121</div></div>
+<div class="ttc" id="astructStmt_html_a778c64c2e15567db25e3b247d9ade03a"><div class="ttname"><a href="../../df/d9f/structStmt.html#a778c64c2e15567db25e3b247d9ade03a">Stmt::type</a></div><div class="ttdeci">StmtType type</div><div class="ttdef"><b>定义</b> core.h:119</div></div>
+<div class="ttc" id="astructStmt_html_abfc34569e4b3fe2723bb3e77c3e13d16"><div class="ttname"><a href="../../df/d9f/structStmt.html#abfc34569e4b3fe2723bb3e77c3e13d16">Stmt::instantiate</a></div><div class="ttdeci">void(* instantiate)(Stmt *self, Argument *, ReturnT *)</div><div class="ttdef"><b>定义</b> core.h:122</div></div>
+<div class="ttc" id="astructStmt_html_abfde4749c43c73e23a50604bd463b49a"><div class="ttname"><a href="../../df/d9f/structStmt.html#abfde4749c43c73e23a50604bd463b49a">Stmt::list</a></div><div class="ttdeci">struct list_head list</div><div class="ttdef"><b>定义</b> core.h:120</div></div>
+<div class="ttc" id="astructTable_html"><div class="ttname"><a href="../../dc/dcb/structTable.html">Table</a></div><div class="ttdef"><b>定义</b> core.h:71</div></div>
+<div class="ttc" id="astructTable_html_a0ec74a713920b371320d68c80fa0ac11"><div class="ttname"><a href="../../dc/dcb/structTable.html#a0ec74a713920b371320d68c80fa0ac11">Table::chain_head</a></div><div class="ttdeci">Chain * chain_head</div><div class="ttdef"><b>定义</b> core.h:75</div></div>
+<div class="ttc" id="astructTable_html_a145a2af10f10d4fd3fbaf7b9e88cf575"><div class="ttname"><a href="../../dc/dcb/structTable.html#a145a2af10f10d4fd3fbaf7b9e88cf575">Table::comment</a></div><div class="ttdeci">Comment comment</div><div class="ttdef"><b>定义</b> core.h:73</div></div>
+<div class="ttc" id="astructTable_html_a1931fca4112d5ee079ee126051183aea"><div class="ttname"><a href="../../dc/dcb/structTable.html#a1931fca4112d5ee079ee126051183aea">Table::name</a></div><div class="ttdeci">Name name</div><div class="ttdef"><b>定义</b> core.h:72</div></div>
+<div class="ttc" id="astructTable_html_a6da8ac1ec869491774b100e5ecc8751b"><div class="ttname"><a href="../../dc/dcb/structTable.html#a6da8ac1ec869491774b100e5ecc8751b">Table::list</a></div><div class="ttdeci">struct list_head list</div><div class="ttdef"><b>定义</b> core.h:74</div></div>
+<div class="ttc" id="astructVerdictStmt_html"><div class="ttname"><a href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a></div><div class="ttdef"><b>定义</b> core.h:140</div></div>
+<div class="ttc" id="astructVerdictStmt_html_a1f1a502a436adfc23a0d28948f317adb"><div class="ttname"><a href="../../d5/d0e/structVerdictStmt.html#a1f1a502a436adfc23a0d28948f317adb">VerdictStmt::name_for_jump_or_goto</a></div><div class="ttdeci">Name name_for_jump_or_goto</div><div class="ttdef"><b>定义</b> core.h:142</div></div>
+<div class="ttc" id="astructVerdictStmt_html_a7fcddc2583bf1918f991f27be070a0c4"><div class="ttname"><a href="../../d5/d0e/structVerdictStmt.html#a7fcddc2583bf1918f991f27be070a0c4">VerdictStmt::instantiate</a></div><div class="ttdeci">void(* instantiate)(VerdictStmt *self, Argument *, ReturnT *)</div><div class="ttdef"><b>定义</b> core.h:143</div></div>
+<div class="ttc" id="astructVerdictStmt_html_acd8ce632bd239eb9de64dbae8df7f9da"><div class="ttname"><a href="../../d5/d0e/structVerdictStmt.html#acd8ce632bd239eb9de64dbae8df7f9da">VerdictStmt::type</a></div><div class="ttdeci">VerdictStmtType type</div><div class="ttdef"><b>定义</b> core.h:141</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../d5/dc4/core_8h.html">core.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

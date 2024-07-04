@@ -12,16 +12,16 @@
 #include <stdlib.h> // for malloc
 
 int main() {
-  Package package = {
-    .state = PACKAGE_UNDECIDED
+  Packet packet = {
+    .state = PACKET_UNDECIDED
   };
 
   Argument argument = {
-    .package = &package
+    .packet = &packet
   };
 
   ReturnT ret = {
-    .state = PACKAGE_UNDECIDED,
+    .state = PACKET_UNDECIDED,
     .op = OP_NONE,
     .name = "\0"
   };
@@ -38,11 +38,11 @@ int main() {
 
   stmt->instantiate(stmt, &argument, &ret);
 
-  if (package.state == PACKAGE_ACCEPT) {
-    printf("PACKAGE_ACCEPT\n");
+  if (packet.state == PACKET_ACCEPT) {
+    printf("PACKET_ACCEPT\n");
   }
 
-  if (ret.state == PACKAGE_ACCEPT) {
+  if (ret.state == PACKET_ACCEPT) {
     printf("ret accept\n");
   }
   
