@@ -7,6 +7,9 @@
 #ifndef FIREWALL_DEBUG
 #define FIREWALL_DEBUG 1
 #endif
+#ifndef FIREWALL_WARN
+#define FIREWALL_WARN 1
+#endif
 #ifndef FIREWALL_ERR
 #define FIREWALL_ERR 1
 #endif
@@ -19,6 +22,11 @@
 #define PRINT_DEBUG(fmt, args...)    do{\
                                        if (FIREWALL_DEBUG) {\
                                          printk("[FIREWALL_DEBUG] %s: %d: "fmt, __FILE__, __LINE__, ##args);\
+                                       }\
+                                     }while(0)
+#define PRINT_WARN(fmt, args...)    do{\
+                                       if (FIREWALL_WARN) {\
+                                         printk("[FIREWALL_WARN] %s: %d: "fmt, __FILE__, __LINE__, ##args);\
                                        }\
                                      }while(0)
 #define PRINT_ERR(fmt, args...)    do{\
