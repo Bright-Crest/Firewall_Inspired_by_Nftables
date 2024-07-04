@@ -4,16 +4,19 @@
 
 #include "common.h"
 
+#include <linux/netfilter.h>
+#include <linux/list.h> // for doubly linked list
+
 // copied from <linux/netfilter.h>
-enum nf_inet_hooks {
-	NF_INET_PRE_ROUTING,
-	NF_INET_LOCAL_IN,
-	NF_INET_FORWARD,
-	NF_INET_LOCAL_OUT,
-	NF_INET_POST_ROUTING,
-	NF_INET_NUMHOOKS,
-	NF_INET_INGRESS = NF_INET_NUMHOOKS,
-};
+// enum nf_inet_hooks {
+// 	NF_INET_PRE_ROUTING,
+// 	NF_INET_LOCAL_IN,
+// 	NF_INET_FORWARD,
+// 	NF_INET_LOCAL_OUT,
+// 	NF_INET_POST_ROUTING,
+// 	NF_INET_NUMHOOKS,
+// 	NF_INET_INGRESS = NF_INET_NUMHOOKS,
+// };
 
 
 // Since the enum values are store in global scope, they have to be globally
@@ -57,7 +60,8 @@ typedef struct VerdictStmt VerdictStmt;
 struct Table {
   Name name;
   Comment comment;
-  // Chains
+  struct list_head list;
+  Chain *chain_head;
 };
 
 struct Chain {
@@ -67,7 +71,8 @@ struct Chain {
   ChainPriority priority;
   ChainPolicy policy;
   Comment comment;
-  // Rules
+  struct list_head list;
+  Rule *rule_head;
   void *chain;
   void (*instantiate)(Chain *self, Argument *, ReturnT *);
 };
@@ -75,12 +80,14 @@ struct Chain {
 struct Rule {
   Handle handle;
   Comment comment;
-  // Matches
+  struct list_head list;
+  Match *match_head;
   Stmt *stmt;
 };
 
 struct Match {
   MatchType type;
+  struct list_head list;
   void *match;
   MatchResult (*instantiate)(Match *self, Argument *);
 };
