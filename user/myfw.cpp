@@ -1,5 +1,5 @@
 // TODO: print the rules or chains
-
+// TODO: print the log
 
 #include <iostream>
 #include <string.h>
