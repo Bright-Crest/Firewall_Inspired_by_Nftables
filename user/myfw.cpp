@@ -1,3 +1,6 @@
+// TODO: print the rules or chains
+
+
 #include <iostream>
 #include <string.h>
 #include <vector>
