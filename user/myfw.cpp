@@ -30,7 +30,9 @@ enum class Command {
     Delete,
     List,
     Flush,
-    Rename
+    Rename,
+    View,
+    Unknown
 };
 
 unsigned int controlled_protocol = 0;
@@ -58,6 +60,7 @@ std::string commandToString(Command cmd) {
         case Command::List: return "list";
         case Command::Flush: return "flush";
         case Command::Rename: return "rename";
+        case Command::View: return "view";
         default: return "unknown";
     }
 }
@@ -70,7 +73,8 @@ Command parseCommand(const std::string& command) {
     if (command == "list") return Command::List;
     if (command == "flush") return Command::Flush;
     if (command == "rename") return Command::Rename;
-    return Command::Add; // Default to 'add' if not recognized
+    if (command == "View") return Command::View;
+    return Command::Unknown; // Default to 'Unknown' if not recognized
 }
 
 void printHelp(const char* programName) {
@@ -97,6 +101,10 @@ void printHelp(const char* programName) {
                 << "Options:" << std::endl
                 << "  -h             Print this help message" << std::endl;
     // TODO: Add descriptions for other options if needed
+}
+
+void viewLogs(int argc, char *argv[]){
+    // TODO: viewLogs
 }
 
 void getRulePara(Command cmd, int argc, char *argv[]){
@@ -473,6 +481,15 @@ int main(int argc, char* argv[]) {
             return 0;
         }
     }
+
+    int newArgc= argc - optionsStartIndex + 1;
+    char* newArgv[newArgc];
+    if(optionsStartIndex < argc){
+        for (int i = 0; i < newArgc; ++i) {
+            newArgv[i] = argv[i + optionsStartIndex-1];
+            // std::cout << newArgv[i] << std::endl;
+        }
+    }
     
     if(object == "rule"){
         if(cmd != Command::Add && cmd != Command::Insert && cmd != Command::Replace &&cmd != Command::Delete){
@@ -480,14 +497,8 @@ int main(int argc, char* argv[]) {
             printHelp(argv[0]);
             return 1;
         }
-        int newArgc= argc - optionsStartIndex + 1;
-        char* newArgv[newArgc];
-        if(optionsStartIndex < argc){
-            for (int i = 0; i < newArgc; ++i) {
-                newArgv[i] = argv[i + optionsStartIndex-1];
-            }
-            getRulePara(cmd, newArgc, newArgv);
-        }
+        getRulePara(cmd, newArgc, newArgv);
+        
 
 
         // This is a test: Output the parsed command and its components
@@ -507,15 +518,8 @@ int main(int argc, char* argv[]) {
             printHelp(argv[0]);
             return 1;
         }
-        int newArgc= argc - optionsStartIndex + 1;
-        char* newArgv[newArgc];
-        if(optionsStartIndex < argc){
-            for (int i = 0; i < newArgc; ++i) {
-                newArgv[i] = argv[i + optionsStartIndex-1];
-                // std::cout << newArgv[i] << std::endl;
-            }
-            getChainPara(cmd, newArgc, newArgv);
-        }
+        getChainPara(cmd, newArgc, newArgv);
+        
 
 
         // This is a test: Output the parsed command and its components
@@ -526,6 +530,9 @@ int main(int argc, char* argv[]) {
         std::cout <<  chain_type << " " << chain_hook << " " << 
                 chain_priority << " " << chain_action << " " << 
                 chain_rename_name << std::endl;
+    }
+    else if(cmd == Command::View && (object == "log" || object == "logs")){
+        viewLogs(newArgc, newArgv);
     }
 
     return 0;
