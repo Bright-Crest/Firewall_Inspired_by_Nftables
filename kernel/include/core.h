@@ -19,26 +19,6 @@
 // 	NF_INET_INGRESS = NF_INET_NUMHOOKS,
 // };
 
-// Since the enum values are store in global scope, they have to be globally
-// unique. The usual methods to prevent name collision in enum is to add the
-// name enum's name as prefix for each of the enum values. 
-
-// Top level types.
-typedef enum {CHAIN_FILTER, CHAIN_NAT} ChainType;
-typedef enum {MATCH_TODO} MatchType;
-typedef enum {STMT_VERDICT, STMT_LOG, STMT_COUNTER, STMT_NAT, STMT_CONNTRACK} StmtType;
-
-// Second level types.
-typedef enum {VERDICT_ACCEPT, VERDICT_DROP, VERDICT_CONTINUE, VERDICT_RETURN, VERDICT_JUMP, VERDICT_GOTO} VerdictStmtType;
-
-// Other useful types.
-typedef enum {CP_TODO} ChainPriority;
-typedef enum {CHAIN_ACCEPT, CHAIN_DROP} ChainPolicy;
-typedef enum {MATCH, NOT_MATCH} MatchResult;
-
-typedef unsigned int Handle;
-
-
 // pre-definitions
 struct Table;
 struct Chain;
