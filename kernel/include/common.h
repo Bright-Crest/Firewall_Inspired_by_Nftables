@@ -1,50 +1,57 @@
 #ifndef _FIREWALL_COMMON_H
 #define _FIREWALL_COMMON_H
 
+#include "share.h"
+
+/**
+ * Log level.
+ */
 #ifndef FIREWALL_INFO
 #define FIREWALL_INFO 1
 #endif
 #ifndef FIREWALL_DEBUG
 #define FIREWALL_DEBUG 1
 #endif
+#ifndef FIREWALL_WARN
+#define FIREWALL_WARN 1
+#endif
 #ifndef FIREWALL_ERR
 #define FIREWALL_ERR 1
 #endif
 
-#define PRINT_INFO(fmt, args...)    do{\
+#define PRINTK_INFO(fmt, args...)    do{\
                                        if (FIREWALL_INFO) {\
                                          printk("[FIREWALL_INFO] "fmt, ##args);\
                                        }\
                                      }while(0)
-#define PRINT_DEBUG(fmt, args...)    do{\
+#define PRINTK_DEBUG(fmt, args...)    do{\
                                        if (FIREWALL_DEBUG) {\
                                          printk("[FIREWALL_DEBUG] %s: %d: "fmt, __FILE__, __LINE__, ##args);\
                                        }\
                                      }while(0)
-#define PRINT_ERR(fmt, args...)    do{\
+#define PRINTK_WARN(fmt, args...)    do{\
+                                       if (FIREWALL_WARN) {\
+                                         printk("[FIREWALL_WARN] %s: %d: "fmt, __FILE__, __LINE__, ##args);\
+                                       }\
+                                     }while(0)
+#define PRINTK_ERR(fmt, args...)    do{\
                                        if (FIREWALL_ERR) {\
                                          printk("[FIREWALL_ERR] %s: %d: "fmt, __FILE__, __LINE__, ##args);\
                                        }\
                                      }while(0)
 
-#define MAX_NAME_LENGTH 30
-#define MAX_COMMENT_LENGTH 100
-
-typedef char Name[MAX_NAME_LENGTH];
-typedef char Comment[MAX_COMMENT_LENGTH];
-
-typedef enum {PACKAGE_UNDECIDED, PACKAGE_ACCEPT, PACKAGE_DROP} PackageState;
+typedef enum {PACKET_UNDECIDED, PACKET_ACCEPT, PACKET_DROP} PacketState;
 typedef struct {
-  PackageState state;
-} Package;
+  PacketState state;
+} Packet;
 
 typedef struct {
-  Package *package;
+  Packet *packet;
 } Argument;
 
 typedef enum {OP_NONE, OP_RETURN, OP_JUMP, OP_GOTO} Operation;
 typedef struct {
-  PackageState state;
+  PacketState state;
   Operation op;
   Name name;
 } ReturnT;
