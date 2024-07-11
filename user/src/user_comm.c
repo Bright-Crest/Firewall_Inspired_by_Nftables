@@ -1,4 +1,5 @@
 #include "user_comm.h"
+#include "api.h"
 
 /**
  * @brief:与内核进行通信
@@ -132,3 +133,95 @@ struct KernelResp ComWithKernel(void *smsg, unsigned int slen)
     return rsp;
 }
 
+/**
+ * @brief:格式化输出FTRule
+ */
+void printFTRule(struct ftrule *rule)
+{
+    printf("-------New Rule Info------\n");
+    printf("规则名: %s\n", rule->name);
+    printf("源地址: %s\n", rule->sip);
+    printf("源端口: %s\n", rule->sport);
+    printf("目的地址: %s\n", rule->tip);
+    printf("目的端口: %s\n", rule->tport);
+    printf("协议: %s\n", rule->protocol);
+    printf("行为: %u\n", rule->act);
+    printf("日志: %u\n", rule->islog);
+    printf("--------------------------\n");
+}
+
+/**
+ * @brief:格式化输出nat rule
+ */
+void printNATRule(struct natrule *rule)
+{
+    printf("-----New NAT Rule Info----\n");
+    printf("转换前地址/掩码: %s\n", rule->sip);
+    printf("转换后地址: %s\n", rule->tip);
+    printf("转换端口范围: %s\n", rule->tport);
+    printf("--------------------------\n");
+}
+
+/**
+ * @brief:添加过滤规则的函数
+ * @param:原始输入的过滤规则
+ * @return:内核响应
+ */
+struct KernelResp addFtRule(struct ftrule *filter_rule, struct FTRule *k_filter_rule)
+{
+    printFTRule(filter_rule);
+    // 用户请求
+    struct UsrReq req;
+    // 内核响应
+    struct KernelResp rsp;
+    // 添加的规则
+    struct FTRule rule;
+    // 设置规则参数
+    rule.protocol = k_filter_rule->protocol;
+    rule.saddr = k_filter_rule->saddr;
+    rule.smask = k_filter_rule->smask;
+    rule.sport = k_filter_rule->sport;
+    rule.taddr = k_filter_rule->taddr;
+    rule.tmask = k_filter_rule->tmask;
+    rule.tport = k_filter_rule->tport;
+    rule.act = k_filter_rule->act;
+    rule.islog = k_filter_rule->islog;
+    // 设置规则名
+    strncpy(rule.name, k_filter_rule->name, MAXRuleNameLen);
+    req.tp = ADD_FT_RULE;
+    req.ruleName[0] = 0;
+    // 设置前序规则名为空
+    char after[MAXRuleNameLen + 1];
+    strcpy(after, "");
+    strncpy(req.ruleName, after, MAXRuleNameLen);
+    req.msg.FTRule = rule;
+    // 将用户请求发送给内核，与内核通信，获取内核响应
+    return ComWithKernel(&req, sizeof(req));
+}
+
+/**
+ * @brief:展示过滤规则的函数
+ * @return:内核响应
+ */
+struct KernelResp getAllFTRules(void)
+{
+    // 用户请求
+    struct UsrReq req;
+    req.tp = SHOW_ALL_RULE;
+    // 将用户请求发送给内核，与内核通信，获取内核响应
+    return ComWithKernel(&req, sizeof(req));
+}
+
+/**
+ * @brief:删除规则
+ * @param:rule name
+ */
+struct KernelResp delFTRule(char name[])
+{
+    // 用户请求
+    struct UsrReq req;
+    req.tp = REMOVE_FT_RULE;
+    strcpy(req.ruleName, name);
+    // 将用户请求发送给内核，与内核通信，获取内核响应
+    return ComWithKernel(&req, sizeof(req));
+}
