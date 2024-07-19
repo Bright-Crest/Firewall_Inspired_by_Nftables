@@ -6,8 +6,39 @@ static struct sock *nl_sock = NULL;
 /**
  * @brief Send data from kernel to user using Netlink
  */
-int send(unsigned int pid, void *data, unsigned int len)
+// int send(unsigned int pid, void *data, unsigned int len)
+// {
+//     int ret;
+//     // netlink套接字消息头
+//     struct nlmsghdr *nl_hd;
+//     // 套接字缓冲区
+//     struct sk_buff *skb;
+//     // 创建一个新的 netlink 消息缓冲区。
+//     skb = nlmsg_new(len, GFP_ATOMIC);
+//     if (skb == NULL)
+//     {
+//         PRINTK_WARN("Fail to allocating a new socket buffer\n");
+//         return -1;
+//     }
+//     // 向netlink消息缓冲区中添加netlink消息头
+//     nl_hd = nlmsg_put(skb, 0, 0, 0, NLMSG_SPACE(len) - NLMSG_HDRLEN, 0);
+//     // 将data复制到netlink消息数据中
+//     memcpy(NLMSG_DATA(nl_hd), data, len);
+//     // 设置目标组
+//     // 会将消息发送给所有正在监听 netlink 套接字的接收者。
+//     NETLINK_CB(skb).dst_group = 0;
+//     // 将netlink消息发送给指定的接收者
+//     ret = netlink_unicast(nl_sock, skb, pid, MSG_DONTWAIT);
+//     PRINTK_DEBUG("Data is sended to user. pid=%d, len=%d, ret=%d\n", pid, nl_hd->nlmsg_len - NLMSG_SPACE(0), ret);
+//     return ret;
+// }
+
+/**
+ * @brief Send header and body from kernel to user using Netlink
+ */
+int send(unsigned int pid, void *header, void *body, unsigned int header_len, unsigned int body_len)
 {
+    unsigned int len = header_len + body_len;
     int ret;
     // netlink套接字消息头
     struct nlmsghdr *nl_hd;
@@ -22,8 +53,9 @@ int send(unsigned int pid, void *data, unsigned int len)
     }
     // 向netlink消息缓冲区中添加netlink消息头
     nl_hd = nlmsg_put(skb, 0, 0, 0, NLMSG_SPACE(len) - NLMSG_HDRLEN, 0);
-    // 将data复制到netlink消息数据中
-    memcpy(NLMSG_DATA(nl_hd), data, len);
+    // 复制到netlink消息数据中
+    memcpy(NLMSG_DATA(nl_hd), header, header_len);
+    memcpy(NLMSG_DATA(nl_hd) + header_len, body, body_len);
     // 设置目标组
     // 会将消息发送给所有正在监听 netlink 套接字的接收者。
     NETLINK_CB(skb).dst_group = 0;

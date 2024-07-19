@@ -15,7 +15,7 @@ typedef char Comment[MAX_COMMENT_LENGTH + 1];
 
 // Top level types.
 typedef enum {CHAIN_FILTER, CHAIN_NAT} ChainType;
-typedef enum {MATCH_TODO} MatchType;
+typedef enum {MATCH_IP, MATCH_TCP} MatchType;
 typedef enum {STMT_VERDICT, STMT_LOG, STMT_COUNTER, STMT_NAT, STMT_CONNTRACK} StmtType;
 
 // Second level types.
@@ -24,7 +24,7 @@ typedef enum {VERDICT_ACCEPT, VERDICT_DROP, VERDICT_CONTINUE, VERDICT_RETURN, VE
 // Other useful types.
 typedef enum {CP_TODO} ChainPriority;
 typedef enum {CHAIN_ACCEPT, CHAIN_DROP} ChainPolicy;
-typedef enum {MATCH, NOT_MATCH} MatchResult;
+typedef enum {MATCH = 1, NOT_MATCH = 0} MatchResult;
 
 typedef unsigned int Handle;
 

@@ -28,6 +28,8 @@ struct Stmt;
 
 struct FilterChain;
 
+struct IPMatch;
+
 struct VerdictStmt;
 
 
@@ -40,6 +42,8 @@ typedef struct Stmt Stmt;
 
 typedef struct FilterChain FilterChain;
 
+typedef struct IPMatch IPMatch;
+
 typedef struct VerdictStmt VerdictStmt;
 
 
@@ -51,7 +55,7 @@ typedef struct VerdictStmt VerdictStmt;
 struct Table {
   Name name;
   Comment comment;
-  struct list_head list;
+  struct list_head list; /**< use the kernel in-built doubly linked list */
   Chain *chain_head;
 };
 
@@ -112,10 +116,31 @@ struct FilterChain {
   // TODO: filter
 };
 
+// Second level `Match`es
+
+/**
+ * To match IP header
+ */
+struct IPMatch {
+  unsigned int protocol = -1; ///< Equal to the default value means not to match, i.e. accepting all packets.
+  int is_length_exclude;
+  unsigned int min_length;
+  unsigned int max_length; ///< Total packet length. This aims to support matching intervals. See `MATCH_INTERVAL`.
+  int is_saddr_exclude;
+  unsigned int min_saddr;
+  unsigned int max_saddr; ///< Source address
+  int is_daddr_exclude;
+  unsigned int min_daddr;
+  unsigned int max_daddr; ///< Destination address
+  MatchResult (*instantiate)(IPMatch *self, Argument *);
+};
+
 // Second level `Stmt`s.
 
 /**
- * The verdict statement alters control flow in the ruleset and issues policy decisions for `Packet`
+ * The verdict statement alters control flow in the ruleset and issues policy decisions for `Packet`.
+ * 
+ * Each `Rule` only contains one `VerdictStmt`.
  */
 struct VerdictStmt {
   VerdictStmtType type;
@@ -126,6 +151,8 @@ struct VerdictStmt {
 
 void chain_instantiate(Chain *self, Argument *, ReturnT *);
 void stmt_instantiate(Stmt *self, Argument *, ReturnT *);
+
+MatchResult ip_match(IPMatch *self, Argument *);
 
 void verdict_instantiate(VerdictStmt *self, Argument *, ReturnT *);
 

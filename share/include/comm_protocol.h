@@ -11,7 +11,7 @@ typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
 
 // user to kernel
 
-// header
+// one uniform header
 typedef struct {
   UserMsgType type;
 } UserMsgHeader;
