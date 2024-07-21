@@ -3,12 +3,10 @@
 
 #include "share.h"
 
+#define NETLINK_MYFW 17
+
 typedef enum {MANAGE, LOG_EXPORT, USER_RESPONSE} UserMsgType;
 typedef enum {TABLE, CHAIN, RULE} Hierarchy;
-typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH} TableChangeType;
-typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH, CREATE, RENAME} ChainChangeType;
-typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
-
 // user to kernel
 
 // one uniform header

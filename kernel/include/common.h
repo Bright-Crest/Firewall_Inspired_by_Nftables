@@ -40,31 +40,6 @@
                                        }\
                                      }while(0)
 
-/** 
- * @brief Match value in an interval or match value not in an interval.
- * @details To support polymorphyism like template. 
- *          When min_value > max_value, it means all the values.
- * @return 1: MATCH, 0: NOT_MATCH
- */
-#define MATCH_INTERVAL(value, min_value, max_value, is_exclude) ({\
-                                                                  typeof (value) _value = (value);\
-                                                                  typeof (min_value) _min = (min_value);\
-                                                                  typeof (max_value) _max = (max_value);\
-                                                                  typeof (is_exclude) _is_exclude = (is_exclude);\
-                                                                  int _result = 0;\
-                                                                  if (_min <= _value && _value <= _max) {\
-                                                                    _result = 1;\
-                                                                  } else if (_min > _max) {\
-                                                                    _result = 1;\
-                                                                  } else {\
-                                                                    _result = 0;\
-                                                                  }\
-                                                                  if (is_exclude) {\
-                                                                    _result = (_result + 1) % 2;\
-                                                                  }\
-                                                                  _result;\
-                                                                })
-
 
 typedef enum {PACKET_UNDECIDED, PACKET_ACCEPT, PACKET_DROP} PacketState;
 typedef struct {
@@ -85,7 +60,7 @@ typedef enum {OP_NONE, OP_RETURN, OP_JUMP, OP_GOTO} Operation;
 typedef struct {
   PacketState state;
   Operation op;
-  Name name;
+  Name name; ///< used only when op is OP_JUMP and OP_GOTO
 } ReturnT;
 
 #endif /*_FIREWALL_COMMON_H*/

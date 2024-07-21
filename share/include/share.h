@@ -9,6 +9,10 @@
 typedef char Name[MAX_NAME_LENGTH + 1];
 typedef char Comment[MAX_COMMENT_LENGTH + 1];
 
+typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH} TableChangeType;
+typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH, CREATE, RENAME} ChainChangeType;
+typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
+
 // Since the enum values are store in global scope, they have to be globally
 // unique. The usual methods to prevent name collision in enum is to add the
 // name enum's name as prefix for each of the enum values. 
@@ -44,7 +48,24 @@ typedef enum {
 
 // second level matches
 
-// TODO:
+typedef struct {
+  unsigned int protocol; ///< Equal to the default value means not to match, i.e. accepting all packets.
+  int is_length_exclude; ///< 0: in the interval; 1: exclude the interval
+  unsigned int min_length;
+  unsigned int max_length; ///< The max value of the total packet length of the interval. This aims to support matching intervals. See `MATCH_INTERVAL`.
+  int is_saddr_exclude;
+  unsigned int min_saddr;
+  unsigned int max_saddr; ///< Source address
+  int is_daddr_exclude;
+  unsigned int min_daddr;
+  unsigned int max_daddr; ///< Destination address
+  int is_sport_exclude;
+  unsigned int min_sport;
+  unsigned int max_sport;
+  int is_dport_exclude;
+  unsigned int min_dport;
+  unsigned int max_dport;
+} IPMatchT;
 
 // second level stmts
 
@@ -53,33 +74,34 @@ typedef struct {
   Name name_for_jump_or_goto;
 } VerdictStmtT;
 
-// TODO: 
+// TODO: other `Stmt`s
 
 // match & stmt
 
 typedef struct {
   MatchType type;
   union {
-    // TODO:
+    IPMatchT ipm;
+    // TODO: other `Match`es
   } match;
 } MatchT;
 
 typedef struct {
   StmtType type;
   union {
-	VerdictStmtT verdict;
-	// TODO:
+    VerdictStmtT verdict;
+    // TODO: other `Stmt`s
   } stmt;
 } StmtT;
 
 // second level chains
 
 typedef struct {
-  // TODO:
+  ChainPolicy policy;
 } FilterChainT;
 
 typedef struct {
-  // TODO:
+  // TODO: NatChainT
 } NatChainT;
 
 // top level structs
@@ -94,7 +116,6 @@ typedef struct {
   ChainType type;
   HookPoint hook;
   ChainPriority priority;
-  ChainPolicy policy;
   Comment comment;
   union {
     FilterChainT filter;

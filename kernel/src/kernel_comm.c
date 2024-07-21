@@ -117,7 +117,7 @@ struct sock *netlink_init()
      * 第二个参数用于标识 netlink 套接字的协议类型，这里使用自定义的协议。
      * 第三个参数nl_conf是一个指向netlink_kernel_cfg结构体的指针，用于配置netlink套接字的行为。
      */
-    nl_sock = netlink_kernel_create(&init_net, /*TODO: */, &nl_conf);
+    nl_sock = netlink_kernel_create(&init_net, NETLINK_MYFW, &nl_conf);
     if (!nl_sock)
     {
         PRINTK_WARN("Fail to create a Netlink socket\n");
@@ -127,9 +127,64 @@ struct sock *netlink_init()
     return nl_sock;
 }
 /**
- * @brief:释放NETLINK_MYFW套接字
+ * @brief:释放套接字
  */
 void netlink_release()
 {
     netlink_kernel_release(nl_sock);
+}
+
+/**
+ * @param data consists of header and body. Header is `UserMsgHeader`.
+ * @return total length of the kernel response
+ */
+int process_user_request(unsigned int pid, void *data, unsigned int len)
+{
+    // extract header
+    UserMsgHeader *uheader = (UserMsgHeader *)data;
+    // Manage *manage = NULL;
+    // LogExport *log_export = NULL;
+    // UserResponse *uresponse = NULL;
+
+    switch (uheader->type)
+    {
+    case MANAGE:
+        if (len != sizeof(UserMsgHeader) + sizeof(Manage)) {
+            // TODO: length not equal, error handle
+        }
+        // extract body
+        Manage *manage = (Manage *)(data + sizeof(UserMsgHeader));
+        process_manage(manage);
+        // TODO: how to form kernel response
+        break;
+    case LOG_EXPORT:
+        // TODO: case LOG_EXPORT
+        break;    
+    case USER_RESPONSE:
+        // TODO: case USER_RESPONSE 
+        break;
+    default:
+        break;
+    }
+
+    // TODO: Kernel response
+    return 0;
+}
+
+void process_manage(Manage *manage)
+{
+    switch (manage->hierarchy)
+    {
+    case TABLE:
+        manage_table(manage->data.table, manage->operation.table_op);
+        break;
+    case CHAIN:
+        manage_chain(manage->data.chain, manage->operation.chain_op, manage->table_name);
+        break;
+    case RULE:
+        manage_rule(manage->data.rule, manage->operation.rule_op, manage->table_name, manage->chain_name);
+        break;
+    default:
+        break;
+    }
 }
