@@ -122,16 +122,22 @@ struct FilterChain {
  * To match IP header
  */
 struct IPMatch {
-  unsigned int protocol = -1; ///< Equal to the default value means not to match, i.e. accepting all packets.
-  int is_length_exclude;
+  unsigned short protocol = -1; ///< Equal to the default value means not to match, i.e. accepting all packets.
+  int is_length_exclude; ///< 0: in the interval; 1: exclude the interval
   unsigned int min_length;
-  unsigned int max_length; ///< Total packet length. This aims to support matching intervals. See `MATCH_INTERVAL`.
+  unsigned int max_length; ///< The max value of the total packet length of the interval. This aims to support matching intervals. See `MATCH_INTERVAL`.
   int is_saddr_exclude;
   unsigned int min_saddr;
   unsigned int max_saddr; ///< Source address
   int is_daddr_exclude;
   unsigned int min_daddr;
   unsigned int max_daddr; ///< Destination address
+  int is_sport_exclude;
+  unsigned short min_sport;
+  unsigned short max_sport;
+  int is_dport_exclude;
+  unsigned short min_dport;
+  unsigned short max_dport;
   MatchResult (*instantiate)(IPMatch *self, Argument *);
 };
 
@@ -151,6 +157,7 @@ struct VerdictStmt {
 
 void chain_instantiate(Chain *self, Argument *, ReturnT *);
 void stmt_instantiate(Stmt *self, Argument *, ReturnT *);
+MatchResult match_instantiate(Match *self, Argument *);
 
 MatchResult ip_match(IPMatch *self, Argument *);
 

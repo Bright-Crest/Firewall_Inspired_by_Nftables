@@ -48,12 +48,30 @@ void stmt_instantiate(Stmt *self, Argument *argument, ReturnT *ret)
   }
 }
 
+MatchResult match_instantiate(Match *self, Argument *argument)
+{
+  MatchResult ret = NOT_MATCH;
+  switch (self->type)
+  {
+  case MATCH_IP:
+    IPMatch *ipm = (IPMatch *)self->match;
+    ret = ipm->instantiate(ipm, argument);
+    break;
+  default:
+    break;
+  }
+
+  return ret;
+}
+
 MatchResult ip_match(IPMatch *self, Argument *argument)
 {
   if ((self->protocol == -1 || self->protocol == argument->packet->protocol)
-    && MATCH_INTERVAL(argument->packet->length, self->min_length, self->max_length, self->is_length_exclude)
-    && MATCH_INTERVAL(argument->packet->saddr, self->min_saddr, self->max_saddr, self->is_saddr_exclude)
-    && MATCH_INTERVAL(argument->packet->daddr, self->min_daddr, self->max_daddr, self->is_daddr_exclude)) {
+      && MATCH_INTERVAL(argument->packet->length, self->min_length, self->max_length, self->is_length_exclude)
+      && MATCH_INTERVAL(argument->packet->saddr, self->min_saddr, self->max_saddr, self->is_saddr_exclude)
+      && MATCH_INTERVAL(argument->packet->daddr, self->min_daddr, self->max_daddr, self->is_daddr_exclude)
+      && MATCH_INTERVAL(argument->packet->sport, self->min_sport, self->max_sport, self->is_sport_exclude)
+      && MATCH_INTERVAL(argument->packet->dport, self->min_dport, self->max_dport, self->is_dport_exclude)) {
     return MATCH;
   } else {
     return NOT_MATCH;

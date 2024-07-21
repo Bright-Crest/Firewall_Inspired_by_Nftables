@@ -68,10 +68,12 @@
 
 typedef enum {PACKET_UNDECIDED, PACKET_ACCEPT, PACKET_DROP} PacketState;
 typedef struct {
-  unsigned int protocol; 
+  unsigned short protocol; 
   unsigned int length;
   unsigned int saddr;
   unsigned int daddr;
+  unsigned short sport;
+  unsigned short dport;
   PacketState state;
 } Packet;
 
