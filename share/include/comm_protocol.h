@@ -1,3 +1,10 @@
+/**
+ * @file comm_protocol.h
+ * @author Bright-Crest (stephenzhu2004@163.com)
+ * @brief The communication protocol shared by both kernel and user
+ * @date 2024/07
+ */
+
 #ifndef _FIREWALL_COMM_PROTOCOL_H
 #define _FIREWALL_COMM_PROTOCOL_H
 

@@ -1,3 +1,10 @@
+/**
+ * @file common.h
+ * @author Bright-Crest (stephenzhu2004@163.com)
+ * @brief Common macros and structs used in the kernel module
+ * @date 2024/07
+ */
+
 #ifndef _FIREWALL_COMMON_H
 #define _FIREWALL_COMMON_H
 

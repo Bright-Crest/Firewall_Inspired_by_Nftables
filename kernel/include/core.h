@@ -1,4 +1,9 @@
-// The core and hierarchy of rule management.
+/**
+ * @file core.h
+ * @author Bright-Crest (stephenzhu2004@163.com)
+ * @brief The core and hierarchy of rule management.
+ * @date 2024/07
+ */
 
 #ifndef _FIREWALL_RULE_H
 #define _FIREWALL_RULE_H

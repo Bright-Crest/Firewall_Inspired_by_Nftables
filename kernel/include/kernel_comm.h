@@ -1,3 +1,10 @@
+/**
+ * @file kernel_comm.h
+ * @author Bright-Crest (stephenzhu2004@163.com)
+ * @brief Kernel-space communication API based on Netlink.
+ * @date 2024/07
+ */
+
 #ifndef _FIREWALL_KERNEL_COMM_H
 #define _FIREWALL_KERNEL_COMM_H
 

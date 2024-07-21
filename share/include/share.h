@@ -1,3 +1,10 @@
+/**
+ * @file share.h
+ * @author Bright-Crest (stephenzhu2004@163.com)
+ * @brief Common data types can be shared by both kernel and user
+ * @date 2024/07
+ */
+
 #ifndef _FIREWALL_SHARE_H
 #define _FIREWALL_SHARE_H
 
@@ -9,6 +16,7 @@
 typedef char Name[MAX_NAME_LENGTH + 1];
 typedef char Comment[MAX_COMMENT_LENGTH + 1];
 
+// TODO: 与用户态统一
 typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH} TableChangeType;
 typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH, CREATE, RENAME} ChainChangeType;
 typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
