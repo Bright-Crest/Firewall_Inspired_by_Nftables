@@ -17,17 +17,15 @@
 #include <linux/icmp.h>
 #include <linux/spinlock.h>
 
-// TODO: rename and maybe include `NATRule` in share/include/share.h
-struct NATRule
-{
-    unsigned int saddr; // 源IP
-    unsigned int smask; // 源IP的掩码
-    unsigned int daddr; // 转换后的IP
-    unsigned short sport;   // 原始端口
-    unsigned short dport;   // 转换后的端口
-    unsigned short nowPort; // 当前使用的端口
-    struct NATRule *next;
-};
+#define LOCALIN 0b00001
+#define PREROUTING 0b00010
+#define FORWARD 0b00100
+#define POSTROUTING 0b01000
+#define LOCALOUT 0b10000
+
+#define MAX_NAME_LENGTH 32 // 规则名称最大长度
+
+#define DEFAULT_ACTION NF_ACCEPT
 
 // TODO: rename and maybe include `FTRule` in share/include/share.h
 struct FTRule
@@ -45,12 +43,27 @@ struct FTRule
     struct FTRule *next;
 };
 
-unsigned int ftrule_match(struct sk_buff *skb, struct FTRule *rule);
+struct FTRule_Chain
+{
+    char name[MAX_NAME_LENGTH+ 1];
+    FTRule *chain_head;
+    FTRule_Table *next;
+    unsigned int applyloc=LOCALIN|LOCALOUT;
+};
+
+static struct FTRule_chain *Table_head= NULL;
+
+unsigned int add_rule(char chain_name[], char after[], struct FTRule rule);
+
+unsigned int addRule_chain(char after[], struct FTRule_Chain chain);
+
+unsigned int delRule(char chain_name[],char name[]);
+
+unsigned int delRule_chain(char chain_name[]);
+
+unsigned int ftrule_match(struct sk_buff *skb, unsigned int loc);
 
 unsigned int filter_op(void *priv,struct sk_buff *skb,const struct nf_hook_state *state);
 
-unsigned int snat_op(void *priv,struct sk_buff *skb,const struct nf_hook_state *state);
-
-unsigned int dnat_op(void *priv,struct sk_buff *skb,const struct nf_hook_state *state);
 
 
