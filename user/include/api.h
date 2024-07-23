@@ -91,12 +91,15 @@ struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name, Name
 // struct KernelResp delNATRule(int seq, Name table, Name chain);                   // 删除序号为seq的nat规则
 struct KernelResp setDefaultAction(unsigned int action); // 设置默认行为
 struct KernelResp getAllConns(void);                     // 获取所有连接
-struct KernelResp getLogs(char name[], Name table, Name chain);
+struct KernelResp getLogs(char name[], Name table, Name chain);                 // 查看日志
 
 // chains
 
 struct KernelResp addChain(ChainT *chain, Name table);
 struct KernelResp delChain(Name chain, Name table);
+struct KernelResp listChain(Name chain, Name table);
+struct KernelResp flushChain(Name chain, Name table);
+struct KernelResp renameChain(Name chain, Name new_chain_name, Name table);
 
 /**
  * @brief:格式转换的工具函数

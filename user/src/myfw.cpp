@@ -3,6 +3,12 @@
 // TODO: add rule name
 // TODO: add rule islog
 
+/**
+ * @file myfw.cpp
+ * @author Frog2022 (zhehao4423@gmail.com)
+ * @brief process user input
+ * @date 2024/07
+ */
 #include <iostream>
 #include <string.h>
 #include <cstring>
@@ -34,18 +40,17 @@ enum class Command {
 };
 
 ftrule u_ftRule;
-FTRule k_ftRule;
 
 static Name table_name = "", chain_name = "";
 
-unsigned int controlled_protocol = 0;
 unsigned short controlled_srcport = 0;
 unsigned short controlled_dstport = 0;
 unsigned int controlled_saddr = 0;
 unsigned int controlled_daddr = 0;
-unsigned int insert_index = 0; 
-unsigned int delete_index = 0; 
-unsigned int replace_index = 0; 
+char rule_name[MAX_NAME_LENGTH+1];
+char front_name[MAX_NAME_LENGTH+1];
+char replace_name[MAX_NAME_LENGTH+1];
+char log_rule_name[MAX_NAME_LENGTH+1];
 unsigned int rule_action = 0;
 
 // unsigned int chain_priority = 0;
@@ -85,30 +90,51 @@ void printHelp(const char* programName) {
     std::cout << "Usage: " << programName << " <command> <object> <table> <chain> [options...]" << std::endl
                 << "Commands:" << std::endl
                 << "  add rule      Add a rule to the specified chain" << std::endl
-                << programName << " add rule <table> <chain> -p <protocol> -x <saddr> -y <daddr> -m <srcport> -n <dstport> -a <action, deny or accept>" << std::endl
+                << programName << " add rule <table> <chain> -r <rule name> -p <protocol> -x <saddr> -y <daddr> -m <srcport> -n <dstport> -a <action, deny or accept>" << std::endl
                 << "  insert rule   Insert a rule at a specific position in the chain" << std::endl
-                << programName << " insert rule <table> <chain> -i <index> -p <protocol> -x <saddr> -y <daddr> -m <srcport> -n <dstport> -a <action, deny or accept>" << std::endl
+                << programName << " insert rule <table> <chain> -f <front rule name> -r <rule name> -p <protocol> -x <saddr> -y <daddr> -m <srcport> -n <dstport> -a <action, deny or accept>" << std::endl
                 << "  replace rule  Replace an existing rule in the chain" << std::endl
-                << programName << " replace rule <table> <chain> -i <index> -p <protocol> -x <saddr> -y <daddr> -m <srcport> -n <dstport> -a <action, <action, deny or accept>" << std::endl
+                << programName << " replace rule <table> <chain> -f <front rule name> -r <rule name> -p <protocol> -x <saddr> -y <daddr> -m <srcport> -n <dstport> -a <action, <action, deny or accept>" << std::endl
                 << "  delete rule   Delete a rule from the chain" << std::endl
-                << programName << " delete rule <table> <chain> -i <index>" << std::endl
+                << programName << " delete rule <table> <chain> -r <rule name>" << std::endl
                 << "  add chain     Add a chain to the specified table" << std::endl
                 << programName << " add chain <table> <chain name> -t <type, filter or nat> -h <hook, input or output> -p <priority, an unsigned int> -a <action, deny or accept>" << std::endl
                 << "  delete rule   Delete a chain from the table" << std::endl
                 << programName << " delete chain <table> <chain name>" << std::endl
                 << "  list chain    List all rules in a specific chain" << std::endl
                 << programName << " insert chain <table> <chain name>" << std::endl
-                << "  flush chain   flush all rules in a specific chain" << std::endl
+                << "  flush chain   Flush all rules in a specific chain" << std::endl
                 << programName << " flush chain <table> <chain name>" << std::endl
                 << "  rename chain  Replace an existing chain in the table" << std::endl
                 << programName << " replace chain <table> <chain> -n <new chain name>" << std::endl
+                << "  view log      view logs of the rule by name" << std::endl
+                << programName << " view log <table> <chain> -r <rule_name_1> -r <rule_name_2> ... -r <rule_name_n>" << std::endl
                 << "Options:" << std::endl
                 << "  -h             Print this help message" << std::endl;
     // TODO: Add descriptions for other options if needed
 }
 
 void viewLogs(int argc, char *argv[]){
-    // TODO: viewLogs
+    int optret;
+    optret = getopt(argc,argv,"r");
+    while( optret != -1 ) {
+        // printf(" first in getpara: %s\n",argv[optind]);
+        switch( optret ) {
+            case 'r': // rule name
+                std::strncpy(log_rule_name, argv[optind], MAX_NAME_LENGTH);
+                log_rule_name[MAX_NAME_LENGTH+1] = '\0';
+
+                struct KernelResp rsp = getLogs(log_rule_name, table_name, chain_name);
+                ProcKernelResp(rsp);
+                break;
+            
+            default:
+            printf("Invalid parameters! \n ");
+                printHelp(argv[0]);
+                exit(1);;
+        }
+        optret = getopt(argc,argv,"r");
+    }
 }
 
 void getRulePara(Command cmd, int argc, char *argv[]){
@@ -118,75 +144,33 @@ void getRulePara(Command cmd, int argc, char *argv[]){
     switch (cmd)
     {
         case Command::Add:
-            optret = getopt(argc,argv,"pxymnal");
+            optret = getopt(argc,argv,"rpxymnal");
             while( optret != -1 ) {
                 // printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
+                    case 'r': // rule name
+                        std::strncpy(u_ftRule.name, argv[optind], MAX_NAME_LENGTH);
+                        u_ftRule.name[MAX_NAME_LENGTH+1] = '\0';
+                        break;
                     case 'p':
-                        if (strncmp(argv[optind], "ping",4) == 0 ){
-                            std::strncpy(u_ftRule.protocol, "ping", MAX_NAME_LENGTH);
-                            k_ftRule.protocol = PROTOCOL_PING;
-                        }
-                        else if ( strncmp(argv[optind], "tcp",3) == 0  ){
-                            std::strncpy(u_ftRule.protocol, "tcp", MAX_NAME_LENGTH);
-                            k_ftRule.protocol = PROTOCOL_TCP;
-                        }
-                        else if ( strncmp(argv[optind], "udp",3) == 0 ){
-                            std::strncpy(u_ftRule.protocol, "udp", MAX_NAME_LENGTH);
-                            k_ftRule.protocol = PROTOCOL_UDP;
-                        }
-                        else if ( strncmp(argv[optind], "any",3) == 0 ){
-                            std::strncpy(u_ftRule.protocol, "any", MAX_NAME_LENGTH);
-                            k_ftRule.protocol = PROTOCOL_ANY;
-                        }
-                        else {
-                            printf("Unkonwn protocol! please check and try again! \n");
-                            exit(1);
-                        }
+                        std::strncpy(u_ftRule.protocol, argv[optind], 5);
+                        u_ftRule.protocol[6] = '\0';
                         break;
                     case 'x':   //get source ipaddr 
-                    if ( inet_aton(argv[optind], (struct in_addr* )&controlled_saddr) == 0){
-                        printf("Invalid source ip address! please check and try again! \n ");
-                        exit(1);
-                    }
-                    else{
                         std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
                         u_ftRule.sip[sizeof(u_ftRule.sip) - 1] = '\0';
-                        k_ftRule.saddr = controlled_saddr;
-                        k_ftRule.smask = 0;
-                    }
                         break;
                     case 'y':   //get destination ipaddr
-                    if ( inet_aton(argv[optind], (struct in_addr* )&controlled_daddr) == 0){
-                        printf("Invalid destination ip address! please check and try again! \n ");
-                        exit(1);
-                    }
-                    else{
                         std::strncpy(u_ftRule.tip, argv[optind], sizeof(u_ftRule.tip) - 1);
                         u_ftRule.tip[sizeof(u_ftRule.tip) - 1] = '\0';
-                        k_ftRule.taddr = controlled_daddr;
-                        k_ftRule.tmask = 0;
-                    }
                         break;
                     case 'm':   //get source port
                     std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
                     u_ftRule.sport[sizeof(u_ftRule.sport) - 1] = '\0';
-                    tmpport = atoi(argv[optind]);
-                    if (tmpport == 0){
-                        printf("Invalid source port! please check and try again! \n ");
-                        exit(1);
-                    }
-                    k_ftRule.sport = htons(tmpport);
                         break;
                     case 'n':   //get destination port
                     std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
                     u_ftRule.tport[sizeof(u_ftRule.tport) - 1] = '\0';
-                    tmpport = atoi(argv[optind]);
-                    if (tmpport == 0){
-                        printf("Invalid destination port! please check and try again! \n ");
-                        exit(1);
-                    }
-                    k_ftRule.tport = htons(tmpport);
                         break;
 
                     case 'a':   //get destination port
@@ -198,12 +182,12 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                         printf("Unkonwn action! please check and try again! \n");
                         exit(1);
                     }
-                    u_ftRule.act = k_ftRule.act = rule_action;
+                    u_ftRule.act = rule_action;
                         break;
                     case 'l': // is log or not
                         isLog = atoi(argv[optind]);
                         if(isLog == 0 || isLog == 1){
-                            k_ftRule.islog = isLog;
+                            u_ftRule.islog = isLog;
                         }
                         else{
                             printf("Unkonwn isLog para! please check and try again! \n");
@@ -215,7 +199,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                         printHelp(argv[0]);
                         exit(1);;
                 }
-                optret = getopt(argc,argv,"pxymnal");
+                optret = getopt(argc,argv,"rpxymnal");
             }
 
             struct KernelResp rsp = addFtRule(&u_ftRule, table_name, chain_name);
@@ -223,61 +207,57 @@ void getRulePara(Command cmd, int argc, char *argv[]){
             break;
         
         case Command::Insert:
-            optret = getopt(argc,argv,"ipxymna");
+            optret = getopt(argc,argv,"frpxymnal");
             while( optret != -1 ) {
                 //printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
-                    case 'i':
-                        insert_index = atoi(argv[optind]);
+                    case 'f':
+                        std::strncpy(front_name, argv[optind], MAX_NAME_LENGTH);
+                        front_name[MAX_NAME_LENGTH+1] = '\0';
+                        break;
+                    case 'r': // rule name
+                        std::strncpy(u_ftRule.name, argv[optind], MAX_NAME_LENGTH);
+                        u_ftRule.name[MAX_NAME_LENGTH+1] = '\0';
                         break;
                     case 'p':
-                        if (strncmp(argv[optind], "ping",4) == 0 )
-                            controlled_protocol = 1;
-                        else if ( strncmp(argv[optind], "tcp",3) == 0  )
-                            controlled_protocol = 6;
-                        else if ( strncmp(argv[optind], "udp",3) == 0 )
-                            controlled_protocol = 17;
-                        else {
-                            printf("Unkonwn protocol! please check and try again! \n");
-                            exit(1);
-                        }
+                        std::strncpy(u_ftRule.protocol, argv[optind], 5);
+                        u_ftRule.protocol = '\0';
                         break;
                     case 'x':   //get source ipaddr 
-                    if ( inet_aton(argv[optind], (struct in_addr* )&controlled_saddr) == 0){
-                        printf("Invalid source ip address! please check and try again! \n ");
-                        exit(1);
-                    }
+                        std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
+                        u_ftRule.sip[sizeof(u_ftRule.sip) - 1] = '\0';
                         break;
                     case 'y':   //get destination ipaddr
-                    if ( inet_aton(argv[optind], (struct in_addr* )&controlled_daddr) == 0){
-                        printf("Invalid destination ip address! please check and try again! \n ");
-                        exit(1);
-                    }
+                        std::strncpy(u_ftRule.tip, argv[optind], sizeof(u_ftRule.tip) - 1);
+                        u_ftRule.tip[sizeof(u_ftRule.tip) - 1] = '\0';
                         break;
                     case 'm':   //get source port
-                    tmpport = atoi(argv[optind]);
-                    if (tmpport == 0){
-                        printf("Invalid source port! please check and try again! \n ");
-                        exit(1);
-                    }
-                    controlled_srcport = htons(tmpport);
+                    std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
+                    u_ftRule.sport[sizeof(u_ftRule.sport) - 1] = '\0';
                         break;
                     case 'n':   //get destination port
-                    tmpport = atoi(argv[optind]);
-                    if (tmpport == 0){
-                        printf("Invalid destination port! please check and try again! \n ");
-                        exit(1);
-                    }
-                    controlled_dstport = htons(tmpport);
+                    std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
+                    u_ftRule.tport[sizeof(u_ftRule.tport) - 1] = '\0';
                         break;
 
                     case 'a':   //get destination port
                     if (strncmp(argv[optind], "accept",5) == 0 )
-                            rule_action = ACTION_ACCEPT;
-                        else if ( strncmp(argv[optind], "deny",4) == 0  )
-                            rule_action = ACTION_DENY;
-                        else {
-                            printf("Unkonwn action! please check and try again! \n");
+                        rule_action = ACTION_ACCEPT;
+                    else if ( strncmp(argv[optind], "deny",4) == 0  )
+                        rule_action = ACTION_DENY;
+                    else {
+                        printf("Unkonwn action! please check and try again! \n");
+                        exit(1);
+                    }
+                    u_ftRule.act = rule_action;
+                        break;
+                    case 'l': // is log or not
+                        isLog = atoi(argv[optind]);
+                        if(isLog == 0 || isLog == 1){
+                            u_ftRule.islog = isLog;
+                        }
+                        else{
+                            printf("Unkonwn isLog para! please check and try again! \n");
                             exit(1);
                         }
                         break;
@@ -286,89 +266,86 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                         printHelp(argv[0]);
                         exit(1);;
                 }
-                optret = getopt(argc,argv,"ipxymna");
+                optret = getopt(argc,argv,"frpxymnal");
             }
 
             // TODO: deal with insert rule i
+            struct KernelResp rsp = insertFtRule(&u_ftRule, front_name, table_name, chain_name);
+            ProcKernelResp(rsp);
             break;
 
         case Command::Delete:   // TODO: change delete to by name, not by index
-            optret = getopt(argc,argv,"i");
+            optret = getopt(argc,argv,"r");
             while( optret != -1 ) {
                 //printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
-                    case 'i':
-                        delete_index = atoi(argv[optind]);
+                    case 'r':
+                        std::strcpy(rule_name, argv[optind], MAX_NAME_LENGTH);
+                        rule_name[MAX_NAME_LENGTH+1] = '\0';
                         break;
                     default:
                     printf("Invalid parameters! \n ");
                         printHelp(argv[0]);
                         exit(1);;
                 }
-                optret = getopt(argc,argv,"i");
+                optret = getopt(argc,argv,"r");
             }
 
-            // TODO: deal with delete rule i
+            struct KernelResp rsp = delFTRule(rule_name, table_name, chain_name);
+            ProcKernelResp(rsp);
             break;
 
         case Command::Replace:
-            optret = getopt(argc,argv,"ipxymna");
+            optret = getopt(argc,argv,"frpxymnal");
             while( optret != -1 ) {
                 //printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
-                    case 'i':
-                        replace_index = atoi(argv[optind]);
+                    case 'f':
+                        std::strncpy(replace_name, argv[optind], MAX_NAME_LENGTH);
+                        replace_name[MAX_NAME_LENGTH+1] = '\0';
+                        break;
+                    case 'r':
+                        std::strcpy(rule_name, argv[optind], MAX_NAME_LENGTH);
+                        rule_name[MAX_NAME_LENGTH+1] = '\0';
                         break;
                     case 'p':
-                        if (strncmp(argv[optind], "ping",4) == 0 )
-                            controlled_protocol = PROTOCOL_PING;
-                        else if ( strncmp(argv[optind], "tcp",3) == 0  )
-                            controlled_protocol = PROTOCOL_TCP;
-                        else if ( strncmp(argv[optind], "udp",3) == 0 )
-                            controlled_protocol = PROTOCOL_UDP;
-                        else if ( strncmp(argv[optind], "any",3) == 0 )
-                            controlled_protocol = PROTOCOL_ANY;
-                        else {
-                            printf("Unkonwn protocol! please check and try again! \n");
-                            exit(1);
-                        }
-                        break;
+                        std::strncpy(u_ftRule.protocol, argv[optind], 5);
+                        u_ftRule.protocol = '\0';
                     case 'x':   //get source ipaddr 
-                    if ( inet_aton(argv[optind], (struct in_addr* )&controlled_saddr) == 0){
-                        printf("Invalid source ip address! please check and try again! \n ");
-                        exit(1);
-                    }
+                        std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
+                        u_ftRule.sip[sizeof(u_ftRule.sip) - 1] = '\0';
                         break;
                     case 'y':   //get destination ipaddr
-                    if ( inet_aton(argv[optind], (struct in_addr* )&controlled_daddr) == 0){
-                        printf("Invalid destination ip address! please check and try again! \n ");
-                        exit(1);
-                    }
+                        std::strncpy(u_ftRule.tip, argv[optind], sizeof(u_ftRule.tip) - 1);
+                        u_ftRule.tip[sizeof(u_ftRule.tip) - 1] = '\0';
                         break;
                     case 'm':   //get source port
-                    tmpport = atoi(argv[optind]);
-                    if (tmpport == 0){
-                        printf("Invalid source port! please check and try again! \n ");
-                        exit(1);
-                    }
-                    controlled_srcport = htons(tmpport);
+                    std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
+                    u_ftRule.sport[sizeof(u_ftRule.sport) - 1] = '\0';
                         break;
                     case 'n':   //get destination port
-                    tmpport = atoi(argv[optind]);
-                    if (tmpport == 0){
-                        printf("Invalid destination port! please check and try again! \n ");
-                        exit(1);
-                    }
-                    controlled_dstport = htons(tmpport);
+                    std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
+                    u_ftRule.tport[sizeof(u_ftRule.tport) - 1] = '\0';
                         break;
 
                     case 'a':   //get destination port
                     if (strncmp(argv[optind], "accept",5) == 0 )
-                            rule_action = ACTION_ACCEPT;
-                        else if ( strncmp(argv[optind], "deny",4) == 0  )
-                            rule_action = ACTION_DENY;
-                        else {
-                            printf("Unkonwn action! please check and try again! \n");
+                        rule_action = ACTION_ACCEPT;
+                    else if ( strncmp(argv[optind], "deny",4) == 0  )
+                        rule_action = ACTION_DENY;
+                    else {
+                        printf("Unkonwn action! please check and try again! \n");
+                        exit(1);
+                    }
+                    u_ftRule.act = rule_action;
+                        break;
+                    case 'l': // is log or not
+                        isLog = atoi(argv[optind]);
+                        if(isLog == 0 || isLog == 1){
+                            u_ftRule.islog = isLog;
+                        }
+                        else{
+                            printf("Unkonwn isLog para! please check and try again! \n");
                             exit(1);
                         }
                         break;
@@ -377,10 +354,14 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                         printHelp(argv[0]);
                         exit(1);;
                 }
-                optret = getopt(argc,argv,"ipxymna");
+                optret = getopt(argc,argv,"frpxymnal");
             }
 
-            // TODO: deal with delete rule i and insert rule i
+            // TODO: deal with delete rule and insert rule
+            struct KernelResp rsp = insertFtRule(&u_ftRule, replace_name, table_name, chain_name);
+            ProcKernelResp(rsp);
+            rsp = delFTRule(replace_name, table_name, chain_name);
+            ProcKernelResp(rsp);
             break;
 
         default:
@@ -452,23 +433,27 @@ void getChainPara(Command cmd, int argc, char *argv[]){
             // get chain name
             std::strncpy(chain.name, chain_name, MAX_NAME_LENGTH);
 
-            // TODO: deal with add rule
+            // deal with add chain
             struct KernelResp rsp = addChain(&chain, table_name);
             ProcKernelResp(rsp);
             break;
         
         case Command::List:
             
-            // TODO: deal with list chain by name
+            // deal with list chain by name
+            struct KernelResp rsp = listChain(chain_name, table_name);
+            ProcKernelResp(rsp);
             break;
 
         case Command::Flush:
             
-            // TODO: deal with Flush chain by name
+            // deal with flush chain by name
+            struct KernelResp rsp = flushChain(chain_name, table_name);
+            ProcKernelResp(rsp);
             break;
 
         case Command::Delete:
-            // TODO: deal with delete chain by name
+            // deal with delete chain by name
             struct KernelResp rsp = delChain(chain_name, table_name);
             ProcKernelResp(rsp);
             break;
@@ -486,6 +471,8 @@ void getChainPara(Command cmd, int argc, char *argv[]){
             
 
             // TODO: deal with rename chain by name
+            struct KernelResp rsp = renameChain(chain_name, chain_rename_name, table_name);
+            ProcKernelResp(rsp);
             break;
 
         default:
