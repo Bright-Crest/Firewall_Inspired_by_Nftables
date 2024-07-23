@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <cstring>
 #include <vector>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -13,9 +14,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "user_comm.h"
-#include "api.h"
 
+#include "api.h"
+#include "call.h"
+#include "share.h"
+#include "comm_protocol.h"
 
 
 enum class Command {
@@ -33,6 +36,8 @@ enum class Command {
 ftrule u_ftRule;
 FTRule k_ftRule;
 
+static Name table = "", chain = "";
+
 unsigned int controlled_protocol = 0;
 unsigned short controlled_srcport = 0;
 unsigned short controlled_dstport = 0;
@@ -47,7 +52,7 @@ unsigned int chain_priority = 0;
 unsigned int chain_type = 0;
 unsigned int chain_hook = 0;
 unsigned int chain_action = 0;
-std::string chain_rename_name = "";
+static Name chain_rename_name = "";
 
 std::string commandToString(Command cmd) {
     switch(cmd) {
@@ -201,7 +206,8 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 optret = getopt(argc,argv,"pxymna");
             }
 
-            // TODO: deal with add rule
+            struct KernelResp rsp = addFtRule(&u_ftRule, table, chain);
+            ProcKernelResp(rsp);
             break;
         
         case Command::Insert:
@@ -452,7 +458,7 @@ void getChainPara(Command cmd, int argc, char *argv[]){
         case Command::Rename:
             optret = getopt(argc,argv,"n");
             if( optret != -1 ) {
-                chain_rename_name = std::string(argv[optind]);
+                std::strncpy(chain_rename_name, argv[optind], MAX_NAME_LENGTH);
             }
             else{
                 printf("Invalid parameters! \n ");
@@ -482,7 +488,7 @@ int main(int argc, char* argv[]) {
     }
 
     Command cmd = parseCommand(argv[1]);
-    std::string object, table, chain;
+    std::string object;
     
     int optionsStartIndex = 1; // Start with the command itself
 
@@ -492,10 +498,10 @@ int main(int argc, char* argv[]) {
             if (object.empty()) {
                 object = argv[i];
             }
-            else if (table.empty()) {
-                table = argv[i];
+            else if (table[0] == '\0') {
+                std::strncpy(table, argv[i], MAX_NAME_LENGTH);
             } else {
-                chain = argv[i];
+                std::strncpy(chain, argv[i], MAX_NAME_LENGTH);
                 optionsStartIndex = i + 1; // Set the index to start collecting options
                 break; // We've found the chain, no need to continue
             }

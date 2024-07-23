@@ -30,7 +30,7 @@ struct NATRule
 
 struct FTRule
 {
-    char name[MAXRuleNameLen + 1];
+    char name[MAX_NAME_LENGTH+ 1];
     unsigned int saddr;
     unsigned int smask;
     unsigned int taddr;

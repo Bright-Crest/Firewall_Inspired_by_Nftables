@@ -1,6 +1,9 @@
 #ifndef _API_APP_H
 #define _API_APP_H
 
+#include "share.h"
+#include "comm_protocol.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,9 +15,6 @@
 #include <linux/in.h>
 #include <linux/netfilter.h>
 #include <linux/netlink.h>
-
-/* 用户层与内核层通用接口 */
-#define MAXRuleNameLen 32 // 规则名称最大长度
 
 // TO BE CHANGED
 // #define REQ_GETAllFTRULES 1 // 获取所有过滤规则
@@ -55,53 +55,11 @@
 // #define MAX_PAYLOAD (1024 * 256)
 
 /**
- * @brief:响应状态码
- */
-#define ERROR_CODE_EXIT -1
-#define ERROR_CODE_EXCHANGE -2  // 与内核交换信息失败
-#define ERROR_CODE_WRONG_IP -11 // 错误的IP格式
-#define ERROR_CODE_NO_SUCH_RULE -12
-
-// /**
-//  * @brief:响应体的类型
-//  */
-// #define RSP_NULL 10
-// #define RSP_MSG 11
-// #define RSP_FTRULES 12  // body为FTRule[]
-// #define RSP_FTLOGS 13   // body为IPlog[]
-// #define RSP_NATRULES 14 // body为FTRule[]
-// #define RSP_CONNLOGS 15 // body为ConnLog[]
-
-// #define NAT_TYPE_NO 0
-// #define NAT_TYPE_SRC 1
-// #define NAT_TYPE_DEST 2
-
-/**
- * @brief:内核响应头
- */
-struct KernelResHdr
-{
-    unsigned int bodyTp; // 响应体的类型
-    unsigned int arrayLen;
-};
-
-/**
- * @brief:内核响应的结构体
- */
-struct KernelResp
-{
-    int stat;                    // 状态码
-    void *data;                  // 回应包指针，记得free
-    struct KernelResHdr *header; // 不要free；指向data中的头部
-    void *body;                  // 不要free；指向data中的Body
-};
-
-/**
  * @brief:用户输入过滤规则结构
  */
 struct ftrule
 {
-    char name[MAXRuleNameLen + 1]; // 规则名
+    char name[MAX_NAME_LENGTH + 1]; // 规则名
     char sip[25];                  // 源ip
     char tip[25];                  // 目的ip
     char sport[15];                // 源端口
@@ -124,76 +82,37 @@ struct natrule
 };
 
 /**
- * @brief:内核接受的过滤规则
+ * @brief:响应状态码
  */
-struct FTRule
-{
-    char name[MAXRuleNameLen + 1];
-    unsigned int saddr;
-    unsigned int smask;
-    unsigned int taddr;
-    unsigned int tmask;
-    unsigned int sport;
-    unsigned int tport;
-    u_int8_t protocol;
-    unsigned int act;
-    unsigned int islog;
-};
+#define ERROR_CODE_EXIT -1
+#define ERROR_CODE_EXCHANGE -2  // 与内核交换信息失败
+#define ERROR_CODE_WRONG_IP -11 // 错误的IP格式
+#define ERROR_CODE_NO_SUCH_RULE -12
 
-/**
- * @brief:内核接受的nat规则
- */
-struct NATRule
-{
-    unsigned int saddr; // 记录：原始IP | 规则：原始源IP
-    unsigned int smask; // 记录：无作用  | 规则：原始源IP掩码
-    unsigned int daddr; // 记录：转换后的IP | 规则：NAT 源IP
+// /**
+//  * @brief:响应体的类型
+//  */
+// #define RSP_NULL 10
+// #define RSP_MSG 11
+// #define RSP_FTRULES 12  // body为FTRule[]
+// #define RSP_FTLOGS 13   // body为IPlog[]
+// #define RSP_NATRULES 14 // body为FTRule[]
+// #define RSP_CONNLOGS 15 // body为ConnLog[]
 
-    unsigned short sport;   // 记录：原始端口 | 规则：最小端口范围
-    unsigned short dport;   // 记录：转换后的端口 | 规则：最大端口范围
-    unsigned short nowPort; // 记录：当前使用端口 | 规则：无作用
-    struct NATRule *next;
-};
-
-/**
- * @brief:用户层的请求结构
- */
-struct UsrReq
-{
-    // 请求类型
-    unsigned int tp;
-    // 前序规则名
-    char ruleName[MAXRuleNameLen + 1];
-    // 请求体——过滤规则、NAT规则、默认动作
-    union
-    {
-        struct FTRule FTRule;
-        struct NATRule NATRule;
-        unsigned int defaultAction;
-        unsigned int num;
-    } msg;
-};
-
-struct ConnLog
-{
-    unsigned int saddr;
-    unsigned int daddr;
-    unsigned short sport;
-    unsigned short dport;
-    u_int8_t protocol;
-    int natType;
-    struct NATRule nat; // NAT记录
-};
+// #define NAT_TYPE_NO 0
+// #define NAT_TYPE_SRC 1
+// #define NAT_TYPE_DEST 2
 
 /**
  * @brief:用户层与内核通信函数的声明
  */
-struct KernelResp addFtRule(struct ftrule *filter_rule); // 新增过滤规则
+struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain); // 新增过滤规则
 struct KernelResp getAllFTRules(void);                   // 获取所有过滤规则
-struct KernelResp delFTRule(char name[]);                // 删除名为name的规则
-struct KernelResp addNATRule(struct natrule *nat_rule);  // 新增nat规则
+// TODO: delete by name, by handle or by all the values?
+struct KernelResp delFTRule(char name[], Name table, Name chain);                // 删除名为name的规则
+struct KernelResp addNATRule(struct natrule *nat_rule, Name table, Name chain);  // 新增nat规则
 struct KernelResp getAllNATRules(void);                  // 获取所有nat规则
-struct KernelResp delNATRule(int seq);                   // 删除序号为seq的nat规则
+struct KernelResp delNATRule(int seq, Name table, Name chain);                   // 删除序号为seq的nat规则
 struct KernelResp setDefaultAction(unsigned int action); // 设置默认行为
 struct KernelResp getAllConns(void);                     // 获取所有连接
 /**
@@ -203,5 +122,7 @@ int IPstr2IPint(const char *ipStr, unsigned int *ip, unsigned int *mask);
 int IPint2IPstr(unsigned int ip, unsigned int mask, char *ipStr);
 int IPint2IPstrNoMask(unsigned int ip, char *ipStr);
 int IPint2IPstrWithPort(unsigned int ip, unsigned short port, char *ipStr);
+
+struct KernelResp ComWithKernel(void *header, void *smsg, unsigned int header_len, unsigned int slen);
 
 #endif

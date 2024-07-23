@@ -54,6 +54,52 @@ typedef enum {
 // used for communication
 // like a mirror of core.h
 
+// imported
+
+/**
+ * @brief:内核接受的过滤规则
+ */
+struct FTRule
+{
+    char name[MAX_NAME_LENGTH + 1];
+    unsigned int saddr;
+    unsigned int smask;
+    unsigned int taddr;
+    unsigned int tmask;
+    unsigned int sport;
+    unsigned int tport;
+    u_int8_t protocol;
+    unsigned int act;
+    unsigned int islog;
+};
+
+/**
+ * @brief:内核接受的nat规则
+ */
+struct NATRule
+{
+    unsigned int saddr; // 记录：原始IP | 规则：原始源IP
+    unsigned int smask; // 记录：无作用  | 规则：原始源IP掩码
+    unsigned int daddr; // 记录：转换后的IP | 规则：NAT 源IP
+
+    unsigned short sport;   // 记录：原始端口 | 规则：最小端口范围
+    unsigned short dport;   // 记录：转换后的端口 | 规则：最大端口范围
+    unsigned short nowPort; // 记录：当前使用端口 | 规则：无作用
+    struct NATRule *next;
+};
+
+struct ConnLog
+{
+    unsigned int saddr;
+    unsigned int daddr;
+    unsigned short sport;
+    unsigned short dport;
+    u_int8_t protocol;
+    int natType;
+    struct NATRule nat; // NAT记录
+};
+
+
 // second level matches
 
 typedef struct {
