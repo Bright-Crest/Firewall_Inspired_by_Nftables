@@ -1,8 +1,3 @@
-// TODO: print the rules or chains
-// TODO: print the log
-// TODO: add rule name
-// TODO: add rule islog
-
 /**
  * @file myfw.cpp
  * @author Frog2022 (zhehao4423@gmail.com)
