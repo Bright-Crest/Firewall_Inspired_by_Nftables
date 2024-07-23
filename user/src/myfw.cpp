@@ -113,11 +113,12 @@ void viewLogs(int argc, char *argv[]){
 
 void getRulePara(Command cmd, int argc, char *argv[]){
 	int optret;
-	unsigned short tmpport;
+	unsigned int tmpport;
+    unsigned int isLog;
     switch (cmd)
     {
         case Command::Add:
-            optret = getopt(argc,argv,"pxymna");
+            optret = getopt(argc,argv,"pxymnal");
             while( optret != -1 ) {
                 // printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
@@ -199,12 +200,22 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                     }
                     u_ftRule.act = k_ftRule.act = rule_action;
                         break;
+                    case 'l': // is log or not
+                        isLog = atoi(argv[optind]);
+                        if(isLog == 0 || isLog == 1){
+                            k_ftRule.islog = isLog;
+                        }
+                        else{
+                            printf("Unkonwn isLog para! please check and try again! \n");
+                            exit(1);
+                        }
+                        break;
                     default:
                     printf("Invalid parameters! \n ");
                         printHelp(argv[0]);
                         exit(1);;
                 }
-                optret = getopt(argc,argv,"pxymna");
+                optret = getopt(argc,argv,"pxymnal");
             }
 
             struct KernelResp rsp = addFtRule(&u_ftRule, table_name, chain_name);
