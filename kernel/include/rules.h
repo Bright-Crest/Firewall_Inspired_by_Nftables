@@ -28,7 +28,7 @@
 #define DEFAULT_ACTION NF_ACCEPT
 
 // TODO: rename and maybe include `FTRule` in share/include/share.h
-struct FTRule
+struct FilterRule
 {
     char name[MAX_NAME_LENGTH+ 1];
     unsigned int saddr;
@@ -40,7 +40,7 @@ struct FTRule
     u_int8_t protocol;
     unsigned int act;
     unsigned int islog;
-    struct FTRule *next;
+    struct FilterRule *next;
 };
 
 struct FTRule_Chain
@@ -53,7 +53,7 @@ struct FTRule_Chain
 
 static struct FTRule_chain *Table_head= NULL;
 
-unsigned int add_rule(char chain_name[], char after[], struct FTRule rule);
+unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule);
 
 unsigned int addRule_chain(char after[], struct FTRule_Chain chain);
 
