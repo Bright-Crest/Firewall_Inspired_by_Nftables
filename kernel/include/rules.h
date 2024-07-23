@@ -47,7 +47,7 @@ struct FTRule_Chain
 {
     char name[MAX_NAME_LENGTH+ 1];
     FTRule *chain_head;
-    FTRule_Table *next;
+    FTRule_Chain *next;
     unsigned int applyloc=LOCALIN|LOCALOUT;
 };
 
