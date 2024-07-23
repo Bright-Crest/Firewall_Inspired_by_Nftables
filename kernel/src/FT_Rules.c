@@ -18,7 +18,13 @@
 #include <linux/icmp.h>
 #include <linux/spinlock.h>
 
-int ftrule_match(struct sk_buff *skb, struct FTRule *rule)
+#include <pthread.h>
+#include <stdio.h>
+ 
+pthread_rwlock_t RuleLock = PTHREAD_RWLOCK_INITIALIZER;
+
+ 
+int ftrule_match(struct sk_buff *skb, unsigned int loc)
 {
     int islog = 1;
     int ismatch = -1;
@@ -64,35 +70,49 @@ int ftrule_match(struct sk_buff *skb, struct FTRule *rule)
     }
     // 遍历规则链表
     // 上锁
-    read_lock(&FTRuleLock);
-    for (tmp = FTRuleHd; tmp != NULL; tmp = tmp->next)
+    pthread_rwlock_rdlock(&RuleLock);
+    struct FTRule *new_rule, *tmp, *chain_head;
+    struct FTRule_Chain *chain_tmp;
+    for (chain_tmp = table_head; chain_tmp != NULL; chain_tmp = chain_tmp->next)
     {
-        // 匹配到一条规则
-        if (((sip & tmp->smask) == (tmp->saddr & tmp->smask) || tmp->saddr == 0 || (sip) == (tmp->saddr)) &&
-            (((tip) == (tmp->taddr)) ||
-             ((tip & tmp->tmask) == (tmp->taddr & tmp->tmask))) &&
-            (src_port >= ((unsigned short)(tmp->sport >> 16)) && src_port <= ((unsigned short)(tmp->sport & 0xFFFFu))) &&
-            (dst_port >= ((unsigned short)(tmp->tport >> 16)) && dst_port <= ((unsigned short)(tmp->tport & 0xFFFFu))) &&
-            (tmp->protocol == IPPROTO_IP || tmp->protocol == proto))
-        {
-            if (tmp->act == NF_ACCEPT)
+            if ((chain_tmp->applyloc&loc) != 0)
             {
-                ismatch = 1;
-                // 添加连接
-                addConn(sip, tip, src_port, dst_port, proto, islog, issyn);
-            }
-            else
-            {
-                ismatch = 0;
-            }
+                chain_head=chain_tmp->chain_head;
+                for (tmp = chain_head; tmp != NULL; tmp = tmp->next)
+                {
+                    // 匹配到一条规则
+                    if (((sip & tmp->smask) == (tmp->saddr & tmp->smask) || tmp->saddr == 0 || (sip) == (tmp->saddr)) &&
+                        (((tip) == (tmp->taddr)) ||
+                        ((tip & tmp->tmask) == (tmp->taddr & tmp->tmask))) &&
+                        (src_port >= ((unsigned short)(tmp->sport >> 16)) && src_port <= ((unsigned short)(tmp->sport & 0xFFFFu))) &&
+                        (dst_port >= ((unsigned short)(tmp->tport >> 16)) && dst_port <= ((unsigned short)(tmp->tport & 0xFFFFu))) &&
+                        (tmp->protocol == IPPROTO_IP || tmp->protocol == proto))
+                    {
+                        if (tmp->act == NF_ACCEPT)
+                        {
+                            ismatch = 1;
+                            // 添加连接
+                            addConn(sip, tip, src_port, dst_port, proto, islog, issyn);
+                            pthread_rwlock_unlock(&RuleLock);
+                            return ismatch;
+                        }
+                        else
+                        {
+                            ismatch = 0;
+                            pthread_rwlock_unlock(&RuleLock);
+                            return ismatch;
+                        }
 
-            // 赋值匹配到的规则
-            rule = tmp;
-            break;
+                        // 赋值匹配到的规则
+                        rule = tmp;
+                        break;
+                    }
+                }
         }
     }
+
     // 解锁
-    read_unlock(&FTRuleLock);
+    pthread_rwlock_unlock(&RuleLock);
     if (ismatch == -1 && DEFAULT_ACTION == NF_ACCEPT)
     {
         // 添加连接
@@ -117,3 +137,222 @@ unsigned int filter_op(void *priv,struct sk_buff *skb,const struct nf_hook_state
     return DEFAULT_ACTION;
 }
 
+unsigned int add_rule(char chain_name[], char after[], struct FTRule rule)
+{
+    struct FTRule *new_rule, *tmp, *chain_head;
+    struct FTRule_Chain *chain_tmp;
+
+    // 为新规则分配空间
+    // GFP_KERNEL 表示内存分配在进程上下文中进行，
+    // 并且请求的内存应该来自内核的内存池（kernel memory pool）。
+    // 这意味着内存分配是在内核空间进行的，分配的内存可以由进程在内核中使用。
+    new_rule = (struct FTRule *)kzalloc(sizeof(struct FTRule), GFP_KERNEL);
+
+    if (new_rule == NULL)
+    {
+        printk(KERN_WARNING "no memory for new filter rule.\n");
+        return 10;
+    }
+    memcpy(new_rule, &rule, sizeof(struct FTRule));
+    if (new_rule == NULL)
+    {
+        kfree(new_rule);
+        return NULL;
+    }
+    // 新增规则至规则链表
+    pthread_rwlock_wrlock(RuleLock);
+    if (strlen(chain_name)==0)
+    {
+        printk(KERN_INFO "no chain name provided.\n");
+        chain_name="default";
+    }
+
+    for (chain_tmp = table_head; chain_tmp != NULL; chain_tmp = chain_tmp->next)
+    {
+        if (strcmp(chain_tmp->name, chain_name) == 0)
+        {
+            chain_head=chain_tmp->chain_head;
+            // 如果前序规则名为空
+            if (strlen(after) == 0)
+            {
+                new_rule->next = chain_head;
+                chain_head = new_rule;
+                pthread_rwlock_unlock(&RuleLock);
+                return 1;
+            }
+            // 插入前序规则名之后
+            for (tmp = chain_head; tmp != NULL; tmp = tmp->next)
+            {
+                if (strcmp(tmp->name, after) == 0)
+                {
+                    new_rule->next = tmp->next;
+                    tmp->next = new_rule;
+                    pthread_rwlock_unlock(&RuleLock);
+                    return 1;
+                }
+            }    
+        }
+    }
+
+
+    
+    printk(KERN_INFO "add filter rule failed.\n");
+    // 添加失败
+    pthread_rwlock_unlock(&RuleLock);
+    kfree(new_rule);
+    return 0;
+}
+
+unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
+{
+    struct FTRule_Chain *new_chain, *tmp;
+
+    new_chain = (struct FTRule_Chain *)kzalloc(sizeof(struct FTRule_Chain), GFP_KERNEL);
+
+    if (new_chain == NULL)
+    {
+        printk(KERN_WARNING "no memory for new filter rule chain.\n");
+        return 10;
+    }
+    memcpy(new_chain, &rule, sizeof(struct FTRule));
+    if (new_chain == NULL)
+    {
+        kfree(new_chain);
+        return NULL;
+    }
+    // 新增规则链表
+    pthread_rwlock_wrlock(RuleLock);
+    if (Table_head== NULL)
+    {
+        Table_head = new_chain;
+        Table_head->next = NULL;
+        pthread_rwlock_unlock(&RuleLock);
+        return 1;
+    }
+    // 如果前序规则链表名为空
+    if (strlen(after) == 0)
+    {
+        new_chain->next = Table_head;
+        Table_head = new_chain;
+        pthread_rwlock_unlock(&RuleLock);
+        return 1;
+    }
+    // 插入前序规则链表名之后
+    for (tmp = Table_head; tmp != NULL; tmp = tmp->next)
+    {
+        if (strcmp(tmp->name, after) == 0)
+        {
+            new_chain->next = tmp->next;
+            tmp->next = new_chain;
+            pthread_rwlock_unlock(&RuleLock);
+            return 1;
+        }
+    }    
+        
+
+
+    
+    printk(KERN_INFO "add filter rule chain failed.\n");
+    // 添加失败
+    pthread_rwlock_unlock(&RuleLock);
+    kfree(new_chain);
+    return 0;
+
+}
+
+
+
+unsigned int delRule(char chain_name[],char name[])
+{
+    // 用于遍历规则链表
+    struct FTRule *new_rule, *tmp, *chain_head;
+    struct FTRule_Chain *chain_tmp;
+    // 删除的规则个数
+    int ret = 0;
+    // 上锁
+    pthread_rwlock_wrlock(RuleLock);
+    if (strlen(chain_name)==0)
+    {
+        printk(KERN_INFO "no chain name provided.\n");
+        chain_name="default";
+    }
+    // 遍历
+    for (chain_tmp = table_head; chain_tmp != NULL; chain_tmp = chain_tmp->next)
+    {
+        if (strcmp(chain_tmp->name, chain_name) == 0)
+        {
+            chain_head=chain_tmp->chain_head;
+            // 如果链表头为 name
+            while (chain_head!= NULL && strcmp(chain_head->name, name) == 0)
+            {
+                struct FTRule *delRule = chain_head;
+                chain_head = chain_head->next;
+                kfree(delRule);
+                ret++;
+            }
+            for (tmp = chain_head; tmp != NULL && tmp->next != NULL;)
+            {
+                // 匹配到一条规则
+                if (strcmp(tmp->next->name, name) == 0)
+                {
+                    // 保存被删除规则的指针
+                    struct FTRule *delRule = tmp->next;
+                    // 被删除规则前一个规则的next指针移向next的next
+                    tmp->next = tmp->next->next;
+                    // 释放被删除指针
+                    kfree(delRule);
+                    ret++;
+                }
+                else
+                {
+                    tmp = tmp->next;
+                }
+            }   
+        }
+    }
+
+    
+    
+    
+    
+    // 解锁
+    pthread_rwlock_unlock(&RuleLock);
+    return ret;
+}
+
+unsigned int delRule_chain(char chain_name[])
+{
+    struct FTRule_Chain  *tmp;
+    // 删除的规则个数
+    int ret = 0;
+    // 上锁
+    pthread_rwlock_wrlock(RuleLock);
+    while (table_head != NULL && strcmp(table_head->name, name) == 0)
+    {
+        struct FTRule_Chain *delRule = table_head;
+        table_head= table_head->next;
+        kfree(delRule);
+        ret++;
+    }
+    for (tmp = table_head; tmp != NULL && tmp->next != NULL;)
+    {
+        // 匹配到一条规则
+        if (strcmp(tmp->next->name, name) == 0)
+        {
+            // 保存被删除规则的指针
+            struct FTRule_Chain *delRule = tmp->next;
+            // 被删除规则前一个规则的next指针移向next的next
+            tmp->next = tmp->next->next;
+            // 释放被删除指针
+            kfree(delRule);
+            ret++;
+        }
+        else
+        {
+            tmp = tmp->next;
+        }
+    }
+    // 解锁
+    pthread_rwlock_unlock(&RuleLock);
+    return ret;
+}
