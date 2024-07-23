@@ -17,6 +17,7 @@
 #include <linux/icmp.h>
 #include <linux/spinlock.h>
 
+// TODO: rename and maybe include `NATRule` in share/include/share.h
 struct NATRule
 {
     unsigned int saddr; // 源IP
@@ -28,6 +29,7 @@ struct NATRule
     struct NATRule *next;
 };
 
+// TODO: rename and maybe include `FTRule` in share/include/share.h
 struct FTRule
 {
     char name[MAX_NAME_LENGTH+ 1];

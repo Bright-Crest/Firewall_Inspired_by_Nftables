@@ -21,8 +21,10 @@ void receive(struct sk_buff *skb);
 struct sock *netlink_init();
 void netlink_release();
 
-int process_user_request(unsigned int pid, void *data, unsigned int len);
+unsigned int process_user_request(unsigned int pid, void *data, unsigned int len);
 
 void process_manage(Manage *manage);
+
+void manage_usr_req(Manage *manage);
 
 #endif /*_FIREWALL_KERNEL_COMM_H*/

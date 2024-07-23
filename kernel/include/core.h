@@ -14,6 +14,7 @@
 #include <linux/stddef.h>     // used for `NULL`
 #include <linux/netfilter.h>  // used for `enum nf_inet_hooks` 
 #include <linux/list.h>       // for doubly linked list
+#include <linux/list_sort.h>  // to sort `Chain`s by priority
 #include <linux/string.h>     // used for `strncpy()`
 #include <linux/slab.h>       // used for `kmalloc()` and `kfree()`
 #include <linux/spinlock.h>   // use spin lock to assist RCU

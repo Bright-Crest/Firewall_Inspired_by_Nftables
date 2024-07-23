@@ -36,7 +36,7 @@ enum class Command {
 ftrule u_ftRule;
 FTRule k_ftRule;
 
-static Name table = "", chain = "";
+static Name table_name = "", chain_name = "";
 
 unsigned int controlled_protocol = 0;
 unsigned short controlled_srcport = 0;
@@ -48,10 +48,11 @@ unsigned int delete_index = 0;
 unsigned int replace_index = 0; 
 unsigned int rule_action = 0;
 
-unsigned int chain_priority = 0;
-unsigned int chain_type = 0;
-unsigned int chain_hook = 0;
-unsigned int chain_action = 0;
+// unsigned int chain_priority = 0;
+// unsigned int chain_type = 0;
+// unsigned int chain_hook = 0;
+// unsigned int chain_action = 0;
+static ChainT chain;
 static Name chain_rename_name = "";
 
 std::string commandToString(Command cmd) {
@@ -122,19 +123,19 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 switch( optret ) {
                     case 'p':
                         if (strncmp(argv[optind], "ping",4) == 0 ){
-                            u_ftRule.protocol = "ping";
+                            std::strncpy(u_ftRule.protocol, "ping", MAX_NAME_LENGTH);
                             k_ftRule.protocol = PROTOCOL_PING;
                         }
                         else if ( strncmp(argv[optind], "tcp",3) == 0  ){
-                            u_ftRule.protocol = "tcp";
+                            std::strncpy(u_ftRule.protocol, "tcp", MAX_NAME_LENGTH);
                             k_ftRule.protocol = PROTOCOL_TCP;
                         }
                         else if ( strncmp(argv[optind], "udp",3) == 0 ){
-                            u_ftRule.protocol = "udp";
+                            std::strncpy(u_ftRule.protocol, "udp", MAX_NAME_LENGTH);
                             k_ftRule.protocol = PROTOCOL_UDP;
                         }
                         else if ( strncmp(argv[optind], "any",3) == 0 ){
-                            u_ftRule.protocol = "any";
+                            std::strncpy(u_ftRule.protocol, "any", MAX_NAME_LENGTH);
                             k_ftRule.protocol = PROTOCOL_ANY;
                         }
                         else {
@@ -206,7 +207,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 optret = getopt(argc,argv,"pxymna");
             }
 
-            struct KernelResp rsp = addFtRule(&u_ftRule, table, chain);
+            struct KernelResp rsp = addFtRule(&u_ftRule, table_name, chain_name);
             ProcKernelResp(rsp);
             break;
         
@@ -390,40 +391,40 @@ void getChainPara(Command cmd, int argc, char *argv[]){
             while( optret != -1 ) {
                 // printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
-                    case 'p':
+                    case 'p': // get chain priority
                     try {
-                        chain_priority = std::stoi(argv[optind]);
+                        chain.priority = (ChainPriority)std::stoi(argv[optind]);
                     } catch (const std::invalid_argument& e) {
                         std::cerr << "Invalid argument: " << e.what() << std::endl;
                     } catch (const std::out_of_range& e) {
                         std::cerr << "Out of range: " << e.what() << std::endl;
                     }
                         break;
-                    case 't':   //get source ipaddr 
+                    case 't':   // get chain type
                     if (strncmp(argv[optind], "filter",5) == 0 )
-                        chain_type = CHAIN_TYPE_FILTER;
+                        chain.type = CHAIN_FILTER;
                     else if (strncmp(argv[optind], "nat",3) == 0  )
-                        chain_type = CHAIN_TYPE_NAT;
+                        chain.type = CHAIN_NAT;
                     else {
                         printf("Unkonwn chain type! please check and try again! \n");
                         exit(1);
                     }
                         break;
-                    case 'h':   //get destination ipaddr
+                    case 'h':   // get the hook to load on
                     if (strncmp(argv[optind], "input",5) == 0 )
-                        chain_hook = CHAIN_HOOK_INPUT;
+                        chain.hook = NF_INET_LOCAL_IN;
                     else if (strncmp(argv[optind], "output",3) == 0  )
-                        chain_hook = CHAIN_HOOK_OUTPUT;
+                        chain.hook = NF_INET_LOCAL_OUT;
                     else {
                         printf("Unkonwn chain type! please check and try again! \n");
                         exit(1);
                     }
                         break;
-                    case 'a':   //get destination port
+                    case 'a':   // get chain policy when it's a filter chain
                     if (strncmp(argv[optind], "accept",5) == 0 )
-                            chain_action = ACTION_ACCEPT;
+                            chain.chain.filter.policy = CHAIN_ACCEPT;
                         else if ( strncmp(argv[optind], "deny",4) == 0  )
-                            chain_action = ACTION_DENY;
+                            chain.chain.filter.policy = CHAIN_DROP;
                         else {
                             printf("Unkonwn action! please check and try again! \n");
                             exit(1);
@@ -437,7 +438,12 @@ void getChainPara(Command cmd, int argc, char *argv[]){
                 optret = getopt(argc,argv,"thpa");
             }
 
+            // get chain name
+            std::strncpy(chain.name, chain_name, MAX_NAME_LENGTH);
+
             // TODO: deal with add rule
+            struct KernelResp rsp = addChain(&chain, table_name);
+            ProcKernelResp(rsp);
             break;
         
         case Command::List:
@@ -451,8 +457,9 @@ void getChainPara(Command cmd, int argc, char *argv[]){
             break;
 
         case Command::Delete:
-
             // TODO: deal with delete chain by name
+            struct KernelResp rsp = delChain(chain_name, table_name);
+            ProcKernelResp(rsp);
             break;
 
         case Command::Rename:
@@ -498,10 +505,10 @@ int main(int argc, char* argv[]) {
             if (object.empty()) {
                 object = argv[i];
             }
-            else if (table[0] == '\0') {
-                std::strncpy(table, argv[i], MAX_NAME_LENGTH);
+            else if (table_name[0] == '\0') {
+                std::strncpy(table_name, argv[i], MAX_NAME_LENGTH);
             } else {
-                std::strncpy(chain, argv[i], MAX_NAME_LENGTH);
+                std::strncpy(chain_name, argv[i], MAX_NAME_LENGTH);
                 optionsStartIndex = i + 1; // Set the index to start collecting options
                 break; // We've found the chain, no need to continue
             }
@@ -532,8 +539,8 @@ int main(int argc, char* argv[]) {
 
         // This is a test: Output the parsed command and its components
         std::cout << "Command: " << commandToString(cmd) << std::endl;
-        std::cout << "Table: " << table << std::endl;
-        std::cout << "Chain: " << chain << std::endl;
+        std::cout << "Table: " << table_name << std::endl;
+        std::cout << "Chain: " << chain_name << std::endl;
         std::cout << "Options:";
         std::cout << insert_index << " " << replace_index << " " << delete_index << " "
                 << controlled_protocol << " " << controlled_srcport << " " <<
@@ -553,11 +560,11 @@ int main(int argc, char* argv[]) {
 
         // This is a test: Output the parsed command and its components
         std::cout << "Command: " << commandToString(cmd) << std::endl;
-        std::cout << "Table: " << table << std::endl;
-        std::cout << "Chain: " << chain << std::endl;
+        std::cout << "Table: " << table_name << std::endl;
+        std::cout << "Chain: " << chain_name << std::endl;
         std::cout << "Options:";
-        std::cout <<  chain_type << " " << chain_hook << " " << 
-                chain_priority << " " << chain_action << " " << 
+        std::cout <<  chain.type << " " << chain.hook << " " << 
+                chain.priority << " " << chain.chain.filter.policy << " " << 
                 chain_rename_name << std::endl;
     }
     else if(cmd == Command::View && (object == "log" || object == "logs")){

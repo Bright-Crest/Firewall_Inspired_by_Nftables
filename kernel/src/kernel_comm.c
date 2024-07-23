@@ -94,7 +94,7 @@ void receive(struct sk_buff *skb)
     }
     PRINTK_DEBUG("Data is received from user. pid=%d, len=%d\n", pid, len);
     // 取出了源地址、数据和长度，然后处理用户请求
-    // TODO: ProcUsrReq(pid, data, len);
+    process_user_request(pid, data, len);
 }
 
 /**
@@ -137,19 +137,17 @@ void netlink_release()
  * @param data consists of header and body. Header is `UserMsgHeader`.
  * @return total length of the kernel response
  */
-int process_user_request(unsigned int pid, void *data, unsigned int len)
+unsigned int process_user_request(unsigned int pid, void *data, unsigned int len)
 {
     // extract header
     UserMsgHeader *uheader = (UserMsgHeader *)data;
-    // Manage *manage = NULL;
-    // LogExport *log_export = NULL;
-    // UserResponse *uresponse = NULL;
 
     switch (uheader->type)
     {
     case MANAGE:
         if (len != sizeof(UserMsgHeader) + sizeof(Manage)) {
             // TODO: length not equal, error handle
+            return sizeof(UserMsgHeader);
         }
         // extract body
         Manage *manage = (Manage *)(data + sizeof(UserMsgHeader));
@@ -167,7 +165,7 @@ int process_user_request(unsigned int pid, void *data, unsigned int len)
     }
 
     // TODO: Kernel response
-    return 0;
+    return len;
 }
 
 void process_manage(Manage *manage)
@@ -183,6 +181,23 @@ void process_manage(Manage *manage)
     case RULE:
         manage_rule(manage->data.rule, manage->operation.rule_op, manage->table_name, manage->chain_name);
         break;
+    case USR_REQ:
+        manage_usr_req(manage);
+    default:
+        break;
+    }
+}
+
+void manage_usr_req(Manage *manage)
+{
+    struct UsrReq *req = manage->data.usr_req;
+
+    switch (req->tp)
+    {
+    case REQ_ADDFTRULE:
+
+        break;
+    // TODO: other cases
     default:
         break;
     }

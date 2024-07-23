@@ -14,7 +14,10 @@ LIST_HEAD(g_table_list_head);
  * so it applies to all the struct updaters. This is used along with RCU. 
  */
 static DEFINE_SPINLOCK(_g_core_lock);
-
+/**
+ * Maintain a list of `Chain`s ordered by priority for each hook point
+ */
+LIST_HEAD(g_)
 
 /**
  * Used to initialize `Chain`.
@@ -354,6 +357,11 @@ void manage_chain(ChainT *_chain, ChainChangeType operation, Name table_name)
   case ADD:
     Chain *chain = copy_chain(_chain);
     Table *table = LIST_FIND_RCU(Table, name, table_name, g_table_list_head, _list_node, strcmp);
+    if (!table) { // create a table if not found
+      TableT _table = { .name = table_name };
+      manage_table(&_table, ADD);
+      table = LIST_FIND_RCU(Table, name, table_name, g_table_list_head, _list_node, strcmp);
+    }
     spin_lock(&_g_core_lock);
     list_add_tail_rcu(&chain->_list_node, &table->chain_head);
     spin_unlock(&_g_core_lock);
@@ -383,7 +391,15 @@ void manage_rule(RuleT *_rule, RuleChangeType operation, Name table_name, Name c
   case ADD:
     Rule *rule = copy_rule(_rule);
     Table *table = LIST_FIND_RCU(Table, name, table_name, g_table_list_head, _list_node, strcmp);
+    if (!table) {
+      // TODO: error handle
+      return;
+    }
     Chain *chain = LIST_FIND_RCU(Chain, name, chain_name, table->chain_head, _list_node, strcmp);
+    if (!chain) {
+      // TODO: error handle
+      return;
+    }
     spin_lock(&_g_core_lock);
     list_add_tail_rcu(&rule->_list_node, &chain->rule_head);
     spin_unlock(&_g_core_lock);

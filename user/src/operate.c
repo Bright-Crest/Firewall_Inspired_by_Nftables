@@ -451,3 +451,28 @@ struct KernelResp getAllConns()
     // 将用户请求发送给内核，与内核通信，获取内核响应
     return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
 }
+
+struct KernelResp addChain(ChainT *chain, Name table) {
+    UserMsgHeader header = { .type = MANAGE };
+    Manage manage = {
+        .hierarchy = CHAIN,
+        .operation.chain_op = ADD,
+        .data.chain = *chain,
+        .table_name = table
+    };
+
+    return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
+}
+
+struct KernelResp delChain(Name chain, Name table) {
+    ChainT tmp = { .name = chain };
+    UserMsgHeader header = { .type = MANAGE };
+    Manage manage = {
+        .hierarchy = CHAIN,
+        .operation.chain_op = DELETE,
+        .data.chain = tmp,
+        .table_name = table
+    };
+
+    return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
+}

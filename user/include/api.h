@@ -16,17 +16,6 @@
 #include <linux/netfilter.h>
 #include <linux/netlink.h>
 
-// TO BE CHANGED
-// #define REQ_GETAllFTRULES 1 // 获取所有过滤规则
-// #define REQ_ADDFTRULE 2     // 添加过滤规则
-// #define REQ_DELFTRULES 3    // 删除过滤规则
-// #define REQ_SETACT 4        // 设置行为
-// #define REQ_GETAllLOGS 5    // 获取所有日志
-// #define REQ_GETAllCONNS 6   // 获取所有网络连接
-// #define REQ_ADDNATRULE 7    // 添加网络地址转换规则
-// #define REQ_DELNATRULE 8    // 删除网络地址转换规则
-// #define REQ_GETNATRULES 9   // 获取所有网络地址转换规则
-
 //request defination
 #define SHOW_ALL_RULE 1
 #define GET_CONN_INFO 2
@@ -38,21 +27,27 @@
 #define REMOVE_NAT_RULE 15
 #define SHOW_NAT_RULE 16
 
+// TODO: use kernel built-in definitions
 #define PROTOCOL_ANY 0
 #define PROTOCOL_PING 1
 #define PROTOCOL_TCP 6
 #define PROTOCOL_UDP 17
-#define CHAIN_TYPE_FILTER 0
-#define CHAIN_TYPE_NAT 1
-#define CHAIN_HOOK_INPUT 0
-#define CHAIN_HOOK_OUTPUT 1
+
+// use `ChainType` in share/include/share.h
+// #define CHAIN_TYPE_FILTER 0
+// #define CHAIN_TYPE_NAT 1
+
+// use `HookPoint` in share/include/share.h
+// #define CHAIN_HOOK_INPUT 0
+// #define CHAIN_HOOK_OUTPUT 1
+
+// only used for rules. Use `ChainPolicy` in share/include/share.h for chains.
 #define ACTION_DENY 0
 #define ACTION_ACCEPT 1
 
-// #define uint8_t unsigned char
-// #define NETLINK_MYFW 17
-// // 接收消息的最大载荷
-// #define MAX_PAYLOAD (1024 * 256)
+#define uint8_t unsigned char
+// 接收消息的最大载荷
+#define MAX_PAYLOAD (1024 * 256)
 
 /**
  * @brief:用户输入过滤规则结构
@@ -82,39 +77,25 @@ struct natrule
 };
 
 /**
- * @brief:响应状态码
- */
-#define ERROR_CODE_EXIT -1
-#define ERROR_CODE_EXCHANGE -2  // 与内核交换信息失败
-#define ERROR_CODE_WRONG_IP -11 // 错误的IP格式
-#define ERROR_CODE_NO_SUCH_RULE -12
-
-// /**
-//  * @brief:响应体的类型
-//  */
-// #define RSP_NULL 10
-// #define RSP_MSG 11
-// #define RSP_FTRULES 12  // body为FTRule[]
-// #define RSP_FTLOGS 13   // body为IPlog[]
-// #define RSP_NATRULES 14 // body为FTRule[]
-// #define RSP_CONNLOGS 15 // body为ConnLog[]
-
-// #define NAT_TYPE_NO 0
-// #define NAT_TYPE_SRC 1
-// #define NAT_TYPE_DEST 2
-
-/**
  * @brief:用户层与内核通信函数的声明
  */
+// rules
+
 struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain); // 新增过滤规则
 struct KernelResp getAllFTRules(void);                   // 获取所有过滤规则
 // TODO: delete by name, by handle or by all the values?
 struct KernelResp delFTRule(char name[], Name table, Name chain);                // 删除名为name的规则
-struct KernelResp addNATRule(struct natrule *nat_rule, Name table, Name chain);  // 新增nat规则
-struct KernelResp getAllNATRules(void);                  // 获取所有nat规则
-struct KernelResp delNATRule(int seq, Name table, Name chain);                   // 删除序号为seq的nat规则
+// struct KernelResp addNATRule(struct natrule *nat_rule, Name table, Name chain);  // 新增nat规则
+// struct KernelResp getAllNATRules(void);                  // 获取所有nat规则
+// struct KernelResp delNATRule(int seq, Name table, Name chain);                   // 删除序号为seq的nat规则
 struct KernelResp setDefaultAction(unsigned int action); // 设置默认行为
 struct KernelResp getAllConns(void);                     // 获取所有连接
+
+// chains
+
+struct KernelResp addChain(ChainT *chain, Name table);
+struct KernelResp delChain(Name chain, Name table);
+
 /**
  * @brief:格式转换的工具函数
  */

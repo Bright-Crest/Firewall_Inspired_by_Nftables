@@ -34,7 +34,7 @@ typedef enum {STMT_VERDICT, STMT_LOG, STMT_COUNTER, STMT_NAT, STMT_CONNTRACK} St
 typedef enum {VERDICT_ACCEPT, VERDICT_DROP, VERDICT_CONTINUE, VERDICT_RETURN, VERDICT_JUMP, VERDICT_GOTO} VerdictStmtType;
 
 // Other useful types.
-typedef enum {CP_TODO} ChainPriority;
+typedef enum {CP_CONNTRACK = -200, CP_DSTNAT = -100, CP_FILTER = 0, CP_SRCNAT = 100, } ChainPriority;
 typedef enum {CHAIN_ACCEPT, CHAIN_DROP} ChainPolicy;
 typedef enum {MATCH = 1, NOT_MATCH = 0} MatchResult;
 
