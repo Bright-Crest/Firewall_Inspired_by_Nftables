@@ -30,7 +30,7 @@ int ftrule_match(struct sk_buff *skb, unsigned int loc)
     int ismatch = -1;
     struct connSess *node;
     // 用于遍历规则链表
-    struct FTRule *tmp;
+    struct FilterRule *tmp;
     // 获取ip头
     struct iphdr *hdr = ip_hdr(skb);
     // 传输层报文头
@@ -71,7 +71,7 @@ int ftrule_match(struct sk_buff *skb, unsigned int loc)
     // 遍历规则链表
     // 上锁
     pthread_rwlock_rdlock(&RuleLock);
-    struct FTRule *new_rule, *tmp, *chain_head;
+    struct FilterRule *new_rule, *tmp, *chain_head;
     struct FTRule_Chain *chain_tmp;
     for (chain_tmp = table_head; chain_tmp != NULL; chain_tmp = chain_tmp->next)
     {
@@ -126,7 +126,7 @@ unsigned int filter_op(void *priv,struct sk_buff *skb,const struct nf_hook_state
 {
     int flag;
     // 接收匹配到的规则
-    struct FTRule rule;
+    struct FilterRule rule;
     flag = ftrule_match(skb, &rule);
     if (flag > -1)
     { // 查规则集,如果匹配到了
@@ -137,23 +137,23 @@ unsigned int filter_op(void *priv,struct sk_buff *skb,const struct nf_hook_state
     return DEFAULT_ACTION;
 }
 
-unsigned int add_rule(char chain_name[], char after[], struct FTRule rule)
+unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
 {
-    struct FTRule *new_rule, *tmp, *chain_head;
+    struct FilterRule *new_rule, *tmp, *chain_head;
     struct FTRule_Chain *chain_tmp;
 
     // 为新规则分配空间
     // GFP_KERNEL 表示内存分配在进程上下文中进行，
     // 并且请求的内存应该来自内核的内存池（kernel memory pool）。
     // 这意味着内存分配是在内核空间进行的，分配的内存可以由进程在内核中使用。
-    new_rule = (struct FTRule *)kzalloc(sizeof(struct FTRule), GFP_KERNEL);
+    new_rule = (struct FilterRule *)kzalloc(sizeof(struct FilterRule), GFP_KERNEL);
 
     if (new_rule == NULL)
     {
         printk(KERN_WARNING "no memory for new filter rule.\n");
         return 10;
     }
-    memcpy(new_rule, &rule, sizeof(struct FTRule));
+    memcpy(new_rule, &rule, sizeof(struct FilterRule));
     if (new_rule == NULL)
     {
         kfree(new_rule);
@@ -214,7 +214,7 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
         printk(KERN_WARNING "no memory for new filter rule chain.\n");
         return 10;
     }
-    memcpy(new_chain, &rule, sizeof(struct FTRule));
+    memcpy(new_chain, &rule, sizeof(struct FilterRule));
     if (new_chain == NULL)
     {
         kfree(new_chain);
@@ -265,7 +265,7 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
 unsigned int delRule(char chain_name[],char name[])
 {
     // 用于遍历规则链表
-    struct FTRule *new_rule, *tmp, *chain_head;
+    struct FilterRule *new_rule, *tmp, *chain_head;
     struct FTRule_Chain *chain_tmp;
     // 删除的规则个数
     int ret = 0;
@@ -285,7 +285,7 @@ unsigned int delRule(char chain_name[],char name[])
             // 如果链表头为 name
             while (chain_head!= NULL && strcmp(chain_head->name, name) == 0)
             {
-                struct FTRule *delRule = chain_head;
+                struct FilterRule *delRule = chain_head;
                 chain_head = chain_head->next;
                 kfree(delRule);
                 ret++;
@@ -296,7 +296,7 @@ unsigned int delRule(char chain_name[],char name[])
                 if (strcmp(tmp->next->name, name) == 0)
                 {
                     // 保存被删除规则的指针
-                    struct FTRule *delRule = tmp->next;
+                    struct FilterRule *delRule = tmp->next;
                     // 被删除规则前一个规则的next指针移向next的next
                     tmp->next = tmp->next->next;
                     // 释放被删除指针
