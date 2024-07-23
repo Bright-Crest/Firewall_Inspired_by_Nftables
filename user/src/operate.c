@@ -1,12 +1,3 @@
-/**
- * @file operate.c
- * @author cSuk1 (652240843@qq.com)
- * @brief 发送消息到内核
- * @version 0.1
- * @date 2023-11-23
- *
- *
- */
 #include "api.h"
 
 /**
