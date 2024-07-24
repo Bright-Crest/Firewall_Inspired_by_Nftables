@@ -112,7 +112,6 @@ int ftrule_match(struct sk_buff *skb, unsigned int loc)
 
     // 解锁
     read_unlock(&RuleLock);
-    read_unlock(&RuleLock);
     if (ismatch == -1 && DEFAULT_ACTION == NF_ACCEPT)
     {
         // TODO: 添加连接
@@ -179,7 +178,6 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
                 new_rule->next = chain_head;
                 chain_head = new_rule;
                 write_unlock(&RuleLock);
-                write_unlock(&RuleLock);
                 return 1;
             }
             // 插入前序规则名之后
@@ -189,7 +187,6 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
                 {
                     new_rule->next = tmp->next;
                     tmp->next = new_rule;
-                    write_unlock(&RuleLock);
                     write_unlock(&RuleLock);
                     return 1;
                 }
@@ -201,7 +198,6 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
     
     printk(KERN_INFO "add filter rule failed.\n");
     // 添加失败
-    write_unlock(&RuleLock);
     write_unlock(&RuleLock);
     kfree(new_rule);
     return 0;
@@ -231,7 +227,6 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
         Table_head = new_chain;
         Table_head->next = NULL;
         write_unlock(&RuleLock);
-        write_unlock(&RuleLock);
         return 1;
     }
     // 如果前序规则链表名为空
@@ -239,7 +234,6 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
     {
         new_chain->next = Table_head;
         Table_head = new_chain;
-        write_unlock(&RuleLock);
         write_unlock(&RuleLock);
         return 1;
     }
@@ -251,7 +245,6 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
             new_chain->next = tmp->next;
             tmp->next = new_chain;
             write_unlock(&RuleLock);
-            write_unlock(&RuleLock);
             return 1;
         }
     }    
@@ -261,7 +254,6 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
     
     printk(KERN_INFO "add filter rule chain failed.\n");
     // 添加失败
-    write_unlock(&RuleLock);
     write_unlock(&RuleLock);
     kfree(new_chain);
     return 0;
@@ -325,7 +317,6 @@ unsigned int delRule(char chain_name[],char name[])
     
     // 解锁
     write_unlock(&RuleLock);
-    write_unlock(&RuleLock);
     return ret;
 }
 
@@ -374,7 +365,6 @@ unsigned int delRule_chain(char chain_name[])
         }
     }
     // 解锁
-    write_unlock(&RuleLock);
     write_unlock(&RuleLock);
     return ret;
 }
