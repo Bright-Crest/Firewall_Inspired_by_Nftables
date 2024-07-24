@@ -79,11 +79,13 @@ struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain);
 struct KernelResp getAllFTRules(void);                   // 获取所有过滤规则
 // TODO: delete by name, by handle or by all the values?
 struct KernelResp delFTRule(char name[], Name table, Name chain);                // 删除名为name的规则
+struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name, Name table, Name chain)
 // struct KernelResp addNATRule(struct natrule *nat_rule, Name table, Name chain);  // 新增nat规则
 // struct KernelResp getAllNATRules(void);                  // 获取所有nat规则
 // struct KernelResp delNATRule(int seq, Name table, Name chain);                   // 删除序号为seq的nat规则
 struct KernelResp setDefaultAction(unsigned int action); // 设置默认行为
 struct KernelResp getAllConns(void);                     // 获取所有连接
+struct KernelResp getLogs(char name[], Name table, Name chain);                 // 查看日志
 
 struct KernelResp addFTChain(struct FilterRule_Chain *chain, Name table);
 struct KernelResp delFTChain(Name chain, Name table);
@@ -92,6 +94,9 @@ struct KernelResp delFTChain(Name chain, Name table);
 
 struct KernelResp addChain(ChainT *chain, Name table);
 struct KernelResp delChain(Name chain, Name table);
+struct KernelResp listChain(Name chain, Name table);
+struct KernelResp flushChain(Name chain, Name table);
+struct KernelResp renameChain(Name chain, Name new_chain_name, Name table);
 
 /**
  * @brief:格式转换的工具函数
