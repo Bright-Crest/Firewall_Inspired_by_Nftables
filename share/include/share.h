@@ -27,15 +27,16 @@
 
 #ifndef NF_INET_PRE_ROUTING // in user space
 // copied from <linux/netfilter.h> but renamed
-typedef enum {
-	NF_INET_PRE_ROUTING,
-	NF_INET_LOCAL_IN,
-	NF_INET_FORWARD,
-	NF_INET_LOCAL_OUT,
-	NF_INET_POST_ROUTING,
-	NF_INET_NUMHOOKS,
-	NF_INET_INGRESS = NF_INET_NUMHOOKS,
-} HookPoint;
+// typedef enum {
+// 	NF_INET_PRE_ROUTING,
+// 	NF_INET_LOCAL_IN,
+// 	NF_INET_FORWARD,
+// 	NF_INET_LOCAL_OUT,
+// 	NF_INET_POST_ROUTING,
+// 	NF_INET_NUMHOOKS,
+// 	NF_INET_INGRESS = NF_INET_NUMHOOKS,
+// } HookPoint;
+typedef int HookPoint;
 #else // in kernel space
 typedef enum nf_inet_hooks HookPoint;
 #endif
@@ -44,9 +45,22 @@ typedef char Name[MAX_NAME_LENGTH + 1];
 typedef char Comment[MAX_COMMENT_LENGTH + 1];
 
 // TODO: 与用户态统一
-typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH} TableChangeType;
-typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH, CREATE, RENAME} ChainChangeType;
-typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
+#define ADD 0
+#define DELETE 1
+#define DESTROY 2
+#define LIST 3
+#define FLUSH 4
+#define CREATE 5
+#define RENAME 6
+#define INSERT 7
+#define REPLACE 8
+#define RESET 9
+// typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH} TableChangeType;
+// typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH, CREATE, RENAME} ChainChangeType;
+// typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
+typedef int TableChangeType;
+typedef int ChainChangeType;
+typedef int RuleChangeType;
 
 // Since the enum values are store in global scope, they have to be globally
 // unique. The usual methods to prevent name collision in enum is to add the
@@ -118,7 +132,7 @@ struct ConnLog
 struct FilterRule_Chain
 {
     char name[MAX_NAME_LENGTH + 1];
-    unsigned int applyloc = LOCALIN|LOCALOUT;
+    unsigned int applyloc;
 };
 
 // second level matches

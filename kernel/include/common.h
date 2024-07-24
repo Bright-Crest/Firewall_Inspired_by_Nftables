@@ -33,17 +33,17 @@
                                      }while(0)
 #define PRINTK_DEBUG(fmt, args...)    do{\
                                        if (FIREWALL_DEBUG) {\
-                                         printk("[FIREWALL_DEBUG] %s: %d: "fmt, ##args);\
+                                         printk("[FIREWALL_DEBUG] "fmt, ##args);\
                                        }\
                                      }while(0)
 #define PRINTK_WARN(fmt, args...)    do{\
                                        if (FIREWALL_WARN) {\
-                                         printk("[FIREWALL_WARN] %s: %d: "fmt, ##args);\
+                                         printk("[FIREWALL_WARN] "fmt, ##args);\
                                        }\
                                      }while(0)
 #define PRINTK_ERR(fmt, args...)    do{\
                                        if (FIREWALL_ERR) {\
-                                         printk("[FIREWALL_ERR] %s: %d: "fmt, ##args);\
+                                         printk("[FIREWALL_ERR] "fmt, ##args);\
                                        }\
                                      }while(0)
 

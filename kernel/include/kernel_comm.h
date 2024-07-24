@@ -14,13 +14,29 @@
 #include "core.h"
 #include "rules.h"
 
+#include <linux/time.h>
+#include <linux/timer.h>
+#include <linux/jiffies.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/version.h>
+#include <linux/skbuff.h>
+#include <linux/netfilter.h>
+#include <linux/netfilter_ipv4.h>
+#include <linux/ip.h>
+#include <linux/tcp.h>
+#include <linux/udp.h>
+#include <linux/icmp.h>
+#include <linux/spinlock.h>
+
 // Netlink API
 
 int send(unsigned int pid, void *data, unsigned int len);
 // int send(unsigned int pid, void *header, void *body, unsigned int header_len, unsigned int body_len);
 void receive(struct sk_buff *skb);
-struct sock *netlink_init();
-void netlink_release();
+struct sock *netlink_init(void);
+void netlink_release(void);
 
 unsigned int process_user_request(unsigned int pid, void *data, unsigned int len);
 void process_manage(unsigned int pid, Manage *manage);

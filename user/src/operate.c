@@ -275,8 +275,8 @@ struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain)
         .hierarchy = USR_REQ,
         .operation.rule_op = ADD,
         .data.usr_req = req,
-        .table_name = table,
-        .chain_name = chain
+        .table_name = {*table},
+        .chain_name = {*chain}
     };
 
     // 将用户请求发送给内核，与内核通信，获取内核响应
@@ -322,8 +322,8 @@ struct KernelResp delFTRule(char name[], Name table, Name chain)
         .hierarchy = USR_REQ,
         .operation.rule_op = DELETE,
         .data.usr_req = req,
-        .table_name = table,
-        .chain_name = chain
+        .table_name = {*table},
+        .chain_name = {*chain}
     };
 
     // 将用户请求发送给内核，与内核通信，获取内核响应
@@ -466,7 +466,7 @@ struct KernelResp addFTChain(struct FilterRule_Chain *chain, Name table) {
         .hierarchy = USR_REQ,
         .operation.chain_op = ADD,
         .data.usr_req = req,
-        .table_name = table
+        .table_name = {*table}
     };
 
     // 将用户请求发送给内核，与内核通信，获取内核响应
@@ -485,7 +485,7 @@ struct KernelResp delFTChain(Name chain, Name table) {
         .hierarchy = USR_REQ,
         .operation.chain_op = DELETE,
         .data.usr_req = req,
-        .table_name = table
+        .table_name = {*table}
     };
 
     // 将用户请求发送给内核，与内核通信，获取内核响应
@@ -498,20 +498,20 @@ struct KernelResp addChain(ChainT *chain, Name table) {
         .hierarchy = CHAIN,
         .operation.chain_op = ADD,
         .data.chain = *chain,
-        .table_name = table
+        .table_name = {*table}
     };
 
     return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
 }
 
 struct KernelResp delChain(Name chain, Name table) {
-    ChainT tmp = { .name = chain };
+    ChainT tmp = { .name = {*chain} };
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = {
         .hierarchy = CHAIN,
         .operation.chain_op = DELETE,
         .data.chain = tmp,
-        .table_name = table
+        .table_name = {*table}
     };
 
     return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));

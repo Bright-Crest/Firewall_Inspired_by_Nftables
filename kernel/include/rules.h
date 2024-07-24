@@ -1,4 +1,5 @@
-#define DEFAULT_ACTION 0
+#ifndef _FIREWALL_RULES_H
+#define _FIREWALL_RULES_H
 
 // 内核模块编写的的依赖头文件
 #include <linux/time.h>
@@ -16,6 +17,8 @@
 #include <linux/udp.h>
 #include <linux/icmp.h>
 #include <linux/spinlock.h>
+
+#include "share.h"
 
 #define DEFAULT_ACTION NF_ACCEPT
 
@@ -39,7 +42,7 @@ struct FTRule_Chain
     char name[MAX_NAME_LENGTH+ 1];
     struct FilterRule *chain_head;
     struct FTRule_Chain *next;
-    unsigned int applyloc=LOCALIN|LOCALOUT;
+    unsigned int applyloc;
 };
 
 
@@ -51,9 +54,9 @@ unsigned int delRule(char chain_name[],char name[]);
 
 unsigned int delRule_chain(char chain_name[]);
 
-unsigned int ftrule_match(struct sk_buff *skb, unsigned int loc);
+int ftrule_match(struct sk_buff *skb, unsigned int loc);
 
 unsigned int filter_op(void *priv,struct sk_buff *skb,const struct nf_hook_state *state);
 
 
-
+#endif /*_FIREWALL_RULES_H*/

@@ -15,11 +15,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+// include c header files and have access to c source files.
+// This is used to avoid error "undefined reference to xxx" in the linking process.
+extern "C" {
 #include "api.h"
 #include "call.h"
 #include "share.h"
 #include "comm_protocol.h"
-
+}
 
 enum class Command {
     Add,
@@ -115,6 +118,7 @@ void viewLogs(int argc, char *argv[]){
 void getRulePara(Command cmd, int argc, char *argv[]){
 	int optret;
 	unsigned short tmpport;
+    struct KernelResp rsp;
     switch (cmd)
     {
         case Command::Add:
@@ -211,7 +215,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
             std::strncpy(u_ftRule.name, rule_name, MAX_NAME_LENGTH);
             std::strncpy(k_ftRule.name, rule_name, MAX_NAME_LENGTH);
 
-            struct KernelResp rsp = addFtRule(&u_ftRule, table_name, chain_name);
+            rsp = addFtRule(&u_ftRule, table_name, chain_name);
             ProcKernelResp(rsp);
             break;
         
@@ -302,7 +306,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
             }
 
             // TODO: deal with delete rule i
-            struct KernelResp rsp = delFTRule(rule_name, table_name, chain_name);
+            rsp = delFTRule(rule_name, table_name, chain_name);
             ProcKernelResp(rsp);
             break;
 
@@ -390,6 +394,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
 
 void getChainPara(Command cmd, int argc, char *argv[]){
 	int optret;
+    struct KernelResp rsp;
     switch (cmd)
     {
         case Command::Add:
@@ -450,8 +455,8 @@ void getChainPara(Command cmd, int argc, char *argv[]){
             std::strncpy(chain.name, chain_name, MAX_NAME_LENGTH);
             std::strncpy(ftchain.name, chain_name, MAX_NAME_LENGTH);
 
-            // struct KernelResp rsp = addChain(&chain, table_name);
-            struct KernelResp rsp = addFTChain(&ftchain, table_name);
+            // rsp = addChain(&chain, table_name);
+            rsp = addFTChain(&ftchain, table_name);
             ProcKernelResp(rsp);
             break;
         
@@ -467,7 +472,7 @@ void getChainPara(Command cmd, int argc, char *argv[]){
 
         case Command::Delete:
             // TODO: deal with delete chain by name
-            struct KernelResp rsp = delChain(chain_name, table_name);
+            rsp = delChain(chain_name, table_name);
             ProcKernelResp(rsp);
             break;
 

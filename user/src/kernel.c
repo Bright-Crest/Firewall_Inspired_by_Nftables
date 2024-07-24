@@ -8,6 +8,7 @@
  *
  */
 #include "call.h"
+#include "api.h"
 
 void ProcKernelResp(struct KernelResp rsp)
 {
@@ -64,9 +65,9 @@ int showRules(struct FTRule *rules, int len)
     return 0;
 }
 
-int showOneConn(struct ConnLog log)
+void showOneConn(struct ConnLog log)
 {
-    struct tm *timeinfo;
+    // struct tm *timeinfo;
     char saddr[25], daddr[25], proto[6];
     // ip
     IPint2IPstrWithPort(log.saddr, log.sport, saddr);
