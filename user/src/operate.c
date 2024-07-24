@@ -78,7 +78,7 @@ struct KernelResp ComWithKernel(void *header, void *smsg, unsigned int header_le
     // 初始化内存
     memset(message, '\0', sizeof(struct nlmsghdr));
     // 设置消息长度
-    message->nlmsg_len = NLMSG_SPACE(slen);
+    message->nlmsg_len = NLMSG_SPACE(header_len + slen);
     // 设置标志、类型和序列号
     message->nlmsg_flags = 0;
     message->nlmsg_type = 0;
