@@ -247,11 +247,11 @@ struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain)
     rule.islog = filter_rule->islog;
     rule.act = filter_rule->act;
     // 设置过滤规则的协议
-    if (strcmp(filter_rule->protocol, "TCP") == 0)
+    if (strcmp(filter_rule->protocol, "tcp") == 0)
         rule.protocol = IPPROTO_TCP;
-    else if (strcmp(filter_rule->protocol, "UDP") == 0)
+    else if (strcmp(filter_rule->protocol, "udp") == 0)
         rule.protocol = IPPROTO_UDP;
-    else if (strcmp(filter_rule->protocol, "ICMP") == 0)
+    else if (strcmp(filter_rule->protocol, "icmp") == 0)
         rule.protocol = IPPROTO_ICMP;
     else if (strcmp(filter_rule->protocol, "any") == 0)
         rule.protocol = IPPROTO_IP;
@@ -263,11 +263,11 @@ struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain)
     strncpy(rule.name, filter_rule->name, MAX_NAME_LENGTH);
     // 设置请求行为为REQ_ADDFTRULE即添加过滤规则
     req.tp = REQ_ADDFTRULE;
-    req.ruleName[0] = 0;
+    req.name[0] = 0;
     // 设置前序规则名为空
     char after[MAX_NAME_LENGTH + 1];
     strcpy(after, "");
-    strncpy(req.ruleName, after, MAX_NAME_LENGTH);
+    strncpy(req.name, after, MAX_NAME_LENGTH);
     req.msg.FTRule = rule;
 
     UserMsgHeader header = { .type = MANAGE };
@@ -315,7 +315,7 @@ struct KernelResp delFTRule(char name[], Name table, Name chain)
     struct UsrReq req;
     // 设置请求类型为REQ_DELFTRULES即删除一条过滤规则
     req.tp = REQ_DELFTRULES;
-    strcpy(req.ruleName, name);
+    strcpy(req.name, name);
 
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = { 
@@ -446,6 +446,46 @@ struct KernelResp getAllConns()
     Manage manage = { 
         .hierarchy = USR_REQ,
         .data.usr_req = req,
+    };
+
+    // 将用户请求发送给内核，与内核通信，获取内核响应
+    return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
+}
+
+
+struct KernelResp addFTChain(struct FilterRule_Chain *chain, Name table) {
+    // 用户请求
+    struct UsrReq req;
+    // 设置请求类型
+    req.tp = REQ_ADDFTCHAIN;
+    strcpy(req.name, "\0");
+    req.msg.chain = *chain;
+
+    UserMsgHeader header = { .type = MANAGE };
+    Manage manage = { 
+        .hierarchy = USR_REQ,
+        .operation.chain_op = ADD,
+        .data.usr_req = req,
+        .table_name = table
+    };
+
+    // 将用户请求发送给内核，与内核通信，获取内核响应
+    return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
+}
+
+struct KernelResp delFTChain(Name chain, Name table) {
+    // 用户请求
+    struct UsrReq req;
+    // 设置请求类型
+    req.tp = REQ_DELFTCHAIN;
+    strncpy(req.name, chain, MAX_NAME_LENGTH);
+
+    UserMsgHeader header = { .type = MANAGE };
+    Manage manage = { 
+        .hierarchy = USR_REQ,
+        .operation.chain_op = DELETE,
+        .data.usr_req = req,
+        .table_name = table
     };
 
     // 将用户请求发送给内核，与内核通信，获取内核响应

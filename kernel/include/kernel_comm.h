@@ -12,6 +12,7 @@
 #include "comm_protocol.h"
 #include "common.h"
 #include "core.h"
+#include "rules.h"
 
 // Netlink API
 
@@ -22,9 +23,9 @@ struct sock *netlink_init();
 void netlink_release();
 
 unsigned int process_user_request(unsigned int pid, void *data, unsigned int len);
+void process_manage(unsigned int pid, Manage *manage);
+void manage_usr_req(unsigned int pid, Manage *manage);
 
-void process_manage(Manage *manage);
-
-void manage_usr_req(Manage *manage);
+int sendmsg(unsigned int pid, const char *msg);
 
 #endif /*_FIREWALL_KERNEL_COMM_H*/

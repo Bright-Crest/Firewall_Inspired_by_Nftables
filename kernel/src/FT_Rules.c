@@ -23,6 +23,7 @@
  
 pthread_rwlock_t RuleLock = PTHREAD_RWLOCK_INITIALIZER;
 
+static struct FTRule_chain *Table_head = NULL;
  
 int ftrule_match(struct sk_buff *skb, unsigned int loc)
 {
@@ -214,7 +215,7 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
         printk(KERN_WARNING "no memory for new filter rule chain.\n");
         return 10;
     }
-    memcpy(new_chain, &rule, sizeof(struct FilterRule));
+    memcpy(new_chain, &chain, sizeof(struct FilterRule));
     if (new_chain == NULL)
     {
         kfree(new_chain);
