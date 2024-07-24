@@ -86,12 +86,7 @@ void receive(struct sk_buff *skb)
     pid = nl_hd->nlmsg_pid;
     // 计算数据部分的长度
     len = nl_hd->nlmsg_len - NLMSG_SPACE(0);
-    // 如果数据部分长度小于用户的请求体的大小
-    if (len < /*TODO: sizeof(struct UsrReq)*/)
-    {
-        PRINTK_WARN("Wrong size of received Netlink message\n");
-        return;
-    }
+
     PRINTK_DEBUG("Data is received from user. pid=%d, len=%d\n", pid, len);
     // 取出了源地址、数据和长度，然后处理用户请求
     process_user_request(pid, data, len);
@@ -101,7 +96,7 @@ void receive(struct sk_buff *skb)
  * @brief Initialize Netlink socket
  * @details Will be called when the kernel module is inserted
  */
-struct sock *netlink_init()
+struct sock *netlink_init(void)
 {
     /**
      * struct netlink_kernel_cfg, in the path linux/include/linux/netlink.h line 44
@@ -128,7 +123,7 @@ struct sock *netlink_init()
 /**
  * @brief:释放套接字
  */
-void netlink_release()
+void netlink_release(void)
 {
     netlink_kernel_release(nl_sock);
 }
@@ -151,7 +146,7 @@ unsigned int process_user_request(unsigned int pid, void *data, unsigned int len
         }
         // extract body
         Manage *manage = (Manage *)(data + sizeof(UserMsgHeader));
-        process_manage(manage);
+        process_manage(pid, manage);
         // TODO: how to form kernel response
         break;
     case LOG_EXPORT:
@@ -168,37 +163,163 @@ unsigned int process_user_request(unsigned int pid, void *data, unsigned int len
     return len;
 }
 
-void process_manage(Manage *manage)
+void process_manage(unsigned int pid, Manage *manage)
 {
     switch (manage->hierarchy)
     {
     case TABLE:
-        manage_table(manage->data.table, manage->operation.table_op);
+        manage_table(&manage->data.table, manage->operation.table_op);
         break;
     case CHAIN:
-        manage_chain(manage->data.chain, manage->operation.chain_op, manage->table_name);
+        manage_chain(&manage->data.chain, manage->operation.chain_op, manage->table_name);
         break;
     case RULE:
-        manage_rule(manage->data.rule, manage->operation.rule_op, manage->table_name, manage->chain_name);
+        manage_rule(&manage->data.rule, manage->operation.rule_op, manage->table_name, manage->chain_name);
         break;
     case USR_REQ:
-        manage_usr_req(manage);
+        manage_usr_req(pid, manage);
     default:
         break;
     }
 }
 
-void manage_usr_req(Manage *manage)
+void manage_usr_req(unsigned int pid, Manage *manage)
 {
-    struct UsrReq *req = manage->data.usr_req;
+    int ret;
+    struct UsrReq *req = &manage->data.usr_req;
+    struct KernelResHdr *rsp_hdr;
+    unsigned int rsp_len = 0;
 
     switch (req->tp)
     {
     case REQ_ADDFTRULE:
+        struct FTRule *_r = &req->msg.FTRule;
+        struct FilterRule rule = { 
+            .name = {*_r->name},
+            .saddr = _r->saddr,
+            .smask = _r->smask,
+            .taddr = _r->taddr,
+            .tmask = _r->tmask,
+            .sport = _r->sport,
+            .tport = _r->tport,
+            .protocol = _r->protocol,
+            .act = _r->act,
+            .islog = _r->islog
+        };
+        ret = add_rule(manage->chain_name, req->name, rule);
 
+        switch (ret)
+        {
+        case 10:
+        case 0:
+            rsp_len = sendmsg(pid, "Fail to add a new filter rule.\n");
+            break; 
+        case 1:
+            rsp_len = sendmsg(pid, "Add a new filter rule successfully.\n");
+            break;
+        default:
+            break;
+        }
+        break;
+    case REQ_DELFTRULES:
+        ret = delRule(manage->chain_name, req->name);
+
+        if (ret <= 0) {
+            rsp_len = sendmsg(pid, "Fail to delete the rule.\n");
+            break;
+        }
+
+        rsp_len = sizeof(struct KernelResHdr);
+        rsp_hdr = (struct KernelResHdr *)kzalloc(rsp_len, GFP_KERNEL);
+        if (rsp_hdr == NULL) {
+            PRINTK_WARN("Kernel kzalloc KernelResHdr failed\n");
+            break;
+        }
+        rsp_hdr->bodyTp = RSP_NULL;
+        rsp_hdr->arrayLen = ret;
+        send(pid, rsp_hdr, rsp_len);
+        kfree(rsp_hdr);
+        break;
+    case REQ_ADDFTCHAIN:
+        struct FilterRule_Chain *_c = &req->msg.chain;
+        struct FTRule_Chain chain = {
+            .name = {*_c->name},
+            .applyloc = _c->applyloc
+        };
+        ret = addRule_chain(req->name, chain);
+
+        switch (ret)
+        {
+        case 10:
+        case 0:
+            rsp_len = sendmsg(pid, "Fail to add a new filter chain.\n");
+            break; 
+        case 1:
+            rsp_len = sendmsg(pid, "Add a new filter chain successfully.\n");
+            break;
+        default:
+            break;
+        }
+        break;
+    case REQ_DELFTCHAIN:
+        ret = delRule_chain(req->name);
+
+        if (ret <= 0) {
+            rsp_len = sendmsg(pid, "Fail to delete the chain.\n");
+            break;
+        }
+
+        rsp_len = sizeof(struct KernelResHdr);
+        rsp_hdr = (struct KernelResHdr *)kzalloc(rsp_len, GFP_KERNEL);
+        if (rsp_hdr == NULL) {
+            PRINTK_WARN("Kernel kzalloc KernelResHdr failed\n");
+            break;
+        }
+        rsp_hdr->bodyTp = RSP_NULL;
+        rsp_hdr->arrayLen = ret;
+        send(pid, rsp_hdr, rsp_len);
+        kfree(rsp_hdr);
+        break;
+    case REQ_GETAllFTRULES:
+        break;
+    case REQ_GETALLFTCHAINS:
         break;
     // TODO: other cases
     default:
+        rsp_len = sendmsg(pid, "Unexpected request type.\n");
         break;
     }
+
+    return; // TODO: return what?
+}
+
+/**
+ * @brief:发送消息到用户层
+ * @param:pid，用户进程id
+ * @param:msg，发送的消息
+ * @return:内核响应长度
+ */
+int sendmsg(unsigned int pid, const char *msg)
+{
+    // 分配空间
+    void *mem;
+    unsigned int rsp_len;
+    struct KernelResHdr *rsp_hdr;
+    rsp_len = sizeof(struct KernelResHdr) + strlen(msg) + 1;
+    mem = kzalloc(rsp_len, GFP_ATOMIC);
+    if (mem == NULL)
+    {
+        PRINTK_WARN("sendmsg kzalloc fail.\n");
+        return 0;
+    }
+    // 构造响应数据包
+    rsp_hdr = (struct KernelResHdr *)mem;
+    rsp_hdr->bodyTp = RSP_MSG;
+    rsp_hdr->arrayLen = strlen(msg);
+    memcpy(mem + sizeof(struct KernelResHdr), msg, strlen(msg));
+    // 发送响应
+    send(pid, mem, rsp_len);
+    // 释放内存
+    kfree(mem);
+    return rsp_len;
 }

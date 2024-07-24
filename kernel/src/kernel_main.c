@@ -24,6 +24,7 @@
 #include <linux/spinlock.h>
 
 #include "hook_func.h"
+#include "kernel_comm.h"
 
 // 使用静态变量更适合与模块化编程，使用static进行定义的结构或变量只能在本文件中使用
 // 定义netfilter的5个钩子点：
@@ -84,7 +85,8 @@ static int mod_init(void)
     nf_register_net_hook(&init_net, &NF_HKForward);
     nf_register_net_hook(&init_net, &NF_HKPostRouting);
     netlink_init();
-    conn_init();
+    // TODO: conntrack
+    // conn_init();
     return 0;
 }
 
@@ -98,7 +100,7 @@ static void mod_exit(void)
     nf_unregister_net_hook(&init_net, &NF_HKForward);
     nf_unregister_net_hook(&init_net, &NF_HKPostRouting);
     netlink_release();
-    conn_exit();
+    // conn_exit();
 }
 
 // 模块证书

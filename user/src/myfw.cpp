@@ -16,11 +16,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+// include c header files and have access to c source files.
+// This is used to avoid error "undefined reference to xxx" in the linking process.
+extern "C" {
 #include "api.h"
 #include "call.h"
 #include "share.h"
 #include "comm_protocol.h"
-
+}
 
 enum class Command {
     Add,
@@ -36,7 +39,7 @@ enum class Command {
 
 ftrule u_ftRule;
 
-static Name table_name = "", chain_name = "";
+static Name table_name = "", chain_name = "", rule_name = "";
 
 unsigned short controlled_srcport = 0;
 unsigned short controlled_dstport = 0;
@@ -53,6 +56,7 @@ unsigned int rule_action = 0;
 // unsigned int chain_hook = 0;
 // unsigned int chain_action = 0;
 static ChainT chain;
+static struct FilterRule_Chain ftchain;
 static Name chain_rename_name = "";
 
 std::string commandToString(Command cmd) {
@@ -134,8 +138,11 @@ void viewLogs(int argc, char *argv[]){
 
 void getRulePara(Command cmd, int argc, char *argv[]){
 	int optret;
+
 	unsigned int tmpport;
     unsigned int isLog;
+    struct KernelResp rsp;
+
     switch (cmd)
     {
         case Command::Add:
@@ -197,7 +204,10 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 optret = getopt(argc,argv,"rpxymnal");
             }
 
-            struct KernelResp rsp = addFtRule(&u_ftRule, table_name, chain_name);
+            std::strncpy(u_ftRule.name, rule_name, MAX_NAME_LENGTH);
+            std::strncpy(k_ftRule.name, rule_name, MAX_NAME_LENGTH);
+
+            rsp = addFtRule(&u_ftRule, table_name, chain_name);
             ProcKernelResp(rsp);
             break;
         
@@ -286,7 +296,8 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 optret = getopt(argc,argv,"r");
             }
 
-            struct KernelResp rsp = delFTRule(rule_name, table_name, chain_name);
+
+            rsp = delFTRule(rule_name, table_name, chain_name);
             ProcKernelResp(rsp);
             break;
 
@@ -371,6 +382,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
 
 void getChainPara(Command cmd, int argc, char *argv[]){
 	int optret;
+    struct KernelResp rsp;
     switch (cmd)
     {
         case Command::Add:
@@ -398,11 +410,13 @@ void getChainPara(Command cmd, int argc, char *argv[]){
                     }
                         break;
                     case 'h':   // get the hook to load on
-                    if (strncmp(argv[optind], "input",5) == 0 )
+                    if (strncmp(argv[optind], "input",5) == 0 ) {
                         chain.hook = NF_INET_LOCAL_IN;
-                    else if (strncmp(argv[optind], "output",3) == 0  )
+                        ftchain.applyloc = LOCALIN;
+                    } else if (strncmp(argv[optind], "output",3) == 0  ) {
                         chain.hook = NF_INET_LOCAL_OUT;
-                    else {
+                        ftchain.applyloc = LOCALOUT;
+                    } else {
                         printf("Unkonwn chain type! please check and try again! \n");
                         exit(1);
                     }
@@ -427,9 +441,12 @@ void getChainPara(Command cmd, int argc, char *argv[]){
 
             // get chain name
             std::strncpy(chain.name, chain_name, MAX_NAME_LENGTH);
+            std::strncpy(ftchain.name, chain_name, MAX_NAME_LENGTH);
+
 
             // deal with add chain
-            struct KernelResp rsp = addChain(&chain, table_name);
+            // rsp = addChain(&chain, table_name);
+            rsp = addFTChain(&ftchain, table_name);
             ProcKernelResp(rsp);
             break;
         
@@ -448,8 +465,10 @@ void getChainPara(Command cmd, int argc, char *argv[]){
             break;
 
         case Command::Delete:
-            // deal with delete chain by name
-            struct KernelResp rsp = delChain(chain_name, table_name);
+        
+            // deal with delete chain by name    
+            // rsp = delChain(chain_name, table_name);
+            rsp = delFTChain(chain_name, table_name);
             ProcKernelResp(rsp);
             break;
 
@@ -500,10 +519,12 @@ int main(int argc, char* argv[]) {
             }
             else if (table_name[0] == '\0') {
                 std::strncpy(table_name, argv[i], MAX_NAME_LENGTH);
-            } else {
+            } else if (chain_name[0] == '\0') {
                 std::strncpy(chain_name, argv[i], MAX_NAME_LENGTH);
+            } else if (rule_name[0] == '\0') {
+                std::strncpy(rule_name, argv[i], MAX_NAME_LENGTH);
                 optionsStartIndex = i + 1; // Set the index to start collecting options
-                break; // We've found the chain, no need to continue
+                break; 
             }
         } else if (std::string(argv[i]) == "-h") {
             printHelp(argv[0]);

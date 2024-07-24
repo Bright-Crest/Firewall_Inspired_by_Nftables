@@ -13,6 +13,7 @@
 #define NETLINK_MYFW 17
 
 // `UsrReq.tp`. TO BE CHANGED
+
 #define REQ_GETAllFTRULES 1 // 获取所有过滤规则
 #define REQ_ADDFTRULE 2     // 添加过滤规则
 #define REQ_DELFTRULES 3    // 删除过滤规则
@@ -22,6 +23,9 @@
 #define REQ_ADDNATRULE 7    // 添加网络地址转换规则
 #define REQ_DELNATRULE 8    // 删除网络地址转换规则
 #define REQ_GETNATRULES 9   // 获取所有网络地址转换规则
+#define REQ_GETALLFTCHAINS 10
+#define REQ_ADDFTCHAIN  11
+#define REQ_DELFTCHAIN  12
 
 /**
  * @brief:响应状态码
@@ -40,6 +44,7 @@
 #define RSP_FTLOGS 13   // body为IPlog[]
 #define RSP_NATRULES 14 // body为FTRule[]
 #define RSP_CONNLOGS 15 // body为ConnLog[]
+#define RSP_FTCHAINS 16 // body为FTRule[]
 
 #define NAT_TYPE_NO 0
 #define NAT_TYPE_SRC 1
@@ -65,12 +70,13 @@ struct UsrReq
     // 请求类型
     unsigned int tp;
     // 前序规则名
-    char ruleName[MAX_NAME_LENGTH + 1];
+    char name[MAX_NAME_LENGTH + 1];
     // 请求体——过滤规则、NAT规则、默认动作
     union
     {
         struct FTRule FTRule;
-        struct NATRule NATRule;
+        // struct NATRule NATRule;
+        struct FilterRule_Chain chain;
         unsigned int defaultAction;
         unsigned int num;
     } msg;

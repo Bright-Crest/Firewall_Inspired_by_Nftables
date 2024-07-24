@@ -17,7 +17,7 @@ static DEFINE_SPINLOCK(_g_core_lock);
 /**
  * Maintain a list of `Chain`s ordered by priority for each hook point
  */
-LIST_HEAD(g_)
+// LIST_HEAD(g_);
 
 /**
  * Used to initialize `Chain`.
@@ -266,7 +266,7 @@ Match *copy_match(MatchT *_match)
 Stmt *copy_stmt(StmtT *_stmt)
 {
   KMALLOC_KERNEL(Stmt, s);
-  s->type = _stmt->stmt;
+  s->type = _stmt->type;
   s->instantiate = stmt_instantiate;
 
   switch (s->type)
@@ -320,7 +320,7 @@ VerdictStmt *copy_verdict_stmt(VerdictStmtT *_verdict)
 {
   KMALLOC_KERNEL(VerdictStmt, v);
   v->type = _verdict->type;
-  v->name_for_jump_or_goto = _verdict->name_for_jump_or_goto;
+  strncpy(v->name_for_jump_or_goto, _verdict->name_for_jump_or_goto, MAX_NAME_LENGTH);
   v->instantiate = verdict_stmt_instantiate;
   return v;
 }
@@ -358,7 +358,8 @@ void manage_chain(ChainT *_chain, ChainChangeType operation, Name table_name)
     Chain *chain = copy_chain(_chain);
     Table *table = LIST_FIND_RCU(Table, name, table_name, g_table_list_head, _list_node, strcmp);
     if (!table) { // create a table if not found
-      TableT _table = { .name = table_name };
+      TableT _table;
+      strncpy(_table.name, table_name, MAX_NAME_LENGTH);
       manage_table(&_table, ADD);
       table = LIST_FIND_RCU(Table, name, table_name, g_table_list_head, _list_node, strcmp);
     }

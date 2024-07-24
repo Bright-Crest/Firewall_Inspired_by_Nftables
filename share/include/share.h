@@ -13,13 +13,54 @@
 #define MAX_NAME_LENGTH 30
 #define MAX_COMMENT_LENGTH 100
 
+#define LOCALIN 0b00001
+#define PREROUTING 0b00010
+#define FORWARD 0b00100
+#define POSTROUTING 0b01000
+#define LOCALOUT 0b10000
+
+// TODO: use kernel built-in definitions
+#define PROTOCOL_ANY 0
+#define PROTOCOL_PING 1
+#define PROTOCOL_TCP 6
+#define PROTOCOL_UDP 17
+
+#ifndef NF_INET_PRE_ROUTING // in user space
+// copied from <linux/netfilter.h> but renamed
+// typedef enum {
+// 	NF_INET_PRE_ROUTING,
+// 	NF_INET_LOCAL_IN,
+// 	NF_INET_FORWARD,
+// 	NF_INET_LOCAL_OUT,
+// 	NF_INET_POST_ROUTING,
+// 	NF_INET_NUMHOOKS,
+// 	NF_INET_INGRESS = NF_INET_NUMHOOKS,
+// } HookPoint;
+typedef int HookPoint;
+#else // in kernel space
+typedef enum nf_inet_hooks HookPoint;
+#endif
+
 typedef char Name[MAX_NAME_LENGTH + 1];
 typedef char Comment[MAX_COMMENT_LENGTH + 1];
 
 // TODO: 与用户态统一
-typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH} TableChangeType;
-typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH, CREATE, RENAME} ChainChangeType;
-typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
+#define ADD 0
+#define DELETE 1
+#define DESTROY 2
+#define LIST 3
+#define FLUSH 4
+#define CREATE 5
+#define RENAME 6
+#define INSERT 7
+#define REPLACE 8
+#define RESET 9
+// typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH} TableChangeType;
+// typedef enum {ADD, DELETE, DESTROY, LIST, FLUSH, CREATE, RENAME} ChainChangeType;
+// typedef enum {ADD, DELETE, DESTROY, INSERT = 7, REPLACE, RESET} RuleChangeType;
+typedef int TableChangeType;
+typedef int ChainChangeType;
+typedef int RuleChangeType;
 
 // Since the enum values are store in global scope, they have to be globally
 // unique. The usual methods to prevent name collision in enum is to add the
@@ -40,17 +81,6 @@ typedef enum {MATCH = 1, NOT_MATCH = 0} MatchResult;
 
 typedef unsigned int Handle;
 
-// copied from <linux/netfilter.h> but renamed
-typedef enum {
-	NF_INET_PRE_ROUTING,
-	NF_INET_LOCAL_IN,
-	NF_INET_FORWARD,
-	NF_INET_LOCAL_OUT,
-	NF_INET_POST_ROUTING,
-	NF_INET_NUMHOOKS,
-	NF_INET_INGRESS = NF_INET_NUMHOOKS,
-} HookPoint;
-
 // used for communication
 // like a mirror of core.h
 
@@ -68,7 +98,7 @@ struct FTRule
     unsigned int tmask;
     unsigned int sport;
     unsigned int tport;
-    u_int8_t protocol;
+    unsigned int protocol;
     unsigned int act;
     unsigned int islog;
 };
@@ -94,11 +124,16 @@ struct ConnLog
     unsigned int daddr;
     unsigned short sport;
     unsigned short dport;
-    u_int8_t protocol;
+    unsigned int protocol;
     int natType;
     struct NATRule nat; // NAT记录
 };
 
+struct FilterRule_Chain
+{
+    char name[MAX_NAME_LENGTH + 1];
+    unsigned int applyloc;
+};
 
 // second level matches
 

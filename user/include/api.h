@@ -16,7 +16,7 @@
 #include <linux/netfilter.h>
 #include <linux/netlink.h>
 
-//request defination
+// request defination. What's for?
 #define SHOW_ALL_RULE 1
 #define GET_CONN_INFO 2
 #define GET_LOG_INFO 3
@@ -26,12 +26,6 @@
 #define ADD_NAT_RULE 14
 #define REMOVE_NAT_RULE 15
 #define SHOW_NAT_RULE 16
-
-// TODO: use kernel built-in definitions
-#define PROTOCOL_ANY 0
-#define PROTOCOL_PING 1
-#define PROTOCOL_TCP 6
-#define PROTOCOL_UDP 17
 
 // use `ChainType` in share/include/share.h
 // #define CHAIN_TYPE_FILTER 0
@@ -92,6 +86,9 @@ struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name, Name
 struct KernelResp setDefaultAction(unsigned int action); // 设置默认行为
 struct KernelResp getAllConns(void);                     // 获取所有连接
 struct KernelResp getLogs(char name[], Name table, Name chain);                 // 查看日志
+
+struct KernelResp addFTChain(struct FilterRule_Chain *chain, Name table);
+struct KernelResp delFTChain(Name chain, Name table);
 
 // chains
 

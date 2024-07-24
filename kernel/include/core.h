@@ -43,8 +43,8 @@
  */
 #define LIST_FIND_RCU(_type, _key_name, _key, _head, _list_name, _compare) \
   ({\
-    (_type *)_pos = NULL;\
-    (_type *)_ret = NULL;\
+    _type * _pos = NULL;\
+    _type * _ret = NULL;\
     rcu_read_lock();\
     list_for_each_entry_rcu(_pos, &_head, _list_name) {\
       if (_compare(_pos->_key_name, _key) == 0) {\
@@ -75,7 +75,7 @@
                                                                   } else {\
                                                                     _result = 0;\
                                                                   }\
-                                                                  if (is_exclude) {\
+                                                                  if (_is_exclude) {\
                                                                     _result = (_result + 1) % 2;\
                                                                   }\
                                                                   _result;\
@@ -190,7 +190,7 @@ struct FilterChain {
  * To match IP header
  */
 struct IPMatch {
-  unsigned int protocol = -1; ///< Equal to the default value means not to match, i.e. accepting all packets.
+  unsigned int protocol; ///< Equal to the default value means not to match, i.e. accepting all packets.
   int is_length_exclude; ///< 0: in the interval; 1: exclude the interval
   unsigned int min_length;
   unsigned int max_length; ///< The max value of the total packet length of the interval. This aims to support matching intervals. See `MATCH_INTERVAL`.
