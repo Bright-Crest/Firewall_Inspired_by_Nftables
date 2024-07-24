@@ -218,7 +218,7 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
         printk(KERN_WARNING "no memory for new filter rule chain.\n");
         return 10;
     }
-    memcpy(new_chain, &rule, sizeof(struct FilterRule));
+    memcpy(new_chain, &chain, sizeof(struct FilterRule));
     if (new_chain == NULL)
     {
         kfree(new_chain);
@@ -349,12 +349,12 @@ unsigned int delRule_chain(char chain_name[])
         if (strcmp(tmp->next->name, chain_name) == 0)
         {
             struct FilterRule *chain_head=tmp->next->chain_head;
-            struct FilterRule tmp_rule;
+            struct FilterRule *tmp_rule;
             for (tmp_rule = chain_head; tmp_rule != NULL ;)
             {
                 
                 // 保存被删除规则的指针
-                struct FTRule *delRule = tmp_rule;
+                struct FilterRule *delRule = tmp_rule;
                 tmp_rule=tmp_rule->next;
                 // 释放被删除指针
                 kfree(delRule);
