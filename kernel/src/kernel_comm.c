@@ -220,7 +220,6 @@ void manage_usr_req(unsigned int pid, struct UsrReq *req)
     case REQ_ADDFTRULE:
         struct FTRule *_r = &req->msg.FTRule;
         struct FilterRule rule = { 
-            .name = {*_r->name},
             .saddr = _r->saddr,
             .smask = _r->smask,
             .taddr = _r->taddr,
@@ -231,7 +230,9 @@ void manage_usr_req(unsigned int pid, struct UsrReq *req)
             .act = _r->act,
             .islog = _r->islog
         };
-        // strncpy(rule.name, _r->name, MAX_NAME_LENGTH);
+        // !!! initialize char array by something like strncpy
+        // TODO: change other wrong codes by searching "{*"
+        strncpy(rule.name, _r->name, MAX_NAME_LENGTH + 1);
         ret = add_rule(req->chain_name, req->name, rule);
 
         switch (ret)
@@ -269,9 +270,9 @@ void manage_usr_req(unsigned int pid, struct UsrReq *req)
     case REQ_ADDFTCHAIN:
         struct FilterRule_Chain *_c = &req->msg.chain;
         struct FTRule_Chain chain = {
-            .name = {*_c->name},
             .applyloc = _c->applyloc
         };
+        strncpy(chain.name, _c->name, MAX_NAME_LENGTH + 1);
         PRINTK_DEBUG("Finish copying UsrReq data.\n");
         ret = addRule_chain(req->name, chain);
         PRINTK_DEBUG("Finish adding a chain but it may not be successful.\n");

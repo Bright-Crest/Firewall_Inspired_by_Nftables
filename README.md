@@ -29,5 +29,6 @@ test cmd:
 
 ```
 ./NftFirewallUser add chain mytable ftchain -t filter -h input -p 0 -a accept
-./NftFirewallUser add rule mytable ftchain -r rule1 -p tcp -x 202.89.233.100 -y 192.168.193.136 -m 0 -n 0 -a deny
+./NftFirewallUser add rule mytable ftchain -r rule1 -p tcp -x 202.89.233.100 -y 192.168.193.136 -m 65535 -n 65535 -a deny
+./NftFirewallUser add rule mytable ftchain -r rule2 -p tcp -y 202.89.233.100 -x 192.168.193.136 -m 65535 -n 65535 -a deny
 ```

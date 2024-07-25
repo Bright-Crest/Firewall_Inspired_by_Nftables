@@ -121,7 +121,7 @@ void viewLogs(int argc, char *argv[]){
         struct KernelResp rsp;
         switch( optret ) {
             case 'r': // rule name
-                std::strncpy(log_rule_name, argv[optind], MAX_NAME_LENGTH);
+                std::strncpy(log_rule_name, argv[optind], MAX_NAME_LENGTH + 1);
                 log_rule_name[MAX_NAME_LENGTH+1] = '\0';
 
                 rsp = getLogs(log_rule_name, table_name, chain_name);
@@ -152,28 +152,22 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 // printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
                     case 'r': // rule name
-                        std::strncpy(u_ftRule.name, argv[optind], MAX_NAME_LENGTH);
-                        u_ftRule.name[MAX_NAME_LENGTH+1] = '\0';
+                        std::strncpy(u_ftRule.name, argv[optind], MAX_NAME_LENGTH + 1);
                         break;
                     case 'p':
-                        std::strncpy(u_ftRule.protocol, argv[optind], 5);
-                        u_ftRule.protocol[6] = '\0';
+                        std::strncpy(u_ftRule.protocol, argv[optind], 6);
                         break;
                     case 'x':   //get source ipaddr 
                         std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
-                        u_ftRule.sip[sizeof(u_ftRule.sip) - 1] = '\0';
                         break;
                     case 'y':   //get destination ipaddr
                         std::strncpy(u_ftRule.tip, argv[optind], sizeof(u_ftRule.tip) - 1);
-                        u_ftRule.tip[sizeof(u_ftRule.tip) - 1] = '\0';
                         break;
                     case 'm':   //get source port
-                    std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
-                    u_ftRule.sport[sizeof(u_ftRule.sport) - 1] = '\0';
+                        std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
                         break;
                     case 'n':   //get destination port
-                    std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
-                    u_ftRule.tport[sizeof(u_ftRule.tport) - 1] = '\0';
+                        std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
                         break;
 
                     case 'a':   //get destination port
@@ -205,8 +199,8 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 optret = getopt(argc,argv,"rpxymnal");
             }
 
-            std::strncpy(u_ftRule.name, rule_name, MAX_NAME_LENGTH);
-            // std::strncpy(k_ftRule.name, rule_name, MAX_NAME_LENGTH);
+            std::strncpy(u_ftRule.name, rule_name, MAX_NAME_LENGTH + 1);
+            // std::strncpy(k_ftRule.name, rule_name, MAX_NAME_LENGTH + 1);
 
             rsp = addFtRule(&u_ftRule, table_name, chain_name);
             ProcKernelResp(rsp);
@@ -218,31 +212,25 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 //printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
                     case 'f':
-                        std::strncpy(front_name, argv[optind], MAX_NAME_LENGTH);
-                        front_name[MAX_NAME_LENGTH+1] = '\0';
+                        std::strncpy(front_name, argv[optind], MAX_NAME_LENGTH + 1);
                         break;
                     case 'r': // rule name
-                        std::strncpy(u_ftRule.name, argv[optind], MAX_NAME_LENGTH);
-                        u_ftRule.name[MAX_NAME_LENGTH+1] = '\0';
+                        std::strncpy(u_ftRule.name, argv[optind], MAX_NAME_LENGTH + 1);
                         break;
                     case 'p':
                         std::strncpy(u_ftRule.protocol, argv[optind], 5);
                         break;
                     case 'x':   //get source ipaddr 
                         std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
-                        u_ftRule.sip[sizeof(u_ftRule.sip) - 1] = '\0';
                         break;
                     case 'y':   //get destination ipaddr
                         std::strncpy(u_ftRule.tip, argv[optind], sizeof(u_ftRule.tip) - 1);
-                        u_ftRule.tip[sizeof(u_ftRule.tip) - 1] = '\0';
                         break;
                     case 'm':   //get source port
-                    std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
-                    u_ftRule.sport[sizeof(u_ftRule.sport) - 1] = '\0';
+                        std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
                         break;
                     case 'n':   //get destination port
-                    std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
-                    u_ftRule.tport[sizeof(u_ftRule.tport) - 1] = '\0';
+                        std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
                         break;
 
                     case 'a':   //get destination port
@@ -307,26 +295,21 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 //printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
                     case 'f':
-                        std::strncpy(replace_name, argv[optind], MAX_NAME_LENGTH);
-                        replace_name[MAX_NAME_LENGTH+1] = '\0';
+                        std::strncpy(replace_name, argv[optind], MAX_NAME_LENGTH + 1);
                         break;
                     case 'r':
-                        std::strncpy(rule_name, argv[optind], MAX_NAME_LENGTH);
-                        rule_name[MAX_NAME_LENGTH+1] = '\0';
+                        std::strncpy(rule_name, argv[optind], MAX_NAME_LENGTH + 1);
                         break;
                     case 'p':
-                        std::strncpy(u_ftRule.protocol, argv[optind], 5);
+                        std::strncpy(u_ftRule.protocol, argv[optind], 6);
                     case 'x':   //get source ipaddr 
                         std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
-                        u_ftRule.sip[sizeof(u_ftRule.sip) - 1] = '\0';
                         break;
                     case 'y':   //get destination ipaddr
                         std::strncpy(u_ftRule.tip, argv[optind], sizeof(u_ftRule.tip) - 1);
-                        u_ftRule.tip[sizeof(u_ftRule.tip) - 1] = '\0';
                         break;
                     case 'm':   //get source port
                     std::strncpy(u_ftRule.sport, argv[optind], sizeof(u_ftRule.sport) - 1);
-                    u_ftRule.sport[sizeof(u_ftRule.sport) - 1] = '\0';
                         break;
                     case 'n':   //get destination port
                     std::strncpy(u_ftRule.tport, argv[optind], sizeof(u_ftRule.tport) - 1);
