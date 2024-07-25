@@ -80,10 +80,9 @@ int ftrule_match(struct sk_buff *skb, unsigned int loc)
                 {
                     // 匹配到一条规则
                     if (((sip & tmp->smask) == (tmp->saddr & tmp->smask) || tmp->saddr == 0 || (sip) == (tmp->saddr)) &&
-                        (((tip) == (tmp->taddr)) ||
-                        ((tip & tmp->tmask) == (tmp->taddr & tmp->tmask))) &&
-                        (src_port >= ((unsigned short)(tmp->sport >> 16)) && src_port <= ((unsigned short)(tmp->sport & 0xFFFFu))) &&
-                        (dst_port >= ((unsigned short)(tmp->tport >> 16)) && dst_port <= ((unsigned short)(tmp->tport & 0xFFFFu))) &&
+                        (((tip) == (tmp->taddr)) ||tmp->taddr == 0||((tip & tmp->tmask) == (tmp->taddr & tmp->tmask))) &&
+                        ((src_port==0xFFFFu)||(src_port >= ((unsigned short)(tmp->sport >> 16)) && src_port <= ((unsigned short)(tmp->sport & 0xFFFFu)))) &&
+                        ((dst_port==0xFFFFu)||(dst_port >= ((unsigned short)(tmp->tport >> 16)) && dst_port <= ((unsigned short)(tmp->tport & 0xFFFFu)))) &&
                         (tmp->protocol == IPPROTO_IP || tmp->protocol == proto))
                     {
                         if (tmp->act == NF_ACCEPT)
