@@ -67,19 +67,20 @@ typedef struct {
  */
 struct UsrReq
 {
-    // 请求类型
-    unsigned int tp;
-    // 前序规则名
-    char name[MAX_NAME_LENGTH + 1];
-    // 请求体——过滤规则、NAT规则、默认动作
-    union
-    {
-        struct FTRule FTRule;
-        // struct NATRule NATRule;
-        struct FilterRule_Chain chain;
-        unsigned int defaultAction;
-        unsigned int num;
-    } msg;
+  // 请求类型
+  unsigned int tp;
+  // 前序规则名
+  char name[MAX_NAME_LENGTH + 1];
+  // 请求体——过滤规则、NAT规则、默认动作
+  union
+  {
+      struct FTRule FTRule;
+      // struct NATRule NATRule;
+      struct FilterRule_Chain chain;
+      unsigned int defaultAction;
+      unsigned int num;
+  } msg;
+  Name chain_name; // used when dealing with rules
 };
 
 // body

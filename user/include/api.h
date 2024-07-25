@@ -79,7 +79,7 @@ struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain);
 struct KernelResp getAllFTRules(void);                   // 获取所有过滤规则
 // TODO: delete by name, by handle or by all the values?
 struct KernelResp delFTRule(char name[], Name table, Name chain);                // 删除名为name的规则
-struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name, Name table, Name chain)
+struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name[], Name table, Name chain);
 // struct KernelResp addNATRule(struct natrule *nat_rule, Name table, Name chain);  // 新增nat规则
 // struct KernelResp getAllNATRules(void);                  // 获取所有nat规则
 // struct KernelResp delNATRule(int seq, Name table, Name chain);                   // 删除序号为seq的nat规则

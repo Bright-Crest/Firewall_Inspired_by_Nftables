@@ -40,7 +40,7 @@ void netlink_release(void);
 
 unsigned int process_user_request(unsigned int pid, void *data, unsigned int len);
 void process_manage(unsigned int pid, Manage *manage);
-void manage_usr_req(unsigned int pid, Manage *manage);
+void manage_usr_req(unsigned int pid, struct UsrReq *req);
 
 int sendmsg(unsigned int pid, const char *msg);
 

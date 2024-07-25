@@ -90,6 +90,7 @@ void receive(struct sk_buff *skb)
     PRINTK_DEBUG("Data is received from user. pid=%d, len=%d\n", pid, len);
     // 取出了源地址、数据和长度，然后处理用户请求
     process_user_request(pid, data, len);
+    PRINTK_DEBUG("Finish processing the user request.\n");
 }
 
 /**
@@ -134,18 +135,28 @@ void netlink_release(void)
  */
 unsigned int process_user_request(unsigned int pid, void *data, unsigned int len)
 {
+    PRINTK_DEBUG("Start processing the user request.\n");
     // extract header
-    UserMsgHeader *uheader = (UserMsgHeader *)data;
+    // UserMsgHeader *uheader = (UserMsgHeader *)data;
+    struct KernelResHdr *rsp_hdr;
+    unsigned int rsp_len = 0;
 
-    switch (uheader->type)
+    // switch (uheader->type)
+    switch(MANAGE)
     {
     case MANAGE:
-        if (len != sizeof(UserMsgHeader) + sizeof(Manage)) {
+        // if (len != sizeof(UserMsgHeader) + sizeof(Manage)) {
+        // if (len != sizeof(Manage)) {
+        if (len != sizeof(struct UsrReq)) {
             // TODO: length not equal, error handle
-            return sizeof(UserMsgHeader);
+            PRINTK_ERR("Wrong message length.\n");
+            PRINTK_DEBUG("len: %d", len);
+            rsp_len = sendmsg(pid, "Error in communicating with kernel.\n");
+            return rsp_len;
         }
         // extract body
-        Manage *manage = (Manage *)(data + sizeof(UserMsgHeader));
+        // Manage *manage = (Manage *)(data + sizeof(UserMsgHeader));
+        Manage *manage = (Manage *)data;
         process_manage(pid, manage);
         // TODO: how to form kernel response
         break;
@@ -156,6 +167,9 @@ unsigned int process_user_request(unsigned int pid, void *data, unsigned int len
         // TODO: case USER_RESPONSE 
         break;
     default:
+        PRINTK_WARN("Unexpected type of the user request.\n");
+        // PRINTK_DEBUG("Type: %d", uheader->type);
+        rsp_len = sendmsg(pid, "Unexpected type of the request.\n");
         break;
     }
 
@@ -165,7 +179,12 @@ unsigned int process_user_request(unsigned int pid, void *data, unsigned int len
 
 void process_manage(unsigned int pid, Manage *manage)
 {
-    switch (manage->hierarchy)
+    PRINTK_DEBUG("Start processing `Manage`.\n");
+    struct KernelResHdr *rsp_hdr;
+    unsigned int rsp_len = 0;
+
+    // switch (manage->hierarchy)
+    switch (USR_REQ)
     {
     case TABLE:
         manage_table(&manage->data.table, manage->operation.table_op);
@@ -177,16 +196,22 @@ void process_manage(unsigned int pid, Manage *manage)
         manage_rule(&manage->data.rule, manage->operation.rule_op, manage->table_name, manage->chain_name);
         break;
     case USR_REQ:
-        manage_usr_req(pid, manage);
+        // struct UsrReq *req = &manage->data.usr_req;
+        struct UsrReq *usr_req = (struct UsrReq *)manage;
+        manage_usr_req(pid, usr_req);
+        break;
     default:
+        PRINTK_WARN("Unexpected hierarchy to manage.\n");
+        // PRINTK_DEBUG("Hierarchy: %d.\n", manage->hierarchy);
+        rsp_len = sendmsg(pid, "Unexpected operation.\n");
         break;
     }
 }
 
-void manage_usr_req(unsigned int pid, Manage *manage)
+void manage_usr_req(unsigned int pid, struct UsrReq *req)
 {
+    PRINTK_DEBUG("Start processing `UsrReq`.\n");
     int ret;
-    struct UsrReq *req = &manage->data.usr_req;
     struct KernelResHdr *rsp_hdr;
     unsigned int rsp_len = 0;
 
@@ -206,7 +231,8 @@ void manage_usr_req(unsigned int pid, Manage *manage)
             .act = _r->act,
             .islog = _r->islog
         };
-        ret = add_rule(manage->chain_name, req->name, rule);
+        // strncpy(rule.name, _r->name, MAX_NAME_LENGTH);
+        ret = add_rule(req->chain_name, req->name, rule);
 
         switch (ret)
         {
@@ -222,7 +248,7 @@ void manage_usr_req(unsigned int pid, Manage *manage)
         }
         break;
     case REQ_DELFTRULES:
-        ret = delRule(manage->chain_name, req->name);
+        ret = delRule(req->chain_name, req->name);
 
         if (ret <= 0) {
             rsp_len = sendmsg(pid, "Fail to delete the rule.\n");
@@ -232,7 +258,7 @@ void manage_usr_req(unsigned int pid, Manage *manage)
         rsp_len = sizeof(struct KernelResHdr);
         rsp_hdr = (struct KernelResHdr *)kzalloc(rsp_len, GFP_KERNEL);
         if (rsp_hdr == NULL) {
-            PRINTK_WARN("Kernel kzalloc KernelResHdr failed\n");
+            PRINTK_ERR("Kernel kzalloc KernelResHdr failed\n");
             break;
         }
         rsp_hdr->bodyTp = RSP_NULL;
@@ -246,7 +272,9 @@ void manage_usr_req(unsigned int pid, Manage *manage)
             .name = {*_c->name},
             .applyloc = _c->applyloc
         };
+        PRINTK_DEBUG("Finish copying UsrReq data.\n");
         ret = addRule_chain(req->name, chain);
+        PRINTK_DEBUG("Finish adding a chain but it may not be successful.\n");
 
         switch (ret)
         {
@@ -255,6 +283,7 @@ void manage_usr_req(unsigned int pid, Manage *manage)
             rsp_len = sendmsg(pid, "Fail to add a new filter chain.\n");
             break; 
         case 1:
+            PRINTK_DEBUG("Add a new filter chain successfully.\n");
             rsp_len = sendmsg(pid, "Add a new filter chain successfully.\n");
             break;
         default:
@@ -272,7 +301,7 @@ void manage_usr_req(unsigned int pid, Manage *manage)
         rsp_len = sizeof(struct KernelResHdr);
         rsp_hdr = (struct KernelResHdr *)kzalloc(rsp_len, GFP_KERNEL);
         if (rsp_hdr == NULL) {
-            PRINTK_WARN("Kernel kzalloc KernelResHdr failed\n");
+            PRINTK_ERR("Kernel kzalloc KernelResHdr failed\n");
             break;
         }
         rsp_hdr->bodyTp = RSP_NULL;
@@ -286,11 +315,13 @@ void manage_usr_req(unsigned int pid, Manage *manage)
         break;
     // TODO: other cases
     default:
-        rsp_len = sendmsg(pid, "Unexpected request type.\n");
+        PRINTK_WARN("Unexpected UsrReq type.\n");
+        PRINTK_DEBUG("UsrReq type: %d.\n", req->tp);
+        rsp_len = sendmsg(pid, "Unexpected operation of user request.\n");
         break;
     }
 
-    return; // TODO: return what?
+    return; 
 }
 
 /**

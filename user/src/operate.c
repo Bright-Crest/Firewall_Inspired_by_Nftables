@@ -12,6 +12,8 @@ struct KernelResp ComWithKernel(void *header, void *smsg, unsigned int header_le
     struct sockaddr_nl target;
     struct KernelResp rsp;
     int data_len, targetlen = sizeof(struct sockaddr_nl);
+    unsigned int total_len = header_len + slen;
+    struct UsrReq *usr_req = &((Manage *)smsg)->data.usr_req;
     /**
      * 创建一个套接字
      * PF_NETLINK 是套接字协议族，用于指定使用Netlink协议族的套接字。
@@ -69,7 +71,9 @@ struct KernelResp ComWithKernel(void *header, void *smsg, unsigned int header_le
     // 初始化内存
     memset(message, '\0', sizeof(struct nlmsghdr));
     // 设置消息长度
-    message->nlmsg_len = NLMSG_SPACE(header_len + slen);
+    // message->nlmsg_len = NLMSG_SPACE(total_len);
+    // message->nlmsg_len = NLMSG_SPACE(slen);
+    message->nlmsg_len = NLMSG_SPACE(sizeof(struct UsrReq));
     // 设置标志、类型和序列号
     message->nlmsg_flags = 0;
     message->nlmsg_type = 0;
@@ -77,8 +81,10 @@ struct KernelResp ComWithKernel(void *header, void *smsg, unsigned int header_le
     // 设置消息的源进程号
     message->nlmsg_pid = local.nl_pid;
     // 从smsg中复制slen个字节到message的数据部分
-    memcpy(NLMSG_DATA(message), header, header_len);
-    memcpy(NLMSG_DATA(message) + header_len, smsg, slen);
+    // memcpy(NLMSG_DATA(message), header, header_len);
+    // memcpy(NLMSG_DATA(message) + header_len, smsg, slen);
+    // memcpy(NLMSG_DATA(message), smsg, slen);
+    memcpy(NLMSG_DATA(message), usr_req, sizeof(struct UsrReq));
     // 通过套接字发送消息
     if (!sendto(skfd, message, message->nlmsg_len, 0, (struct sockaddr *)&target, sizeof(target)))
     {
@@ -260,6 +266,7 @@ struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain)
     strcpy(after, "");
     strncpy(req.name, after, MAX_NAME_LENGTH);
     req.msg.FTRule = rule;
+    strncpy(req.chain_name, chain, MAX_NAME_LENGTH);
 
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = { 
@@ -367,145 +374,19 @@ struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name[], Na
     strncpy(rule.name, filter_rule->name, MAX_NAME_LENGTH);
     // 设置请求行为为REQ_ADDFTRULE即添加过滤规则
     req.tp = REQ_ADDFTRULE;
-    req.ruleName[0] = 0;
+    req.name[0] = 0;
     // 设置前序规则名为空
-    strncpy(req.ruleName, front_name, MAX_NAME_LENGTH);
+    strncpy(req.name, front_name, MAX_NAME_LENGTH);
     req.msg.FTRule = rule;
+    strncpy(req.chain_name, chain, MAX_NAME_LENGTH);
 
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = { 
         .hierarchy = USR_REQ,
         .operation.rule_op = ADD,
         .data.usr_req = req,
-        .table_name = table,
-        .chain_name = chain
-    };
-
-    // 将用户请求发送给内核，与内核通信，获取内核响应
-    return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
-}
-/**
- * @brief:插入过滤规则的函数
- * @param:原始输入的过滤规则
- * @return:内核响应
- */
-struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name, Name table, Name chain)
-{
-    printFTRule(filter_rule);
-    // 用户请求
-    struct UsrReq req;
-    // 内核响应
-    struct KernelResp rsp;
-    // 添加的规则
-    struct FTRule rule;
-    // 设置规则参数
-    if (strcmp(filter_rule->sip, "any") == 0)
-    {
-        rule.saddr = 0;
-        rule.smask = 0;
-    }
-    else
-    {
-        if (IPstr2IPint(filter_rule->sip, &rule.saddr, &rule.smask) != 0)
-        {
-            rsp.stat = ERROR_CODE_WRONG_IP;
-            return rsp;
-        }
-    }
-    if (IPstr2IPint(filter_rule->tip, &rule.taddr, &rule.tmask) != 0)
-    {
-        rsp.stat = ERROR_CODE_WRONG_IP;
-        return rsp;
-    }
-    // 设置源地址和目的地址
-    rule.saddr = rule.saddr;
-    rule.taddr = rule.taddr;
-    unsigned short sportMin, sportMax, tportMin, tportMax;
-    // 设置源端口范围
-    if (strcmp(filter_rule->sport, "any") == 0)
-    {
-        sportMin = 0, sportMax = 0xFFFFu;
-    }
-    else
-    {
-        sscanf(filter_rule->sport, "%hu-%hu", &sportMin, &sportMax);
-    }
-    // 如果最大端口小于最小端口
-    if (sportMin > sportMax)
-    {
-        int temp = sportMin;
-        sportMin = sportMax;
-        sportMax = temp;
-    }
-    // 设置目的端口范围
-    // 设置源端口范围
-    if (strcmp(filter_rule->tport, "any") == 0)
-    {
-        tportMin = 0, tportMax = 0xFFFFu;
-    }
-    else
-    {
-        sscanf(filter_rule->tport, "%hu-%hu", &tportMin, &tportMax);
-    }
-    // 如果最大端口小于最小端口则换位置
-    if (tportMin > tportMax)
-    {
-        tportMin = tportMax ^ tportMin;
-        tportMax = tportMax ^ tportMin;
-        tportMin = tportMin ^ tportMax;
-    }
-    // 高位为起始端口号，低位为末尾端口号
-    rule.sport = (((unsigned int)sportMin << 16) | (((unsigned int)sportMax) & 0xFFFFu));
-    rule.tport = (((unsigned int)tportMin << 16) | (((unsigned int)tportMax) & 0xFFFFu));
-    rule.islog = filter_rule->islog;
-    rule.act = filter_rule->act;
-    // 设置过滤规则的协议
-    if (strcmp(filter_rule->protocol, "TCP") == 0)
-        rule.protocol = IPPROTO_TCP;
-    else if (strcmp(filter_rule->protocol, "UDP") == 0)
-        rule.protocol = IPPROTO_UDP;
-    else if (strcmp(filter_rule->protocol, "ICMP") == 0)
-        rule.protocol = IPPROTO_ICMP;
-    else if (strcmp(filter_rule->protocol, "any") == 0)
-        rule.protocol = IPPROTO_IP;
-    else
-    {
-        rule.protocol = IPPROTO_IP;
-    }
-    // 设置规则名
-    strncpy(rule.name, filter_rule->name, MAX_NAME_LENGTH);
-    // 设置请求行为为REQ_ADDFTRULE即添加过滤规则
-    req.tp = REQ_ADDFTRULE;
-    req.ruleName[0] = 0;
-    // 设置前序规则名
-    strncpy(req.ruleName, front_name, MAX_NAME_LENGTH);
-    req.msg.FTRule = rule;
-
-    UserMsgHeader header = { .type = MANAGE };
-    Manage manage = { 
-        .hierarchy = USR_REQ,
-        .operation.rule_op = INSERT,
-        .data.usr_req = req,
-        .table_name = table,
-        .chain_name = chain
-    };
-
-    // 将用户请求发送给内核，与内核通信，获取内核响应
-    return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
-}
-
-struct KernelResp getLogs(char name[], Name table, Name chain){
-    // 用户请求
-    struct UsrReq req;
-    // 设置请求类型
-    req.tp = GET_LOG_INFO;
-
-    UserMsgHeader header = { .type = MANAGE };
-    Manage manage = { 
-        .hierarchy = USR_REQ,
-        .data.usr_req = req,
-        .table_name = table,
-        .chain_name = chain
+        .table_name = {*table},
+        .chain_name = {*chain}
     };
 
     // 将用户请求发送给内核，与内核通信，获取内核响应
@@ -545,6 +426,7 @@ struct KernelResp delFTRule(char name[], Name table, Name chain)
     // 设置请求类型为REQ_DELFTRULES即删除一条过滤规则
     req.tp = REQ_DELFTRULES;
     strcpy(req.name, name);
+    strcpy(req.chain_name, chain);
 
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = { 
@@ -680,14 +562,14 @@ struct KernelResp getLogs(char name[], Name table, Name chain)
     // 用户请求
     struct UsrReq req;
     req.tp = GET_LOG_INFO;
-    strcpy(req.ruleName, name);
+    strcpy(req.name, name);
     // 将用户请求发送给内核，与内核通信，获取内核响应
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = { 
         .hierarchy = USR_REQ,
         .data.usr_req = req,
-        .table_name = table,
-        .chain_name = chain
+        .table_name = {*table},
+        .chain_name = {*chain}
     };
   
     return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
@@ -758,26 +640,26 @@ struct KernelResp delChain(Name chain, Name table) {
 }
 
 struct KernelResp flushChain(Name chain, Name table) {
-    ChainT tmp = { .name = chain };
+    ChainT tmp = { .name = {*chain} };
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = {
         .hierarchy = CHAIN,
         .operation.chain_op = FLUSH,
         .data.chain = tmp,
-        .table_name = table
+        .table_name = {*table}
     };
 
     return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
 }
 
 struct KernelResp listChain(Name chain, Name table) {
-    ChainT tmp = { .name = chain };
+    ChainT tmp = { .name = {*chain} };
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = {
         .hierarchy = CHAIN,
         .operation.chain_op = LIST,
         .data.chain = tmp,
-        .table_name = table
+        .table_name = {*table}
     };
 
     return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));
@@ -785,14 +667,14 @@ struct KernelResp listChain(Name chain, Name table) {
 
 
 struct KernelResp renameChain(Name chain, Name new_chain_name, Name table) {
-    ChainT tmp = { .name = chain };
+    ChainT tmp = { .name = {*chain} };
     UserMsgHeader header = { .type = MANAGE };
     Manage manage = {
         .hierarchy = CHAIN,
         .operation.chain_op = RENAME,
         .data.chain = tmp,
-        .table_name = table
-        .chain_name = new_chain_name; // new_chain_name pass in by this
+        .table_name = {*table},
+        .chain_name = {*new_chain_name} // new_chain_name pass in by this
     };
 
     return ComWithKernel(&header, &manage, sizeof(header), sizeof(manage));

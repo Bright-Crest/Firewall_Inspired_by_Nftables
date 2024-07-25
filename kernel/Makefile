@@ -28,10 +28,14 @@ default:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
 
 install:
+	$(MAKE) -C $(KDIR) M=$(PWD) modules_install
 	insmod $(PWD)/$(MODULE_NAME).ko
 
 clean:
 	$(MAKE) -C $(KDIR) M=$(PWD) clean
 # $(RM) -rf .*.cmd *.mod.c *.o *.ko .tmp* *.symvers *.order
+
+help:
+	$(MAKE) -C $(KDIR) M=$(PWD) help
 
 endif

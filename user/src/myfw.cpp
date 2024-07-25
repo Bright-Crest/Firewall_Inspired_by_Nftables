@@ -45,7 +45,7 @@ unsigned short controlled_srcport = 0;
 unsigned short controlled_dstport = 0;
 unsigned int controlled_saddr = 0;
 unsigned int controlled_daddr = 0;
-char rule_name[MAX_NAME_LENGTH+1];
+// char rule_name[MAX_NAME_LENGTH+1];
 char front_name[MAX_NAME_LENGTH+1];
 char replace_name[MAX_NAME_LENGTH+1];
 char log_rule_name[MAX_NAME_LENGTH+1];
@@ -118,12 +118,13 @@ void viewLogs(int argc, char *argv[]){
     optret = getopt(argc,argv,"r");
     while( optret != -1 ) {
         // printf(" first in getpara: %s\n",argv[optind]);
+        struct KernelResp rsp;
         switch( optret ) {
             case 'r': // rule name
                 std::strncpy(log_rule_name, argv[optind], MAX_NAME_LENGTH);
                 log_rule_name[MAX_NAME_LENGTH+1] = '\0';
 
-                struct KernelResp rsp = getLogs(log_rule_name, table_name, chain_name);
+                rsp = getLogs(log_rule_name, table_name, chain_name);
                 ProcKernelResp(rsp);
                 break;
             
@@ -205,7 +206,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
             }
 
             std::strncpy(u_ftRule.name, rule_name, MAX_NAME_LENGTH);
-            std::strncpy(k_ftRule.name, rule_name, MAX_NAME_LENGTH);
+            // std::strncpy(k_ftRule.name, rule_name, MAX_NAME_LENGTH);
 
             rsp = addFtRule(&u_ftRule, table_name, chain_name);
             ProcKernelResp(rsp);
@@ -226,7 +227,6 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                         break;
                     case 'p':
                         std::strncpy(u_ftRule.protocol, argv[optind], 5);
-                        u_ftRule.protocol = '\0';
                         break;
                     case 'x':   //get source ipaddr 
                         std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
@@ -275,7 +275,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
             }
 
             // TODO: deal with insert rule i
-            struct KernelResp rsp = insertFtRule(&u_ftRule, front_name, table_name, chain_name);
+            rsp = insertFtRule(&u_ftRule, front_name, table_name, chain_name);
             ProcKernelResp(rsp);
             break;
 
@@ -285,7 +285,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                 //printf(" first in getpara: %s\n",argv[optind]);
                 switch( optret ) {
                     case 'r':
-                        std::strcpy(rule_name, argv[optind], MAX_NAME_LENGTH);
+                        std::strcpy(rule_name, argv[optind]);
                         rule_name[MAX_NAME_LENGTH+1] = '\0';
                         break;
                     default:
@@ -311,12 +311,11 @@ void getRulePara(Command cmd, int argc, char *argv[]){
                         replace_name[MAX_NAME_LENGTH+1] = '\0';
                         break;
                     case 'r':
-                        std::strcpy(rule_name, argv[optind], MAX_NAME_LENGTH);
+                        std::strncpy(rule_name, argv[optind], MAX_NAME_LENGTH);
                         rule_name[MAX_NAME_LENGTH+1] = '\0';
                         break;
                     case 'p':
                         std::strncpy(u_ftRule.protocol, argv[optind], 5);
-                        u_ftRule.protocol = '\0';
                     case 'x':   //get source ipaddr 
                         std::strncpy(u_ftRule.sip, argv[optind], sizeof(u_ftRule.sip) - 1);
                         u_ftRule.sip[sizeof(u_ftRule.sip) - 1] = '\0';
@@ -364,7 +363,7 @@ void getRulePara(Command cmd, int argc, char *argv[]){
             }
 
             // TODO: deal with delete rule and insert rule
-            struct KernelResp rsp = insertFtRule(&u_ftRule, replace_name, table_name, chain_name);
+            rsp = insertFtRule(&u_ftRule, replace_name, table_name, chain_name);
             ProcKernelResp(rsp);
             rsp = delFTRule(replace_name, table_name, chain_name);
             ProcKernelResp(rsp);
@@ -453,14 +452,14 @@ void getChainPara(Command cmd, int argc, char *argv[]){
         case Command::List:
             
             // deal with list chain by name
-            struct KernelResp rsp = listChain(chain_name, table_name);
+            rsp = listChain(chain_name, table_name);
             ProcKernelResp(rsp);
             break;
 
         case Command::Flush:
             
             // deal with flush chain by name
-            struct KernelResp rsp = flushChain(chain_name, table_name);
+            rsp = flushChain(chain_name, table_name);
             ProcKernelResp(rsp);
             break;
 
@@ -485,7 +484,7 @@ void getChainPara(Command cmd, int argc, char *argv[]){
             
 
             // TODO: deal with rename chain by name
-            struct KernelResp rsp = renameChain(chain_name, chain_rename_name, table_name);
+            rsp = renameChain(chain_name, chain_rename_name, table_name);
             ProcKernelResp(rsp);
             break;
 
@@ -556,11 +555,9 @@ int main(int argc, char* argv[]) {
         std::cout << "Table: " << table_name << std::endl;
         std::cout << "Chain: " << chain_name << std::endl;
         std::cout << "Options:";
-        std::cout << insert_index << " " << replace_index << " " << delete_index << " "
-                << controlled_protocol << " " << controlled_srcport << " " <<
+        std::cout << controlled_srcport << " " <<
                 controlled_dstport << " " << controlled_saddr << " " << 
-                controlled_daddr << " " << insert_index << " " << 
-                delete_index << " " << replace_index << std::endl;
+                controlled_daddr << std::endl;
     }
     else if(object == "chain"){
         if(cmd != Command::Add && cmd != Command::List && cmd != Command::Flush && cmd != Command::Delete && cmd != Command::Rename){
