@@ -205,6 +205,7 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
 
 unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
 {
+    PRINTK_DEBUG("Start adding a chain.\n");
     struct FTRule_Chain *new_chain, *tmp;
 
     new_chain = (struct FTRule_Chain *)kzalloc(sizeof(struct FTRule_Chain), GFP_KERNEL);
@@ -214,7 +215,8 @@ unsigned int addRule_chain(char after[], struct FTRule_Chain chain)
         printk(KERN_WARNING "no memory for new filter rule chain.\n");
         return 10;
     }
-    memcpy(new_chain, &chain, sizeof(struct FilterRule));
+    // !!! The size must be right. Otherwise buffer overflow in memcpy will be detected
+    memcpy(new_chain, &chain, sizeof(struct FTRule_Chain));
     if (new_chain == NULL)
     {
         kfree(new_chain);
