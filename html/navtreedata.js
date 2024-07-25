@@ -36,8 +36,9 @@ var NAVTREE =
     [ "文件", "files.html", [
       [ "文件列表", "files.html", "files_dup" ],
       [ "文件成员", "globals.html", [
-        [ "全部", "globals.html", null ],
+        [ "全部", "globals.html", "globals_dup" ],
         [ "函数", "globals_func.html", null ],
+        [ "变量", "globals_vars.html", null ],
         [ "类型定义", "globals_type.html", null ],
         [ "枚举", "globals_enum.html", null ],
         [ "枚举值", "globals_eval.html", null ],
@@ -49,7 +50,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"annotated.html",
+"dc/d54/common_8h.html#aa8f137f19095e0bdcf4f521e901f88bb"
 ];
 
 var SYNCONMSG = '点击 关闭 面板同步';

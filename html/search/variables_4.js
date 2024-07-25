@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['match_0',['match',['../d2/db6/structMatch.html#ac54b63347d4e13f245b84378e972d89c',1,'Match']]],
-  ['match_5fhead_1',['match_head',['../dc/d7a/structRule.html#a5856438679e3d51258e081ad97e38944',1,'Rule']]]
+  ['front_5fname_0',['front_name',['../d6/db4/myfw_8cpp.html#ab4b4de25c600574cb431c9cee8142d2d',1,'myfw.cpp']]],
+  ['ftchain_1',['ftchain',['../d6/db4/myfw_8cpp.html#a447314b223a65c7b58cf11e4d3dcde3c',1,'myfw.cpp']]]
 ];

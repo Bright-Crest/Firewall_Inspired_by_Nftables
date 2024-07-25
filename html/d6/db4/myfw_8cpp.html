@@ -1,0 +1,646 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Firewall: user/src/myfw.cpp 文件参考</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Firewall
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d6/db4/myfw_8cpp.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#enum-members">枚举</a> &#124;
+<a href="#func-members">函数</a> &#124;
+<a href="#var-members">变量</a>  </div>
+  <div class="headertitle"><div class="title">myfw.cpp 文件参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>process user input  
+<a href="#details">更多...</a></p>
+<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;sys/types.h&gt;</code><br />
+<code>#include &lt;sys/stat.h&gt;</code><br />
+<code>#include &lt;arpa/inet.h&gt;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;fcntl.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d1/dfd/call_8h_source.html">call.h</a>&quot;</code><br />
+<code>#include &quot;share.h&quot;</code><br />
+<code>#include &quot;comm_protocol.h&quot;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+枚举</h2></td></tr>
+<tr class="memitem:a2afce0a47a93eee73a314d53e4890153" id="r_a2afce0a47a93eee73a314d53e4890153"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a> { <br />
+&#160;&#160;<a class="el" href="#a2afce0a47a93eee73a314d53e4890153aec211f7c20af43e742bf2570c3cb84f9">Add</a>
+, <a class="el" href="#a2afce0a47a93eee73a314d53e4890153aa458be0f08b7e4ff3c0f633c100176c0">Insert</a>
+, <a class="el" href="#a2afce0a47a93eee73a314d53e4890153a0ebe6df8a3ac338e0512acc741823fdb">Replace</a>
+, <a class="el" href="#a2afce0a47a93eee73a314d53e4890153af2a6c498fb90ee345d997f888fce3b18">Delete</a>
+, <br />
+&#160;&#160;<a class="el" href="#a2afce0a47a93eee73a314d53e4890153a4ee29ca12c7d126654bd0e5275de6135">List</a>
+, <a class="el" href="#a2afce0a47a93eee73a314d53e4890153a75f33789f924a80667bcdf8e195c1a1d">Flush</a>
+, <a class="el" href="#a2afce0a47a93eee73a314d53e4890153a904a8304056d77e4547744781b7ceb50">Rename</a>
+, <a class="el" href="#a2afce0a47a93eee73a314d53e4890153a4351cfebe4b61d8aa5efa1d020710005">View</a>
+, <br />
+&#160;&#160;<a class="el" href="#a2afce0a47a93eee73a314d53e4890153a88183b946cc5f0e8c96b2e66e1c74a7e">Unknown</a>
+<br />
+ }</td></tr>
+<tr class="separator:a2afce0a47a93eee73a314d53e4890153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+函数</h2></td></tr>
+<tr class="memitem:ab27645cfc3fe8e6ab3fc896c15dd7be8" id="r_ab27645cfc3fe8e6ab3fc896c15dd7be8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab27645cfc3fe8e6ab3fc896c15dd7be8">commandToString</a> (<a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a> cmd)</td></tr>
+<tr class="separator:ab27645cfc3fe8e6ab3fc896c15dd7be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0957cd1323191a69d099fbd882a29bcb" id="r_a0957cd1323191a69d099fbd882a29bcb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0957cd1323191a69d099fbd882a29bcb">parseCommand</a> (const std::string &amp;command)</td></tr>
+<tr class="separator:a0957cd1323191a69d099fbd882a29bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11ef1a84d8ce7af0f18e28f12258c62" id="r_aa11ef1a84d8ce7af0f18e28f12258c62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa11ef1a84d8ce7af0f18e28f12258c62">printHelp</a> (const char *programName)</td></tr>
+<tr class="separator:aa11ef1a84d8ce7af0f18e28f12258c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6baf8ea969b1c5775ea3899a35057d9e" id="r_a6baf8ea969b1c5775ea3899a35057d9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6baf8ea969b1c5775ea3899a35057d9e">viewLogs</a> (int argc, char *argv[])</td></tr>
+<tr class="separator:a6baf8ea969b1c5775ea3899a35057d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56cf0ebe456e4cb861d1620708f4713d" id="r_a56cf0ebe456e4cb861d1620708f4713d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56cf0ebe456e4cb861d1620708f4713d">getRulePara</a> (<a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a> cmd, int argc, char *argv[])</td></tr>
+<tr class="separator:a56cf0ebe456e4cb861d1620708f4713d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2e37aac58c75d46b36bb86f9d1def83" id="r_ad2e37aac58c75d46b36bb86f9d1def83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2e37aac58c75d46b36bb86f9d1def83">getChainPara</a> (<a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a> cmd, int argc, char *argv[])</td></tr>
+<tr class="separator:ad2e37aac58c75d46b36bb86f9d1def83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97" id="r_a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
+<tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+变量</h2></td></tr>
+<tr class="memitem:a8fa4edadd72e0f308709b772a822c2ec" id="r_a8fa4edadd72e0f308709b772a822c2ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/db8/structftrule.html">ftrule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8fa4edadd72e0f308709b772a822c2ec">u_ftRule</a></td></tr>
+<tr class="separator:a8fa4edadd72e0f308709b772a822c2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8021f062250f8cd66c2afa9ef5e90fe3" id="r_a8021f062250f8cd66c2afa9ef5e90fe3"><td class="memItemLeft" align="right" valign="top">static Name&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8021f062250f8cd66c2afa9ef5e90fe3">table_name</a> = &quot;&quot;</td></tr>
+<tr class="separator:a8021f062250f8cd66c2afa9ef5e90fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac036d1f6f221111da3fe67f1b0c3f967" id="r_ac036d1f6f221111da3fe67f1b0c3f967"><td class="memItemLeft" align="right" valign="top">static Name&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac036d1f6f221111da3fe67f1b0c3f967">chain_name</a> = &quot;&quot;</td></tr>
+<tr class="separator:ac036d1f6f221111da3fe67f1b0c3f967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05eb7ceabd453c8c76eb55880838f818" id="r_a05eb7ceabd453c8c76eb55880838f818"><td class="memItemLeft" align="right" valign="top">static Name&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05eb7ceabd453c8c76eb55880838f818">rule_name</a> = &quot;&quot;</td></tr>
+<tr class="separator:a05eb7ceabd453c8c76eb55880838f818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a063dd69fc92bc4a22d7fe14370f59386" id="r_a063dd69fc92bc4a22d7fe14370f59386"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a063dd69fc92bc4a22d7fe14370f59386">controlled_srcport</a> = 0</td></tr>
+<tr class="separator:a063dd69fc92bc4a22d7fe14370f59386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35f40d50ec9779c63107be55851ea6a3" id="r_a35f40d50ec9779c63107be55851ea6a3"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35f40d50ec9779c63107be55851ea6a3">controlled_dstport</a> = 0</td></tr>
+<tr class="separator:a35f40d50ec9779c63107be55851ea6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a359467b2adcfcd211f1214b004c57ffc" id="r_a359467b2adcfcd211f1214b004c57ffc"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a359467b2adcfcd211f1214b004c57ffc">controlled_saddr</a> = 0</td></tr>
+<tr class="separator:a359467b2adcfcd211f1214b004c57ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abde372e1f3e6847991b0c888997debb6" id="r_abde372e1f3e6847991b0c888997debb6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abde372e1f3e6847991b0c888997debb6">controlled_daddr</a> = 0</td></tr>
+<tr class="separator:abde372e1f3e6847991b0c888997debb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4b4de25c600574cb431c9cee8142d2d" id="r_ab4b4de25c600574cb431c9cee8142d2d"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b4de25c600574cb431c9cee8142d2d">front_name</a> [MAX_NAME_LENGTH+1]</td></tr>
+<tr class="separator:ab4b4de25c600574cb431c9cee8142d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abda969abecb03721d07930c9e93a4487" id="r_abda969abecb03721d07930c9e93a4487"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abda969abecb03721d07930c9e93a4487">replace_name</a> [MAX_NAME_LENGTH+1]</td></tr>
+<tr class="separator:abda969abecb03721d07930c9e93a4487"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab68052dda16637fc58c39462da073faa" id="r_ab68052dda16637fc58c39462da073faa"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab68052dda16637fc58c39462da073faa">log_rule_name</a> [MAX_NAME_LENGTH+1]</td></tr>
+<tr class="separator:ab68052dda16637fc58c39462da073faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893240dbab3b13607bda803c9a9a75af" id="r_a893240dbab3b13607bda803c9a9a75af"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a893240dbab3b13607bda803c9a9a75af">rule_action</a> = 0</td></tr>
+<tr class="separator:a893240dbab3b13607bda803c9a9a75af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa97fa269486761a368887d1a2afd6710" id="r_aa97fa269486761a368887d1a2afd6710"><td class="memItemLeft" align="right" valign="top">static ChainT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa97fa269486761a368887d1a2afd6710">chain</a></td></tr>
+<tr class="separator:aa97fa269486761a368887d1a2afd6710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a447314b223a65c7b58cf11e4d3dcde3c" id="r_a447314b223a65c7b58cf11e4d3dcde3c"><td class="memItemLeft" align="right" valign="top">static struct FilterRule_Chain&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a447314b223a65c7b58cf11e4d3dcde3c">ftchain</a></td></tr>
+<tr class="separator:a447314b223a65c7b58cf11e4d3dcde3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaef6051feb9b500852e3d7ceb464f45b" id="r_aaef6051feb9b500852e3d7ceb464f45b"><td class="memItemLeft" align="right" valign="top">static Name&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaef6051feb9b500852e3d7ceb464f45b">chain_rename_name</a> = &quot;&quot;</td></tr>
+<tr class="separator:aaef6051feb9b500852e3d7ceb464f45b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>process user input </p>
+<dl class="section author"><dt>作者</dt><dd>Frog2022 (<a href="#" onclick="location.href='mai'+'lto:'+'zhe'+'ha'+'o44'+'23'+'@gm'+'ai'+'l.c'+'om'; return false;">zheha<span class="obfuscator">.nosp@m.</span>o442<span class="obfuscator">.nosp@m.</span>3@gma<span class="obfuscator">.nosp@m.</span>il.c<span class="obfuscator">.nosp@m.</span>om</a>) </dd></dl>
+<dl class="section date"><dt>日期</dt><dd>2024/07 </dd></dl>
+</div><h2 class="groupheader">枚举类型说明</h2>
+<a id="a2afce0a47a93eee73a314d53e4890153" name="a2afce0a47a93eee73a314d53e4890153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2afce0a47a93eee73a314d53e4890153">&#9670;&#160;</a></span>Command</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153aec211f7c20af43e742bf2570c3cb84f9" name="a2afce0a47a93eee73a314d53e4890153aec211f7c20af43e742bf2570c3cb84f9"></a>Add&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153aa458be0f08b7e4ff3c0f633c100176c0" name="a2afce0a47a93eee73a314d53e4890153aa458be0f08b7e4ff3c0f633c100176c0"></a>Insert&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153a0ebe6df8a3ac338e0512acc741823fdb" name="a2afce0a47a93eee73a314d53e4890153a0ebe6df8a3ac338e0512acc741823fdb"></a>Replace&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153af2a6c498fb90ee345d997f888fce3b18" name="a2afce0a47a93eee73a314d53e4890153af2a6c498fb90ee345d997f888fce3b18"></a>Delete&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153a4ee29ca12c7d126654bd0e5275de6135" name="a2afce0a47a93eee73a314d53e4890153a4ee29ca12c7d126654bd0e5275de6135"></a>List&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153a75f33789f924a80667bcdf8e195c1a1d" name="a2afce0a47a93eee73a314d53e4890153a75f33789f924a80667bcdf8e195c1a1d"></a>Flush&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153a904a8304056d77e4547744781b7ceb50" name="a2afce0a47a93eee73a314d53e4890153a904a8304056d77e4547744781b7ceb50"></a>Rename&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153a4351cfebe4b61d8aa5efa1d020710005" name="a2afce0a47a93eee73a314d53e4890153a4351cfebe4b61d8aa5efa1d020710005"></a>View&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2afce0a47a93eee73a314d53e4890153a88183b946cc5f0e8c96b2e66e1c74a7e" name="a2afce0a47a93eee73a314d53e4890153a88183b946cc5f0e8c96b2e66e1c74a7e"></a>Unknown&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">函数说明</h2>
+<a id="ab27645cfc3fe8e6ab3fc896c15dd7be8" name="ab27645cfc3fe8e6ab3fc896c15dd7be8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab27645cfc3fe8e6ab3fc896c15dd7be8">&#9670;&#160;</a></span>commandToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string commandToString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a></td>          <td class="paramname"><span class="paramname"><em>cmd</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad2e37aac58c75d46b36bb86f9d1def83" name="ad2e37aac58c75d46b36bb86f9d1def83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2e37aac58c75d46b36bb86f9d1def83">&#9670;&#160;</a></span>getChainPara()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getChainPara </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a></td>          <td class="paramname"><span class="paramname"><em>cmd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>argc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>argv</em></span>[]&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a56cf0ebe456e4cb861d1620708f4713d" name="a56cf0ebe456e4cb861d1620708f4713d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56cf0ebe456e4cb861d1620708f4713d">&#9670;&#160;</a></span>getRulePara()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getRulePara </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a></td>          <td class="paramname"><span class="paramname"><em>cmd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>argc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>argv</em></span>[]&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0ddf1224851353fc92bfbff6f499fa97" name="a0ddf1224851353fc92bfbff6f499fa97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ddf1224851353fc92bfbff6f499fa97">&#9670;&#160;</a></span>main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>argc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>argv</em></span>[]&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0957cd1323191a69d099fbd882a29bcb" name="a0957cd1323191a69d099fbd882a29bcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0957cd1323191a69d099fbd882a29bcb">&#9670;&#160;</a></span>parseCommand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a2afce0a47a93eee73a314d53e4890153">Command</a> parseCommand </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>command</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa11ef1a84d8ce7af0f18e28f12258c62" name="aa11ef1a84d8ce7af0f18e28f12258c62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa11ef1a84d8ce7af0f18e28f12258c62">&#9670;&#160;</a></span>printHelp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void printHelp </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>programName</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6baf8ea969b1c5775ea3899a35057d9e" name="a6baf8ea969b1c5775ea3899a35057d9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6baf8ea969b1c5775ea3899a35057d9e">&#9670;&#160;</a></span>viewLogs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void viewLogs </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>argc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>argv</em></span>[]&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">变量说明</h2>
+<a id="aa97fa269486761a368887d1a2afd6710" name="aa97fa269486761a368887d1a2afd6710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa97fa269486761a368887d1a2afd6710">&#9670;&#160;</a></span>chain</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ChainT chain</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac036d1f6f221111da3fe67f1b0c3f967" name="ac036d1f6f221111da3fe67f1b0c3f967"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac036d1f6f221111da3fe67f1b0c3f967">&#9670;&#160;</a></span>chain_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Name chain_name = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaef6051feb9b500852e3d7ceb464f45b" name="aaef6051feb9b500852e3d7ceb464f45b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaef6051feb9b500852e3d7ceb464f45b">&#9670;&#160;</a></span>chain_rename_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Name chain_rename_name = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abde372e1f3e6847991b0c888997debb6" name="abde372e1f3e6847991b0c888997debb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abde372e1f3e6847991b0c888997debb6">&#9670;&#160;</a></span>controlled_daddr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int controlled_daddr = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a35f40d50ec9779c63107be55851ea6a3" name="a35f40d50ec9779c63107be55851ea6a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35f40d50ec9779c63107be55851ea6a3">&#9670;&#160;</a></span>controlled_dstport</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short controlled_dstport = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a359467b2adcfcd211f1214b004c57ffc" name="a359467b2adcfcd211f1214b004c57ffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a359467b2adcfcd211f1214b004c57ffc">&#9670;&#160;</a></span>controlled_saddr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int controlled_saddr = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a063dd69fc92bc4a22d7fe14370f59386" name="a063dd69fc92bc4a22d7fe14370f59386"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a063dd69fc92bc4a22d7fe14370f59386">&#9670;&#160;</a></span>controlled_srcport</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short controlled_srcport = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab4b4de25c600574cb431c9cee8142d2d" name="ab4b4de25c600574cb431c9cee8142d2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4b4de25c600574cb431c9cee8142d2d">&#9670;&#160;</a></span>front_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char front_name[MAX_NAME_LENGTH+1]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a447314b223a65c7b58cf11e4d3dcde3c" name="a447314b223a65c7b58cf11e4d3dcde3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a447314b223a65c7b58cf11e4d3dcde3c">&#9670;&#160;</a></span>ftchain</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct FilterRule_Chain ftchain</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab68052dda16637fc58c39462da073faa" name="ab68052dda16637fc58c39462da073faa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab68052dda16637fc58c39462da073faa">&#9670;&#160;</a></span>log_rule_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char log_rule_name[MAX_NAME_LENGTH+1]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abda969abecb03721d07930c9e93a4487" name="abda969abecb03721d07930c9e93a4487"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abda969abecb03721d07930c9e93a4487">&#9670;&#160;</a></span>replace_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char replace_name[MAX_NAME_LENGTH+1]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a893240dbab3b13607bda803c9a9a75af" name="a893240dbab3b13607bda803c9a9a75af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a893240dbab3b13607bda803c9a9a75af">&#9670;&#160;</a></span>rule_action</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int rule_action = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a05eb7ceabd453c8c76eb55880838f818" name="a05eb7ceabd453c8c76eb55880838f818"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05eb7ceabd453c8c76eb55880838f818">&#9670;&#160;</a></span>rule_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Name rule_name = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8021f062250f8cd66c2afa9ef5e90fe3" name="a8021f062250f8cd66c2afa9ef5e90fe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8021f062250f8cd66c2afa9ef5e90fe3">&#9670;&#160;</a></span>table_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Name table_name = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8fa4edadd72e0f308709b772a822c2ec" name="a8fa4edadd72e0f308709b772a822c2ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fa4edadd72e0f308709b772a822c2ec">&#9670;&#160;</a></span>u_ftRule</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/db8/structftrule.html">ftrule</a> u_ftRule</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_111cd2f11cffd6d6d28d89ee0389ee9e.html">user</a></li><li class="navelem"><a class="el" href="../../dir_d070f32a728a03cdee47adce6b71c59a.html">src</a></li><li class="navelem"><a class="el" href="../../d6/db4/myfw_8cpp.html">myfw.cpp</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

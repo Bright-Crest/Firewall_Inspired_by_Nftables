@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['op_0',['op',['../d9/d9d/structReturnT.html#ab212ab54691b4e04e8ff0f7cc4b57969',1,'ReturnT']]],
-  ['op_5fgoto_1',['OP_GOTO',['../dc/d54/common_8h.html#aa8f137f19095e0bdcf4f521e901f88bbaeeb288b7f2ed283ff2d7f73725c9991a',1,'common.h']]],
-  ['op_5fjump_2',['OP_JUMP',['../dc/d54/common_8h.html#aa8f137f19095e0bdcf4f521e901f88bba702651101fc28a886970546cf992ce3b',1,'common.h']]],
-  ['op_5fnone_3',['OP_NONE',['../dc/d54/common_8h.html#aa8f137f19095e0bdcf4f521e901f88bba7ad9e2b1c976b9a618111f246c891bfd',1,'common.h']]],
-  ['op_5freturn_4',['OP_RETURN',['../dc/d54/common_8h.html#aa8f137f19095e0bdcf4f521e901f88bbad436c18b194473f5ec64c28b774e41b3',1,'common.h']]],
-  ['operation_5',['Operation',['../dc/d54/common_8h.html#aa8f137f19095e0bdcf4f521e901f88bb',1,'common.h']]]
+  ['kernel_2ec_0',['kernel.c',['../d9/d26/kernel_8c.html',1,'']]],
+  ['kernel_5fcomm_2ec_1',['kernel_comm.c',['../dc/d5f/kernel__comm_8c.html',1,'']]],
+  ['kernel_5fcomm_2eh_2',['kernel_comm.h',['../d8/d7f/kernel__comm_8h.html',1,'']]],
+  ['kernel_5fmain_2ec_3',['kernel_main.c',['../db/d98/kernel__main_8c.html',1,'']]],
+  ['kmalloc_5fkernel_4',['KMALLOC_KERNEL',['../d5/dc4/core_8h.html#a4d4619064db111faef78a9977ced939e',1,'core.h']]]
 ];

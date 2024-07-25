@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['firewall_5fdebug_0',['FIREWALL_DEBUG',['../dc/d54/common_8h.html#a3d5538954bcbdc809823f9753995b4fb',1,'common.h']]],
-  ['firewall_5ferr_1',['FIREWALL_ERR',['../dc/d54/common_8h.html#a0f32e80cefd5c688ba264d20ff69c011',1,'common.h']]],
-  ['firewall_5finfo_2',['FIREWALL_INFO',['../dc/d54/common_8h.html#a330a7dc2a801a47346f86954c621103c',1,'common.h']]],
-  ['firewall_5fwarn_3',['FIREWALL_WARN',['../dc/d54/common_8h.html#a1da04959fa015f4dbd2b7dd88606d56f',1,'common.h']]]
+  ['action_5faccept_0',['ACTION_ACCEPT',['../dc/d65/api_8h.html#a452937681b071b984af6103094bfb5d5',1,'api.h']]],
+  ['action_5fdeny_1',['ACTION_DENY',['../dc/d65/api_8h.html#a75c26507b23ac33546afc5cb9fbe35a1',1,'api.h']]],
+  ['add_5fft_5frule_2',['ADD_FT_RULE',['../dc/d65/api_8h.html#aa7ec64946cd8881a89167b176bfccd22',1,'api.h']]],
+  ['add_5fnat_5frule_3',['ADD_NAT_RULE',['../dc/d65/api_8h.html#ab613dd342ddfe2c136aa884a9dd65b25',1,'api.h']]]
 ];

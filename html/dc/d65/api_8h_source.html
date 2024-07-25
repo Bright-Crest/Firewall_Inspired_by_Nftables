@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Firewall: user/include/api.h 源文件</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Firewall
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('dc/d65/api_8h_source.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">api.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="../../dc/d65/api_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _API_APP_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define _API_APP_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;share.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;comm_protocol.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;time.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;sys/types.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;sys/socket.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;linux/types.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;linux/in.h&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;linux/netfilter.h&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;linux/netlink.h&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// request defination. What&#39;s for?</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#a64ad66b508feeeff38e4b03e60b54064">   20</a></span><span class="preprocessor">#define SHOW_ALL_RULE 1</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#acf0183c2fbe012bd09f2169df805cb3b">   21</a></span><span class="preprocessor">#define GET_CONN_INFO 2</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#aed707235122dc358fd00a33e91fa450d">   22</a></span><span class="preprocessor">#define GET_LOG_INFO 3</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#aa7ec64946cd8881a89167b176bfccd22">   23</a></span><span class="preprocessor">#define ADD_FT_RULE 11</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#a0a4c78d33b6b11195045c85649af4892">   24</a></span><span class="preprocessor">#define REMOVE_FT_RULE 12</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#aff170eb811f2e445bbc049e80375749f">   25</a></span><span class="preprocessor">#define SHOW_FT_RULE 13</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#ab613dd342ddfe2c136aa884a9dd65b25">   26</a></span><span class="preprocessor">#define ADD_NAT_RULE 14</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#ae150fd92ed56aa6de9d7e16bf16ffaca">   27</a></span><span class="preprocessor">#define REMOVE_NAT_RULE 15</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#a14b9c12ca85d3c94ddc8f159c705a24b">   28</a></span><span class="preprocessor">#define SHOW_NAT_RULE 16</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// use `ChainType` in share/include/share.h</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// #define CHAIN_TYPE_FILTER 0</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// #define CHAIN_TYPE_NAT 1</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// use `HookPoint` in share/include/share.h</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// #define CHAIN_HOOK_INPUT 0</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// #define CHAIN_HOOK_OUTPUT 1</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// only used for rules. Use `ChainPolicy` in share/include/share.h for chains.</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#a75c26507b23ac33546afc5cb9fbe35a1">   39</a></span><span class="preprocessor">#define ACTION_DENY 0</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#a452937681b071b984af6103094bfb5d5">   40</a></span><span class="preprocessor">#define ACTION_ACCEPT 1</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#ab077fa1127453be2bd9d4c3c8a768fa7">   42</a></span><span class="preprocessor">#define uint8_t unsigned char</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// 接收消息的最大载荷</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../dc/d65/api_8h.html#aa7a7521abb3a3664218d8dc0e3759f0f">   44</a></span><span class="preprocessor">#define MAX_PAYLOAD (1024 * 256)</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="};">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html">   49</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../d5/db8/structftrule.html">ftrule</a></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#a9468490957066802b33f74eb97612ab3">   51</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#a9468490957066802b33f74eb97612ab3">name</a>[MAX_NAME_LENGTH + 1]; <span class="comment">// 规则名</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#aecf33a9bc9ac0c4203bd32f2a7ed7cce">   52</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#aecf33a9bc9ac0c4203bd32f2a7ed7cce">sip</a>[25];                  <span class="comment">// 源ip</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#ae793f4b10ac381ec13fb36d6e224df5c">   53</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#ae793f4b10ac381ec13fb36d6e224df5c">tip</a>[25];                  <span class="comment">// 目的ip</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#a28da829ae860ec569df74db97e198dae">   54</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#a28da829ae860ec569df74db97e198dae">sport</a>[15];                <span class="comment">// 源端口</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#ac4bf71acdcae55d22f961040227e72ae">   55</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#ac4bf71acdcae55d22f961040227e72ae">tport</a>[15];                <span class="comment">// 目的端口</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#a91f690ed3b21cc5b2f2fcb0e1bf7d7e1">   56</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#a91f690ed3b21cc5b2f2fcb0e1bf7d7e1">protocol</a>[6];              <span class="comment">// 协议</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#a4a7b2820aec70306bd6ddd2c1a0bb388">   57</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#a4a7b2820aec70306bd6ddd2c1a0bb388">act</a>;              <span class="comment">// 对数据包的行为</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../d5/db8/structftrule.html#a8ac77389f149262eb34a222fe66eca1b">   58</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="../../d5/db8/structftrule.html#a8ac77389f149262eb34a222fe66eca1b">islog</a>;            <span class="comment">// 是否记录日志</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>};</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="};">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../df/d18/structnatrule.html">   64</a></span><span class="keyword">struct </span><a class="code hl_struct" href="../../df/d18/structnatrule.html">natrule</a></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>{</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../df/d18/structnatrule.html#a396731130214378c63b6fb78f8b7491b">   66</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../df/d18/structnatrule.html#a396731130214378c63b6fb78f8b7491b">sip</a>[25];   <span class="comment">// nat源地址</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="../../df/d18/structnatrule.html#a435c501e97b4982c58601dbb5646fe38">   67</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../df/d18/structnatrule.html#a435c501e97b4982c58601dbb5646fe38">tip</a>[25];   <span class="comment">// nat地址</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../df/d18/structnatrule.html#ab661a54bd7f90bd3fa80d873684addc7">   68</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="../../df/d18/structnatrule.html#ab661a54bd7f90bd3fa80d873684addc7">tport</a>[15]; <span class="comment">// 端口</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../df/d18/structnatrule.html#a058be6a9b061854381f36b585ba9acc8">   69</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code hl_variable" href="../../df/d18/structnatrule.html#a058be6a9b061854381f36b585ba9acc8">portMin</a>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../df/d18/structnatrule.html#a5be207f66e8980c8cf07f6f716ccaf7c">   70</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <a class="code hl_variable" href="../../df/d18/structnatrule.html#a5be207f66e8980c8cf07f6f716ccaf7c">portMax</a>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>};</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">// rules</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a224c54b0546101a355de3bbf29eebe13">addFtRule</a>(struct <a class="code hl_struct" href="../../d5/db8/structftrule.html">ftrule</a> *filter_rule, Name table, Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>); <span class="comment">// 新增过滤规则</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a6b1c4cb1e41d257be8f53f8b7ee35e90">getAllFTRules</a>(void);                   <span class="comment">// 获取所有过滤规则</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">// TODO: delete by name, by handle or by all the values?</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a4dbcaf8fbca6a19afd7982163ca37036">delFTRule</a>(char name[], Name table, Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>);                <span class="comment">// 删除名为name的规则</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a61bf658e4036e1fae86a5acb924a8a1d">insertFtRule</a>(struct <a class="code hl_struct" href="../../d5/db8/structftrule.html">ftrule</a> *filter_rule, <span class="keywordtype">char</span> <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#ab4b4de25c600574cb431c9cee8142d2d">front_name</a>[], Name table, Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">// struct KernelResp addNATRule(struct natrule *nat_rule, Name table, Name chain);  // 新增nat规则</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// struct KernelResp getAllNATRules(void);                  // 获取所有nat规则</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">// struct KernelResp delNATRule(int seq, Name table, Name chain);                   // 删除序号为seq的nat规则</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a365c7900fb4667fe5741813375414b64">setDefaultAction</a>(unsigned int action); <span class="comment">// 设置默认行为</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#adb682d42cea32ea47b953404fac67e26">getAllConns</a>(void);                     <span class="comment">// 获取所有连接</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#ab245295d20e6b1874be1d385e7be23cb">getLogs</a>(char name[], Name table, Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>);                 <span class="comment">// 查看日志</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a2c5ba8553ea36bb4b32d07b0bfed885d">addFTChain</a>(struct FilterRule_Chain *<a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>, Name table);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#acab9312fd664f450575caead906f047f">delFTChain</a>(Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>, Name table);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">// chains</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a33f099e55b4583709237401bafb465f0">addChain</a>(ChainT *<a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>, Name table);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a40396bde5efe7eb42f8e4535418c98a1">delChain</a>(Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>, Name table);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#aef724e5b5c8f81844852370193fc0a74">listChain</a>(Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>, Name table);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a153393b2f88ed8e2a8b284e019525756">flushChain</a>(Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>, Name table);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a7299c34a6f27f5af43f7a736fcdb6198">renameChain</a>(Name <a class="code hl_variable" href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a>, Name new_chain_name, Name table);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d65/api_8h.html#a5a1d81ac471304c656de4ea563c8702a">IPstr2IPint</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *ipStr, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> *ip, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> *mask);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d65/api_8h.html#ac0941197fd14aaceee6a1a334fb42a17">IPint2IPstr</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ip, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> mask, <span class="keywordtype">char</span> *ipStr);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d65/api_8h.html#a8ed8e41029486e32c5630aa0efcf194d">IPint2IPstrNoMask</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ip, <span class="keywordtype">char</span> *ipStr);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="keywordtype">int</span> <a class="code hl_function" href="../../dc/d65/api_8h.html#aa249bd82e2e80f53f121660b7bc840f6">IPint2IPstrWithPort</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ip, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> port, <span class="keywordtype">char</span> *ipStr);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keyword">struct </span>KernelResp <a class="code hl_function" href="../../dc/d65/api_8h.html#a11ae76b3f80085d326090b7f58996ce9">ComWithKernel</a>(void *header, <span class="keywordtype">void</span> *smsg, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> header_len, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> slen);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aapi_8h_html_a11ae76b3f80085d326090b7f58996ce9"><div class="ttname"><a href="../../dc/d65/api_8h.html#a11ae76b3f80085d326090b7f58996ce9">ComWithKernel</a></div><div class="ttdeci">struct KernelResp ComWithKernel(void *header, void *smsg, unsigned int header_len, unsigned int slen)</div><div class="ttdoc">:与内核进行通信</div><div class="ttdef"><b>定义</b> operate.c:9</div></div>
+<div class="ttc" id="aapi_8h_html_a153393b2f88ed8e2a8b284e019525756"><div class="ttname"><a href="../../dc/d65/api_8h.html#a153393b2f88ed8e2a8b284e019525756">flushChain</a></div><div class="ttdeci">struct KernelResp flushChain(Name chain, Name table)</div><div class="ttdef"><b>定义</b> operate.c:642</div></div>
+<div class="ttc" id="aapi_8h_html_a224c54b0546101a355de3bbf29eebe13"><div class="ttname"><a href="../../dc/d65/api_8h.html#a224c54b0546101a355de3bbf29eebe13">addFtRule</a></div><div class="ttdeci">struct KernelResp addFtRule(struct ftrule *filter_rule, Name table, Name chain)</div><div class="ttdoc">:用户层与内核通信函数的声明</div><div class="ttdef"><b>定义</b> operate.c:176</div></div>
+<div class="ttc" id="aapi_8h_html_a2c5ba8553ea36bb4b32d07b0bfed885d"><div class="ttname"><a href="../../dc/d65/api_8h.html#a2c5ba8553ea36bb4b32d07b0bfed885d">addFTChain</a></div><div class="ttdeci">struct KernelResp addFTChain(struct FilterRule_Chain *chain, Name table)</div><div class="ttdef"><b>定义</b> operate.c:578</div></div>
+<div class="ttc" id="aapi_8h_html_a33f099e55b4583709237401bafb465f0"><div class="ttname"><a href="../../dc/d65/api_8h.html#a33f099e55b4583709237401bafb465f0">addChain</a></div><div class="ttdeci">struct KernelResp addChain(ChainT *chain, Name table)</div><div class="ttdef"><b>定义</b> operate.c:617</div></div>
+<div class="ttc" id="aapi_8h_html_a365c7900fb4667fe5741813375414b64"><div class="ttname"><a href="../../dc/d65/api_8h.html#a365c7900fb4667fe5741813375414b64">setDefaultAction</a></div><div class="ttdeci">struct KernelResp setDefaultAction(unsigned int action)</div><div class="ttdoc">:新增nat规则</div><div class="ttdef"><b>定义</b> operate.c:523</div></div>
+<div class="ttc" id="aapi_8h_html_a40396bde5efe7eb42f8e4535418c98a1"><div class="ttname"><a href="../../dc/d65/api_8h.html#a40396bde5efe7eb42f8e4535418c98a1">delChain</a></div><div class="ttdeci">struct KernelResp delChain(Name chain, Name table)</div><div class="ttdef"><b>定义</b> operate.c:629</div></div>
+<div class="ttc" id="aapi_8h_html_a4dbcaf8fbca6a19afd7982163ca37036"><div class="ttname"><a href="../../dc/d65/api_8h.html#a4dbcaf8fbca6a19afd7982163ca37036">delFTRule</a></div><div class="ttdeci">struct KernelResp delFTRule(char name[], Name table, Name chain)</div><div class="ttdoc">:删除规则</div><div class="ttdef"><b>定义</b> operate.c:422</div></div>
+<div class="ttc" id="aapi_8h_html_a5a1d81ac471304c656de4ea563c8702a"><div class="ttname"><a href="../../dc/d65/api_8h.html#a5a1d81ac471304c656de4ea563c8702a">IPstr2IPint</a></div><div class="ttdeci">int IPstr2IPint(const char *ipStr, unsigned int *ip, unsigned int *mask)</div><div class="ttdoc">:格式转换的工具函数</div><div class="ttdef"><b>定义</b> utils.c:5</div></div>
+<div class="ttc" id="aapi_8h_html_a61bf658e4036e1fae86a5acb924a8a1d"><div class="ttname"><a href="../../dc/d65/api_8h.html#a61bf658e4036e1fae86a5acb924a8a1d">insertFtRule</a></div><div class="ttdeci">struct KernelResp insertFtRule(struct ftrule *filter_rule, char front_name[], Name table, Name chain)</div><div class="ttdoc">:插入过滤规则的函数</div><div class="ttdef"><b>定义</b> operate.c:290</div></div>
+<div class="ttc" id="aapi_8h_html_a6b1c4cb1e41d257be8f53f8b7ee35e90"><div class="ttname"><a href="../../dc/d65/api_8h.html#a6b1c4cb1e41d257be8f53f8b7ee35e90">getAllFTRules</a></div><div class="ttdeci">struct KernelResp getAllFTRules(void)</div><div class="ttdoc">:展示过滤规则的函数</div><div class="ttdef"><b>定义</b> operate.c:400</div></div>
+<div class="ttc" id="aapi_8h_html_a7299c34a6f27f5af43f7a736fcdb6198"><div class="ttname"><a href="../../dc/d65/api_8h.html#a7299c34a6f27f5af43f7a736fcdb6198">renameChain</a></div><div class="ttdeci">struct KernelResp renameChain(Name chain, Name new_chain_name, Name table)</div><div class="ttdef"><b>定义</b> operate.c:669</div></div>
+<div class="ttc" id="aapi_8h_html_a8ed8e41029486e32c5630aa0efcf194d"><div class="ttname"><a href="../../dc/d65/api_8h.html#a8ed8e41029486e32c5630aa0efcf194d">IPint2IPstrNoMask</a></div><div class="ttdeci">int IPint2IPstrNoMask(unsigned int ip, char *ipStr)</div><div class="ttdef"><b>定义</b> utils.c:85</div></div>
+<div class="ttc" id="aapi_8h_html_aa249bd82e2e80f53f121660b7bc840f6"><div class="ttname"><a href="../../dc/d65/api_8h.html#aa249bd82e2e80f53f121660b7bc840f6">IPint2IPstrWithPort</a></div><div class="ttdeci">int IPint2IPstrWithPort(unsigned int ip, unsigned short port, char *ipStr)</div><div class="ttdef"><b>定义</b> utils.c:100</div></div>
+<div class="ttc" id="aapi_8h_html_ab245295d20e6b1874be1d385e7be23cb"><div class="ttname"><a href="../../dc/d65/api_8h.html#ab245295d20e6b1874be1d385e7be23cb">getLogs</a></div><div class="ttdeci">struct KernelResp getLogs(char name[], Name table, Name chain)</div><div class="ttdef"><b>定义</b> operate.c:560</div></div>
+<div class="ttc" id="aapi_8h_html_ac0941197fd14aaceee6a1a334fb42a17"><div class="ttname"><a href="../../dc/d65/api_8h.html#ac0941197fd14aaceee6a1a334fb42a17">IPint2IPstr</a></div><div class="ttdeci">int IPint2IPstr(unsigned int ip, unsigned int mask, char *ipStr)</div><div class="ttdef"><b>定义</b> utils.c:60</div></div>
+<div class="ttc" id="aapi_8h_html_acab9312fd664f450575caead906f047f"><div class="ttname"><a href="../../dc/d65/api_8h.html#acab9312fd664f450575caead906f047f">delFTChain</a></div><div class="ttdeci">struct KernelResp delFTChain(Name chain, Name table)</div><div class="ttdef"><b>定义</b> operate.c:598</div></div>
+<div class="ttc" id="aapi_8h_html_adb682d42cea32ea47b953404fac67e26"><div class="ttname"><a href="../../dc/d65/api_8h.html#adb682d42cea32ea47b953404fac67e26">getAllConns</a></div><div class="ttdeci">struct KernelResp getAllConns(void)</div><div class="ttdef"><b>定义</b> operate.c:542</div></div>
+<div class="ttc" id="aapi_8h_html_aef724e5b5c8f81844852370193fc0a74"><div class="ttname"><a href="../../dc/d65/api_8h.html#aef724e5b5c8f81844852370193fc0a74">listChain</a></div><div class="ttdeci">struct KernelResp listChain(Name chain, Name table)</div><div class="ttdef"><b>定义</b> operate.c:655</div></div>
+<div class="ttc" id="amyfw_8cpp_html_aa97fa269486761a368887d1a2afd6710"><div class="ttname"><a href="../../d6/db4/myfw_8cpp.html#aa97fa269486761a368887d1a2afd6710">chain</a></div><div class="ttdeci">static ChainT chain</div><div class="ttdef"><b>定义</b> myfw.cpp:58</div></div>
+<div class="ttc" id="amyfw_8cpp_html_ab4b4de25c600574cb431c9cee8142d2d"><div class="ttname"><a href="../../d6/db4/myfw_8cpp.html#ab4b4de25c600574cb431c9cee8142d2d">front_name</a></div><div class="ttdeci">char front_name[MAX_NAME_LENGTH+1]</div><div class="ttdef"><b>定义</b> myfw.cpp:49</div></div>
+<div class="ttc" id="astructftrule_html"><div class="ttname"><a href="../../d5/db8/structftrule.html">ftrule</a></div><div class="ttdoc">:用户输入过滤规则结构</div><div class="ttdef"><b>定义</b> api.h:50</div></div>
+<div class="ttc" id="astructftrule_html_a28da829ae860ec569df74db97e198dae"><div class="ttname"><a href="../../d5/db8/structftrule.html#a28da829ae860ec569df74db97e198dae">ftrule::sport</a></div><div class="ttdeci">char sport[15]</div><div class="ttdef"><b>定义</b> api.h:54</div></div>
+<div class="ttc" id="astructftrule_html_a4a7b2820aec70306bd6ddd2c1a0bb388"><div class="ttname"><a href="../../d5/db8/structftrule.html#a4a7b2820aec70306bd6ddd2c1a0bb388">ftrule::act</a></div><div class="ttdeci">unsigned int act</div><div class="ttdef"><b>定义</b> api.h:57</div></div>
+<div class="ttc" id="astructftrule_html_a8ac77389f149262eb34a222fe66eca1b"><div class="ttname"><a href="../../d5/db8/structftrule.html#a8ac77389f149262eb34a222fe66eca1b">ftrule::islog</a></div><div class="ttdeci">unsigned int islog</div><div class="ttdef"><b>定义</b> api.h:58</div></div>
+<div class="ttc" id="astructftrule_html_a91f690ed3b21cc5b2f2fcb0e1bf7d7e1"><div class="ttname"><a href="../../d5/db8/structftrule.html#a91f690ed3b21cc5b2f2fcb0e1bf7d7e1">ftrule::protocol</a></div><div class="ttdeci">char protocol[6]</div><div class="ttdef"><b>定义</b> api.h:56</div></div>
+<div class="ttc" id="astructftrule_html_a9468490957066802b33f74eb97612ab3"><div class="ttname"><a href="../../d5/db8/structftrule.html#a9468490957066802b33f74eb97612ab3">ftrule::name</a></div><div class="ttdeci">char name[MAX_NAME_LENGTH+1]</div><div class="ttdef"><b>定义</b> api.h:51</div></div>
+<div class="ttc" id="astructftrule_html_ac4bf71acdcae55d22f961040227e72ae"><div class="ttname"><a href="../../d5/db8/structftrule.html#ac4bf71acdcae55d22f961040227e72ae">ftrule::tport</a></div><div class="ttdeci">char tport[15]</div><div class="ttdef"><b>定义</b> api.h:55</div></div>
+<div class="ttc" id="astructftrule_html_ae793f4b10ac381ec13fb36d6e224df5c"><div class="ttname"><a href="../../d5/db8/structftrule.html#ae793f4b10ac381ec13fb36d6e224df5c">ftrule::tip</a></div><div class="ttdeci">char tip[25]</div><div class="ttdef"><b>定义</b> api.h:53</div></div>
+<div class="ttc" id="astructftrule_html_aecf33a9bc9ac0c4203bd32f2a7ed7cce"><div class="ttname"><a href="../../d5/db8/structftrule.html#aecf33a9bc9ac0c4203bd32f2a7ed7cce">ftrule::sip</a></div><div class="ttdeci">char sip[25]</div><div class="ttdef"><b>定义</b> api.h:52</div></div>
+<div class="ttc" id="astructnatrule_html"><div class="ttname"><a href="../../df/d18/structnatrule.html">natrule</a></div><div class="ttdoc">:用户输入nat规则结构</div><div class="ttdef"><b>定义</b> api.h:65</div></div>
+<div class="ttc" id="astructnatrule_html_a058be6a9b061854381f36b585ba9acc8"><div class="ttname"><a href="../../df/d18/structnatrule.html#a058be6a9b061854381f36b585ba9acc8">natrule::portMin</a></div><div class="ttdeci">unsigned short portMin</div><div class="ttdef"><b>定义</b> api.h:69</div></div>
+<div class="ttc" id="astructnatrule_html_a396731130214378c63b6fb78f8b7491b"><div class="ttname"><a href="../../df/d18/structnatrule.html#a396731130214378c63b6fb78f8b7491b">natrule::sip</a></div><div class="ttdeci">char sip[25]</div><div class="ttdef"><b>定义</b> api.h:66</div></div>
+<div class="ttc" id="astructnatrule_html_a435c501e97b4982c58601dbb5646fe38"><div class="ttname"><a href="../../df/d18/structnatrule.html#a435c501e97b4982c58601dbb5646fe38">natrule::tip</a></div><div class="ttdeci">char tip[25]</div><div class="ttdef"><b>定义</b> api.h:67</div></div>
+<div class="ttc" id="astructnatrule_html_a5be207f66e8980c8cf07f6f716ccaf7c"><div class="ttname"><a href="../../df/d18/structnatrule.html#a5be207f66e8980c8cf07f6f716ccaf7c">natrule::portMax</a></div><div class="ttdeci">unsigned short portMax</div><div class="ttdef"><b>定义</b> api.h:70</div></div>
+<div class="ttc" id="astructnatrule_html_ab661a54bd7f90bd3fa80d873684addc7"><div class="ttname"><a href="../../df/d18/structnatrule.html#ab661a54bd7f90bd3fa80d873684addc7">natrule::tport</a></div><div class="ttdeci">char tport[15]</div><div class="ttdef"><b>定义</b> api.h:68</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_111cd2f11cffd6d6d28d89ee0389ee9e.html">user</a></li><li class="navelem"><a class="el" href="../../dir_5880318873dbba54eaeafe8b295b00fd.html">include</a></li><li class="navelem"><a class="el" href="../../dc/d65/api_8h.html">api.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

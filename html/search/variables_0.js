@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['chain_0',['chain',['../d8/d03/structChain.html#a6fdb2d1a486355df6486f8c6556df01e',1,'Chain']]],
-  ['chain_5fhead_1',['chain_head',['../dc/dcb/structTable.html#a0ec74a713920b371320d68c80fa0ac11',1,'Table']]],
-  ['comment_2',['comment',['../dc/dcb/structTable.html#a145a2af10f10d4fd3fbaf7b9e88cf575',1,'Table::comment'],['../d8/d03/structChain.html#a079837b01d88e8ff1d5cad2ecd2c9e32',1,'Chain::comment'],['../dc/d7a/structRule.html#ace39307787b24f7bd4351dde8d53eb03',1,'Rule::comment']]]
+  ['_5flist_5fnode_0',['_list_node',['../dc/dcb/structTable.html#a647c0813f1f76a19f5cbd6c41c382db9',1,'Table::_list_node'],['../d8/d03/structChain.html#ae20de1c2846eab17ee549ba21dc972f7',1,'Chain::_list_node'],['../dc/d7a/structRule.html#a44b7c3e7b7a333369bd63c7a168020a3',1,'Rule::_list_node'],['../d2/db6/structMatch.html#a280942869d3aff0af65f847c56fd6331',1,'Match::_list_node'],['../df/d9f/structStmt.html#af4299acf9637f7a8ca310096ddddde73',1,'Stmt::_list_node']]]
 ];

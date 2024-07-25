@@ -98,15 +98,26 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">类</a> &#124;
+<a href="#define-members">宏定义</a> &#124;
 <a href="#typedef-members">类型定义</a> &#124;
-<a href="#enum-members">枚举</a> &#124;
-<a href="#func-members">函数</a>  </div>
+<a href="#func-members">函数</a> &#124;
+<a href="#var-members">变量</a>  </div>
   <div class="headertitle"><div class="title">core.h 文件参考</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="../../dc/d54/common_8h_source.html">common.h</a>&quot;</code><br />
+
+<p>The core and hierarchy of rule management.  
+<a href="#details">更多...</a></p>
+<div class="textblock"><code>#include &quot;share.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/d54/common_8h_source.html">common.h</a>&quot;</code><br />
+<code>#include &lt;linux/stddef.h&gt;</code><br />
 <code>#include &lt;linux/netfilter.h&gt;</code><br />
 <code>#include &lt;linux/list.h&gt;</code><br />
+<code>#include &lt;linux/list_sort.h&gt;</code><br />
+<code>#include &lt;linux/string.h&gt;</code><br />
+<code>#include &lt;linux/slab.h&gt;</code><br />
+<code>#include &lt;linux/spinlock.h&gt;</code><br />
+<code>#include &lt;linux/rcupdate.h&gt;</code><br />
 </div>
 <p><a href="../../d5/dc4/core_8h_source.html">浏览该文件的源代码.</a></p>
 <table class="memberdecls">
@@ -124,13 +135,24 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d29/structFilterChain.html">FilterChain</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d73/structIPMatch.html">IPMatch</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+宏定义</h2></td></tr>
+<tr class="memitem:a4d4619064db111faef78a9977ced939e" id="r_a4d4619064db111faef78a9977ced939e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d4619064db111faef78a9977ced939e">KMALLOC_KERNEL</a>(_type,  _name)&#160;&#160;&#160;_type *_name = (_type *)kmalloc(sizeof(_type), GFP_KERNEL)</td></tr>
+<tr class="separator:a4d4619064db111faef78a9977ced939e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6ed59ed37e5708b96814f0f81f77257" id="r_ac6ed59ed37e5708b96814f0f81f77257"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6ed59ed37e5708b96814f0f81f77257">LIST_FIND_RCU</a>(_type,  _key_name,  _key,  _head,  _list_name,  _compare)</td></tr>
+<tr class="memdesc:ac6ed59ed37e5708b96814f0f81f77257"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find an entry in a doubly linked list according to one key in the struct.  <br /></td></tr>
+<tr class="separator:ac6ed59ed37e5708b96814f0f81f77257"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5950a8788d295f61f5cff095a18aee38" id="r_a5950a8788d295f61f5cff095a18aee38"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5950a8788d295f61f5cff095a18aee38">MATCH_INTERVAL</a>(value,  min_value,  max_value,  is_exclude)</td></tr>
+<tr class="memdesc:a5950a8788d295f61f5cff095a18aee38"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d2/db6/structMatch.html">Match</a> value in an interval or match value not in an interval.  <br /></td></tr>
+<tr class="separator:a5950a8788d295f61f5cff095a18aee38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 类型定义</h2></td></tr>
-<tr class="memitem:aca7b85c406273f077d8ee78a2f481709" id="r_aca7b85c406273f077d8ee78a2f481709"><td class="memItemLeft" align="right" valign="top">typedef unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca7b85c406273f077d8ee78a2f481709">Handle</a></td></tr>
-<tr class="separator:aca7b85c406273f077d8ee78a2f481709"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa5713bb2ecdf81c430009179b806232" id="r_aaa5713bb2ecdf81c430009179b806232"><td class="memItemLeft" align="right" valign="top">typedef struct Table&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa5713bb2ecdf81c430009179b806232">Table</a></td></tr>
 <tr class="separator:aaa5713bb2ecdf81c430009179b806232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41856aa78a7ce06313bef77e72354ff2" id="r_a41856aa78a7ce06313bef77e72354ff2"><td class="memItemLeft" align="right" valign="top">typedef struct Chain&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41856aa78a7ce06313bef77e72354ff2">Chain</a></td></tr>
@@ -143,60 +165,201 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
 <tr class="separator:a8d06b072dd455e686bfe1d436dce286c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27f8a8e78b3a2a965afdcbd09426c1e2" id="r_a27f8a8e78b3a2a965afdcbd09426c1e2"><td class="memItemLeft" align="right" valign="top">typedef struct FilterChain&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27f8a8e78b3a2a965afdcbd09426c1e2">FilterChain</a></td></tr>
 <tr class="separator:a27f8a8e78b3a2a965afdcbd09426c1e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2546c471075a489029be000d599599c5" id="r_a2546c471075a489029be000d599599c5"><td class="memItemLeft" align="right" valign="top">typedef struct IPMatch&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2546c471075a489029be000d599599c5">IPMatch</a></td></tr>
+<tr class="separator:a2546c471075a489029be000d599599c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9792282cb1f9e285e0b3d52fb2093251" id="r_a9792282cb1f9e285e0b3d52fb2093251"><td class="memItemLeft" align="right" valign="top">typedef struct VerdictStmt&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9792282cb1f9e285e0b3d52fb2093251">VerdictStmt</a></td></tr>
 <tr class="separator:a9792282cb1f9e285e0b3d52fb2093251"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-枚举</h2></td></tr>
-<tr class="memitem:a697252c7d3bf770f98b0fa46f338d5a7" id="r_a697252c7d3bf770f98b0fa46f338d5a7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a697252c7d3bf770f98b0fa46f338d5a7">ChainType</a> { <a class="el" href="#a697252c7d3bf770f98b0fa46f338d5a7a3b7c75724ad5b3e136fd334323815092">CHAIN_FILTER</a>
-, <a class="el" href="#a697252c7d3bf770f98b0fa46f338d5a7a59f591864b53696804dc57c2304aa97f">CHAIN_NAT</a>
- }</td></tr>
-<tr class="separator:a697252c7d3bf770f98b0fa46f338d5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a747637046be33d7273262104aad8069d" id="r_a747637046be33d7273262104aad8069d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a747637046be33d7273262104aad8069d">MatchType</a> { <a class="el" href="#a747637046be33d7273262104aad8069daf70d4477f7b871c029faf6e5e6fa7a3b">MATCH_TODO</a>
- }</td></tr>
-<tr class="separator:a747637046be33d7273262104aad8069d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c1bfaf3c0a28d12826afa7bd1b0a3db" id="r_a9c1bfaf3c0a28d12826afa7bd1b0a3db"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c1bfaf3c0a28d12826afa7bd1b0a3db">StmtType</a> { <br />
-&#160;&#160;<a class="el" href="#a9c1bfaf3c0a28d12826afa7bd1b0a3dba1d5c41f5363945e19731c95246d9d766">STMT_VERDICT</a>
-, <a class="el" href="#a9c1bfaf3c0a28d12826afa7bd1b0a3dba565b4ee1d9da45bcf95019acf9fe2636">STMT_LOG</a>
-, <a class="el" href="#a9c1bfaf3c0a28d12826afa7bd1b0a3dba353bf4936aa48a73160f70293d317ad4">STMT_COUNTER</a>
-, <a class="el" href="#a9c1bfaf3c0a28d12826afa7bd1b0a3dba348b58cefe92314264699ebc89eedd2c">STMT_NAT</a>
-, <br />
-&#160;&#160;<a class="el" href="#a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab">STMT_CONNTRACK</a>
-<br />
- }</td></tr>
-<tr class="separator:a9c1bfaf3c0a28d12826afa7bd1b0a3db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50c0e86aef78e208432278567a7edf24" id="r_a50c0e86aef78e208432278567a7edf24"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50c0e86aef78e208432278567a7edf24">VerdictStmtType</a> { <br />
-&#160;&#160;<a class="el" href="#a50c0e86aef78e208432278567a7edf24a683831a4d1b2fc9c8425c68a850fdcde">VERDICT_ACCEPT</a>
-, <a class="el" href="#a50c0e86aef78e208432278567a7edf24a4d7d934242b8a78bf6db2857f58976dc">VERDICT_DROP</a>
-, <a class="el" href="#a50c0e86aef78e208432278567a7edf24ad42a0ccf1408d4d7cfc82f4f3d48e6bc">VERDICT_CONTINUE</a>
-, <a class="el" href="#a50c0e86aef78e208432278567a7edf24acfcdfdcb97c38c48e47037c4a54b2da1">VERDICT_RETURN</a>
-, <br />
-&#160;&#160;<a class="el" href="#a50c0e86aef78e208432278567a7edf24acffed4a543c5cb046a304faa7390af68">VERDICT_JUMP</a>
-, <a class="el" href="#a50c0e86aef78e208432278567a7edf24a7483f77413267aabd930f3181881939e">VERDICT_GOTO</a>
-<br />
- }</td></tr>
-<tr class="separator:a50c0e86aef78e208432278567a7edf24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80f9830fd926261ff87ab844b1f28441" id="r_a80f9830fd926261ff87ab844b1f28441"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80f9830fd926261ff87ab844b1f28441">ChainPriority</a> { <a class="el" href="#a80f9830fd926261ff87ab844b1f28441a742dfc10a86951f69cf32c727b047ce5">CP_TODO</a>
- }</td></tr>
-<tr class="separator:a80f9830fd926261ff87ab844b1f28441"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2708749d6ad42b5e9b7ffade143776a" id="r_ae2708749d6ad42b5e9b7ffade143776a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2708749d6ad42b5e9b7ffade143776a">ChainPolicy</a> { <a class="el" href="#ae2708749d6ad42b5e9b7ffade143776aa15be83cc3bfcf77d638ccf998665a170">CHAIN_ACCEPT</a>
-, <a class="el" href="#ae2708749d6ad42b5e9b7ffade143776aa6d0aca0784ca367dc79627251dd896b6">CHAIN_DROP</a>
- }</td></tr>
-<tr class="separator:ae2708749d6ad42b5e9b7ffade143776a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff52e9d9ee5dc357de01943832391b2c" id="r_aff52e9d9ee5dc357de01943832391b2c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff52e9d9ee5dc357de01943832391b2c">MatchResult</a> { <a class="el" href="#aff52e9d9ee5dc357de01943832391b2ca1155ee5305ebe5bb9407faa9d395ae93">MATCH</a>
-, <a class="el" href="#aff52e9d9ee5dc357de01943832391b2ca5f6cc7b0161a4933f17fc59020c18b67">NOT_MATCH</a>
- }</td></tr>
-<tr class="separator:aff52e9d9ee5dc357de01943832391b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 函数</h2></td></tr>
 <tr class="memitem:a9b8c695ecb87014ca65a9e08b1ae4c65" id="r_a9b8c695ecb87014ca65a9e08b1ae4c65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b8c695ecb87014ca65a9e08b1ae4c65">chain_instantiate</a> (<a class="el" href="../../d8/d03/structChain.html">Chain</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *)</td></tr>
 <tr class="separator:a9b8c695ecb87014ca65a9e08b1ae4c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35a660ba473edb23ccf614326278073f" id="r_a35a660ba473edb23ccf614326278073f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35a660ba473edb23ccf614326278073f">rule_instantiate</a> (<a class="el" href="../../dc/d7a/structRule.html">Rule</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *)</td></tr>
+<tr class="separator:a35a660ba473edb23ccf614326278073f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81257186eaae88db7721d83bd8e9e944" id="r_a81257186eaae88db7721d83bd8e9e944"><td class="memItemLeft" align="right" valign="top">MatchResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81257186eaae88db7721d83bd8e9e944">match_instantiate</a> (<a class="el" href="../../d2/db6/structMatch.html">Match</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *)</td></tr>
+<tr class="separator:a81257186eaae88db7721d83bd8e9e944"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a270c6fcee6938f18462f45a6bbf4874e" id="r_a270c6fcee6938f18462f45a6bbf4874e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a270c6fcee6938f18462f45a6bbf4874e">stmt_instantiate</a> (<a class="el" href="../../df/d9f/structStmt.html">Stmt</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *)</td></tr>
 <tr class="separator:a270c6fcee6938f18462f45a6bbf4874e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00cb5321dc14d84ece7f512072778dde" id="r_a00cb5321dc14d84ece7f512072778dde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00cb5321dc14d84ece7f512072778dde">verdict_instantiate</a> (<a class="el" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *)</td></tr>
-<tr class="separator:a00cb5321dc14d84ece7f512072778dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf5f651ef41a28989a9aa67e90ff0dfc" id="r_acf5f651ef41a28989a9aa67e90ff0dfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf5f651ef41a28989a9aa67e90ff0dfc">filter_chain_instantiate</a> (<a class="el" href="../../d2/d29/structFilterChain.html">FilterChain</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *)</td></tr>
+<tr class="separator:acf5f651ef41a28989a9aa67e90ff0dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11ea686fc8b37318a73ffb44cc37fd6c" id="r_a11ea686fc8b37318a73ffb44cc37fd6c"><td class="memItemLeft" align="right" valign="top">MatchResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11ea686fc8b37318a73ffb44cc37fd6c">ip_match_instantiate</a> (<a class="el" href="../../de/d73/structIPMatch.html">IPMatch</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *)</td></tr>
+<tr class="separator:a11ea686fc8b37318a73ffb44cc37fd6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af92346db083c1348d4268b144298593f" id="r_af92346db083c1348d4268b144298593f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af92346db083c1348d4268b144298593f">verdict_stmt_instantiate</a> (<a class="el" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> *self, <a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *, <a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *)</td></tr>
+<tr class="separator:af92346db083c1348d4268b144298593f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb9c545cad16bf59bd36382453d37aa0" id="r_aeb9c545cad16bf59bd36382453d37aa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/dcb/structTable.html">Table</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb9c545cad16bf59bd36382453d37aa0">copy_table</a> (TableT *_table)</td></tr>
+<tr class="separator:aeb9c545cad16bf59bd36382453d37aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fc2642b03a124201763af476db61ac8" id="r_a9fc2642b03a124201763af476db61ac8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d03/structChain.html">Chain</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9fc2642b03a124201763af476db61ac8">copy_chain</a> (ChainT *_chain)</td></tr>
+<tr class="separator:a9fc2642b03a124201763af476db61ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c4dc209fad44862f1a6edb56e8a15d7" id="r_a9c4dc209fad44862f1a6edb56e8a15d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d7a/structRule.html">Rule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c4dc209fad44862f1a6edb56e8a15d7">copy_rule</a> (RuleT *_rule)</td></tr>
+<tr class="separator:a9c4dc209fad44862f1a6edb56e8a15d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b29f627eab490af588c29341a75aa26" id="r_a7b29f627eab490af588c29341a75aa26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/db6/structMatch.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b29f627eab490af588c29341a75aa26">copy_match</a> (MatchT *_match)</td></tr>
+<tr class="separator:a7b29f627eab490af588c29341a75aa26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98ba89a3f15f41c240462d735e146a10" id="r_a98ba89a3f15f41c240462d735e146a10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/d9f/structStmt.html">Stmt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98ba89a3f15f41c240462d735e146a10">copy_stmt</a> (StmtT *_stmt)</td></tr>
+<tr class="separator:a98ba89a3f15f41c240462d735e146a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad99773783014b51ca66ead1384f6fd38" id="r_ad99773783014b51ca66ead1384f6fd38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d29/structFilterChain.html">FilterChain</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad99773783014b51ca66ead1384f6fd38">copy_filter_chain</a> (FilterChainT *_filter)</td></tr>
+<tr class="separator:ad99773783014b51ca66ead1384f6fd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8922cb7395f1d150c72922c3d9d80aeb" id="r_a8922cb7395f1d150c72922c3d9d80aeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d73/structIPMatch.html">IPMatch</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8922cb7395f1d150c72922c3d9d80aeb">copy_ip_match</a> (IPMatchT *_ipm)</td></tr>
+<tr class="separator:a8922cb7395f1d150c72922c3d9d80aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a094b4163d7e4f9142e19fc3e43ab4fb4" id="r_a094b4163d7e4f9142e19fc3e43ab4fb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a094b4163d7e4f9142e19fc3e43ab4fb4">copy_verdict_stmt</a> (VerdictStmtT *_verdict)</td></tr>
+<tr class="separator:a094b4163d7e4f9142e19fc3e43ab4fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a260e5c2b8d200e315481e9a0581f1bdf" id="r_a260e5c2b8d200e315481e9a0581f1bdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a260e5c2b8d200e315481e9a0581f1bdf">manage_table</a> (TableT *_table, TableChangeType operation)</td></tr>
+<tr class="separator:a260e5c2b8d200e315481e9a0581f1bdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0199e473c80022fc4869af13d2942f13" id="r_a0199e473c80022fc4869af13d2942f13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0199e473c80022fc4869af13d2942f13">manage_chain</a> (ChainT *_chain, ChainChangeType operation, Name <a class="el" href="../../d6/db4/myfw_8cpp.html#a8021f062250f8cd66c2afa9ef5e90fe3">table_name</a>)</td></tr>
+<tr class="separator:a0199e473c80022fc4869af13d2942f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae55f71ddb65144ea5506f995205f63ad" id="r_ae55f71ddb65144ea5506f995205f63ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae55f71ddb65144ea5506f995205f63ad">manage_rule</a> (RuleT *_rule, RuleChangeType operation, Name <a class="el" href="../../d6/db4/myfw_8cpp.html#a8021f062250f8cd66c2afa9ef5e90fe3">table_name</a>, Name <a class="el" href="../../d6/db4/myfw_8cpp.html#ac036d1f6f221111da3fe67f1b0c3f967">chain_name</a>)</td></tr>
+<tr class="separator:ae55f71ddb65144ea5506f995205f63ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+变量</h2></td></tr>
+<tr class="memitem:ad51c309d4917e28ece52a80a88bea754" id="r_ad51c309d4917e28ece52a80a88bea754"><td class="memItemLeft" align="right" valign="top">struct list_head&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad51c309d4917e28ece52a80a88bea754">g_table_list_head</a></td></tr>
+<tr class="separator:ad51c309d4917e28ece52a80a88bea754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>The core and hierarchy of rule management. </p>
+<dl class="section author"><dt>作者</dt><dd>Bright-Crest (<a href="#" onclick="location.href='mai'+'lto:'+'ste'+'ph'+'enz'+'hu'+'200'+'4@'+'163'+'.c'+'om'; return false;">steph<span class="obfuscator">.nosp@m.</span>enzh<span class="obfuscator">.nosp@m.</span>u2004<span class="obfuscator">.nosp@m.</span>@163<span class="obfuscator">.nosp@m.</span>.com</a>) </dd></dl>
+<dl class="section date"><dt>日期</dt><dd>2024/07 </dd></dl>
+</div><h2 class="groupheader">宏定义说明</h2>
+<a id="a4d4619064db111faef78a9977ced939e" name="a4d4619064db111faef78a9977ced939e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d4619064db111faef78a9977ced939e">&#9670;&#160;</a></span>KMALLOC_KERNEL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define KMALLOC_KERNEL</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_type</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_name</em></span>&#160;)&#160;&#160;&#160;_type *_name = (_type *)kmalloc(sizeof(_type), GFP_KERNEL)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac6ed59ed37e5708b96814f0f81f77257" name="ac6ed59ed37e5708b96814f0f81f77257"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6ed59ed37e5708b96814f0f81f77257">&#9670;&#160;</a></span>LIST_FIND_RCU</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIST_FIND_RCU</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_type</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_key_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_key</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_head</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_list_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>_compare</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>值:</b><div class="fragment"><div class="line">  ({\</div>
+<div class="line">    _type * _pos = NULL;\</div>
+<div class="line">    _type * _ret = NULL;\</div>
+<div class="line">    rcu_read_lock();\</div>
+<div class="line">    list_for_each_entry_rcu(_pos, &amp;_head, _list_name) {\</div>
+<div class="line">      if (_compare(_pos-&gt;_key_name, _key) == 0) {\</div>
+<div class="line">        _ret = _pos;\</div>
+<div class="line">        <span class="keywordflow">break</span>;\</div>
+<div class="line">      }\</div>
+<div class="line">    }\</div>
+<div class="line">    rcu_read_unlock();\</div>
+<div class="line">    _ret;\</div>
+<div class="line">  })</div>
+</div><!-- fragment -->
+<p>Find an entry in a doubly linked list according to one key in the struct. </p>
+<p>To support polymorphism. This can be applied to different structs with <code>struct list_head</code> and searching according to different keys. Since this uses RCU and is the read-side, do not use this macro inside any locks. </p><dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">_type</td><td>type of the struct </td></tr>
+    <tr><td class="paramname">_key_name</td><td>name of the key within the struct </td></tr>
+    <tr><td class="paramname">_key</td><td>value of the key of the entry to find </td></tr>
+    <tr><td class="paramname">_head</td><td><code>struct list_head</code>. The head of the list </td></tr>
+    <tr><td class="paramname">_list_name</td><td>name of <code>struct list_head</code> within the struct </td></tr>
+    <tr><td class="paramname">_compare</td><td><code>int (*_compare)(KeyType key1, KeyType key2)</code>. The pointer to the function to compare keys. Return 0 if equal. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>pointer to the first entry found. If not found, return NULL. </dd></dl>
+
+</div>
+</div>
+<a id="a5950a8788d295f61f5cff095a18aee38" name="a5950a8788d295f61f5cff095a18aee38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5950a8788d295f61f5cff095a18aee38">&#9670;&#160;</a></span>MATCH_INTERVAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MATCH_INTERVAL</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>min_value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>max_value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>is_exclude</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>值:</b><div class="fragment"><div class="line">                                                                  ({\</div>
+<div class="line">                                                                  typeof (value) _value = (value);\</div>
+<div class="line">                                                                  typeof (min_value) _min = (min_value);\</div>
+<div class="line">                                                                  typeof (max_value) _max = (max_value);\</div>
+<div class="line">                                                                  typeof (is_exclude) _is_exclude = (is_exclude);\</div>
+<div class="line">                                                                  <span class="keywordtype">int</span> _result = 0;\</div>
+<div class="line">                                                                  if (_min &lt;= _value &amp;&amp; _value &lt;= _max) {\</div>
+<div class="line">                                                                    _result = 1;\</div>
+<div class="line">                                                                  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_min &gt; _max) {\</div>
+<div class="line">                                                                    _result = 1;\</div>
+<div class="line">                                                                  } <span class="keywordflow">else</span> {\</div>
+<div class="line">                                                                    _result = 0;\</div>
+<div class="line">                                                                  }\</div>
+<div class="line">                                                                  if (_is_exclude) {\</div>
+<div class="line">                                                                    _result = (_result + 1) % 2;\</div>
+<div class="line">                                                                  }\</div>
+<div class="line">                                                                  _result;\</div>
+<div class="line">                                                                })</div>
+</div><!-- fragment -->
+<p><a class="el" href="../../d2/db6/structMatch.html">Match</a> value in an interval or match value not in an interval. </p>
+<p>To support polymorphism like template. When min_value &gt; max_value, it means all the values. </p><dl class="section return"><dt>返回</dt><dd>1: MATCH, 0: NOT_MATCH </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">类型定义说明</h2>
 <a id="a41856aa78a7ce06313bef77e72354ff2" name="a41856aa78a7ce06313bef77e72354ff2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41856aa78a7ce06313bef77e72354ff2">&#9670;&#160;</a></span>Chain</h2>
@@ -226,14 +389,14 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
 
 </div>
 </div>
-<a id="aca7b85c406273f077d8ee78a2f481709" name="aca7b85c406273f077d8ee78a2f481709"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca7b85c406273f077d8ee78a2f481709">&#9670;&#160;</a></span>Handle</h2>
+<a id="a2546c471075a489029be000d599599c5" name="a2546c471075a489029be000d599599c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2546c471075a489029be000d599599c5">&#9670;&#160;</a></span>IPMatch</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef unsigned int <a class="el" href="#aca7b85c406273f077d8ee78a2f481709">Handle</a></td>
+          <td class="memname">typedef struct IPMatch IPMatch</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -310,138 +473,6 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
 
 </div>
 </div>
-<h2 class="groupheader">枚举类型说明</h2>
-<a id="ae2708749d6ad42b5e9b7ffade143776a" name="ae2708749d6ad42b5e9b7ffade143776a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2708749d6ad42b5e9b7ffade143776a">&#9670;&#160;</a></span>ChainPolicy</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#ae2708749d6ad42b5e9b7ffade143776a">ChainPolicy</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="ae2708749d6ad42b5e9b7ffade143776aa15be83cc3bfcf77d638ccf998665a170" name="ae2708749d6ad42b5e9b7ffade143776aa15be83cc3bfcf77d638ccf998665a170"></a>CHAIN_ACCEPT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae2708749d6ad42b5e9b7ffade143776aa6d0aca0784ca367dc79627251dd896b6" name="ae2708749d6ad42b5e9b7ffade143776aa6d0aca0784ca367dc79627251dd896b6"></a>CHAIN_DROP&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a80f9830fd926261ff87ab844b1f28441" name="a80f9830fd926261ff87ab844b1f28441"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80f9830fd926261ff87ab844b1f28441">&#9670;&#160;</a></span>ChainPriority</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a80f9830fd926261ff87ab844b1f28441">ChainPriority</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a80f9830fd926261ff87ab844b1f28441a742dfc10a86951f69cf32c727b047ce5" name="a80f9830fd926261ff87ab844b1f28441a742dfc10a86951f69cf32c727b047ce5"></a>CP_TODO&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a697252c7d3bf770f98b0fa46f338d5a7" name="a697252c7d3bf770f98b0fa46f338d5a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a697252c7d3bf770f98b0fa46f338d5a7">&#9670;&#160;</a></span>ChainType</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a697252c7d3bf770f98b0fa46f338d5a7">ChainType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a697252c7d3bf770f98b0fa46f338d5a7a3b7c75724ad5b3e136fd334323815092" name="a697252c7d3bf770f98b0fa46f338d5a7a3b7c75724ad5b3e136fd334323815092"></a>CHAIN_FILTER&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a697252c7d3bf770f98b0fa46f338d5a7a59f591864b53696804dc57c2304aa97f" name="a697252c7d3bf770f98b0fa46f338d5a7a59f591864b53696804dc57c2304aa97f"></a>CHAIN_NAT&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="aff52e9d9ee5dc357de01943832391b2c" name="aff52e9d9ee5dc357de01943832391b2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff52e9d9ee5dc357de01943832391b2c">&#9670;&#160;</a></span>MatchResult</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#aff52e9d9ee5dc357de01943832391b2c">MatchResult</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="aff52e9d9ee5dc357de01943832391b2ca1155ee5305ebe5bb9407faa9d395ae93" name="aff52e9d9ee5dc357de01943832391b2ca1155ee5305ebe5bb9407faa9d395ae93"></a>MATCH&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aff52e9d9ee5dc357de01943832391b2ca5f6cc7b0161a4933f17fc59020c18b67" name="aff52e9d9ee5dc357de01943832391b2ca5f6cc7b0161a4933f17fc59020c18b67"></a>NOT_MATCH&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a747637046be33d7273262104aad8069d" name="a747637046be33d7273262104aad8069d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a747637046be33d7273262104aad8069d">&#9670;&#160;</a></span>MatchType</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a747637046be33d7273262104aad8069d">MatchType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a747637046be33d7273262104aad8069daf70d4477f7b871c029faf6e5e6fa7a3b" name="a747637046be33d7273262104aad8069daf70d4477f7b871c029faf6e5e6fa7a3b"></a>MATCH_TODO&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a9c1bfaf3c0a28d12826afa7bd1b0a3db" name="a9c1bfaf3c0a28d12826afa7bd1b0a3db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c1bfaf3c0a28d12826afa7bd1b0a3db">&#9670;&#160;</a></span>StmtType</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a9c1bfaf3c0a28d12826afa7bd1b0a3db">StmtType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a9c1bfaf3c0a28d12826afa7bd1b0a3dba1d5c41f5363945e19731c95246d9d766" name="a9c1bfaf3c0a28d12826afa7bd1b0a3dba1d5c41f5363945e19731c95246d9d766"></a>STMT_VERDICT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a9c1bfaf3c0a28d12826afa7bd1b0a3dba565b4ee1d9da45bcf95019acf9fe2636" name="a9c1bfaf3c0a28d12826afa7bd1b0a3dba565b4ee1d9da45bcf95019acf9fe2636"></a>STMT_LOG&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a9c1bfaf3c0a28d12826afa7bd1b0a3dba353bf4936aa48a73160f70293d317ad4" name="a9c1bfaf3c0a28d12826afa7bd1b0a3dba353bf4936aa48a73160f70293d317ad4"></a>STMT_COUNTER&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a9c1bfaf3c0a28d12826afa7bd1b0a3dba348b58cefe92314264699ebc89eedd2c" name="a9c1bfaf3c0a28d12826afa7bd1b0a3dba348b58cefe92314264699ebc89eedd2c"></a>STMT_NAT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab" name="a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab"></a>STMT_CONNTRACK&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a50c0e86aef78e208432278567a7edf24" name="a50c0e86aef78e208432278567a7edf24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50c0e86aef78e208432278567a7edf24">&#9670;&#160;</a></span>VerdictStmtType</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a50c0e86aef78e208432278567a7edf24">VerdictStmtType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">枚举值</th></tr><tr><td class="fieldname"><a id="a50c0e86aef78e208432278567a7edf24a683831a4d1b2fc9c8425c68a850fdcde" name="a50c0e86aef78e208432278567a7edf24a683831a4d1b2fc9c8425c68a850fdcde"></a>VERDICT_ACCEPT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a50c0e86aef78e208432278567a7edf24a4d7d934242b8a78bf6db2857f58976dc" name="a50c0e86aef78e208432278567a7edf24a4d7d934242b8a78bf6db2857f58976dc"></a>VERDICT_DROP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a50c0e86aef78e208432278567a7edf24ad42a0ccf1408d4d7cfc82f4f3d48e6bc" name="a50c0e86aef78e208432278567a7edf24ad42a0ccf1408d4d7cfc82f4f3d48e6bc"></a>VERDICT_CONTINUE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a50c0e86aef78e208432278567a7edf24acfcdfdcb97c38c48e47037c4a54b2da1" name="a50c0e86aef78e208432278567a7edf24acfcdfdcb97c38c48e47037c4a54b2da1"></a>VERDICT_RETURN&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a50c0e86aef78e208432278567a7edf24acffed4a543c5cb046a304faa7390af68" name="a50c0e86aef78e208432278567a7edf24acffed4a543c5cb046a304faa7390af68"></a>VERDICT_JUMP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a50c0e86aef78e208432278567a7edf24a7483f77413267aabd930f3181881939e" name="a50c0e86aef78e208432278567a7edf24a7483f77413267aabd930f3181881939e"></a>VERDICT_GOTO&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
 <h2 class="groupheader">函数说明</h2>
 <a id="a9b8c695ecb87014ca65a9e08b1ae4c65" name="a9b8c695ecb87014ca65a9e08b1ae4c65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b8c695ecb87014ca65a9e08b1ae4c65">&#9670;&#160;</a></span>chain_instantiate()</h2>
@@ -466,7 +497,315 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Used to initialize <code><a class="el" href="../../d8/d03/structChain.html">Chain</a></code>. </p>
+<p>Maintain a list of <code><a class="el" href="../../d8/d03/structChain.html">Chain</a></code>s ordered by priority for each hook point Used to initialize <code><a class="el" href="../../d8/d03/structChain.html">Chain</a></code>. </p>
+
+</div>
+</div>
+<a id="a9fc2642b03a124201763af476db61ac8" name="a9fc2642b03a124201763af476db61ac8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fc2642b03a124201763af476db61ac8">&#9670;&#160;</a></span>copy_chain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d03/structChain.html">Chain</a> * copy_chain </td>
+          <td>(</td>
+          <td class="paramtype">ChainT *</td>          <td class="paramname"><span class="paramname"><em>_chain</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad99773783014b51ca66ead1384f6fd38" name="ad99773783014b51ca66ead1384f6fd38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad99773783014b51ca66ead1384f6fd38">&#9670;&#160;</a></span>copy_filter_chain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/d29/structFilterChain.html">FilterChain</a> * copy_filter_chain </td>
+          <td>(</td>
+          <td class="paramtype">FilterChainT *</td>          <td class="paramname"><span class="paramname"><em>_filter</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8922cb7395f1d150c72922c3d9d80aeb" name="a8922cb7395f1d150c72922c3d9d80aeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8922cb7395f1d150c72922c3d9d80aeb">&#9670;&#160;</a></span>copy_ip_match()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d73/structIPMatch.html">IPMatch</a> * copy_ip_match </td>
+          <td>(</td>
+          <td class="paramtype">IPMatchT *</td>          <td class="paramname"><span class="paramname"><em>_ipm</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7b29f627eab490af588c29341a75aa26" name="a7b29f627eab490af588c29341a75aa26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b29f627eab490af588c29341a75aa26">&#9670;&#160;</a></span>copy_match()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/db6/structMatch.html">Match</a> * copy_match </td>
+          <td>(</td>
+          <td class="paramtype">MatchT *</td>          <td class="paramname"><span class="paramname"><em>_match</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9c4dc209fad44862f1a6edb56e8a15d7" name="a9c4dc209fad44862f1a6edb56e8a15d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c4dc209fad44862f1a6edb56e8a15d7">&#9670;&#160;</a></span>copy_rule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dc/d7a/structRule.html">Rule</a> * copy_rule </td>
+          <td>(</td>
+          <td class="paramtype">RuleT *</td>          <td class="paramname"><span class="paramname"><em>_rule</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a98ba89a3f15f41c240462d735e146a10" name="a98ba89a3f15f41c240462d735e146a10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ba89a3f15f41c240462d735e146a10">&#9670;&#160;</a></span>copy_stmt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../df/d9f/structStmt.html">Stmt</a> * copy_stmt </td>
+          <td>(</td>
+          <td class="paramtype">StmtT *</td>          <td class="paramname"><span class="paramname"><em>_stmt</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeb9c545cad16bf59bd36382453d37aa0" name="aeb9c545cad16bf59bd36382453d37aa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb9c545cad16bf59bd36382453d37aa0">&#9670;&#160;</a></span>copy_table()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dc/dcb/structTable.html">Table</a> * copy_table </td>
+          <td>(</td>
+          <td class="paramtype">TableT *</td>          <td class="paramname"><span class="paramname"><em>_table</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a094b4163d7e4f9142e19fc3e43ab4fb4" name="a094b4163d7e4f9142e19fc3e43ab4fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a094b4163d7e4f9142e19fc3e43ab4fb4">&#9670;&#160;</a></span>copy_verdict_stmt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> * copy_verdict_stmt </td>
+          <td>(</td>
+          <td class="paramtype">VerdictStmtT *</td>          <td class="paramname"><span class="paramname"><em>_verdict</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acf5f651ef41a28989a9aa67e90ff0dfc" name="acf5f651ef41a28989a9aa67e90ff0dfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf5f651ef41a28989a9aa67e90ff0dfc">&#9670;&#160;</a></span>filter_chain_instantiate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void filter_chain_instantiate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d2/d29/structFilterChain.html">FilterChain</a> *</td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *</td>          <td class="paramname"><span class="paramname"><em>argument</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *</td>          <td class="paramname"><span class="paramname"><em>ret</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a11ea686fc8b37318a73ffb44cc37fd6c" name="a11ea686fc8b37318a73ffb44cc37fd6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11ea686fc8b37318a73ffb44cc37fd6c">&#9670;&#160;</a></span>ip_match_instantiate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatchResult ip_match_instantiate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../de/d73/structIPMatch.html">IPMatch</a> *</td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *</td>          <td class="paramname"><span class="paramname"><em>argument</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0199e473c80022fc4869af13d2942f13" name="a0199e473c80022fc4869af13d2942f13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0199e473c80022fc4869af13d2942f13">&#9670;&#160;</a></span>manage_chain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void manage_chain </td>
+          <td>(</td>
+          <td class="paramtype">ChainT *</td>          <td class="paramname"><span class="paramname"><em>_chain</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ChainChangeType</td>          <td class="paramname"><span class="paramname"><em>operation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Name</td>          <td class="paramname"><span class="paramname"><em>table_name</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae55f71ddb65144ea5506f995205f63ad" name="ae55f71ddb65144ea5506f995205f63ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae55f71ddb65144ea5506f995205f63ad">&#9670;&#160;</a></span>manage_rule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void manage_rule </td>
+          <td>(</td>
+          <td class="paramtype">RuleT *</td>          <td class="paramname"><span class="paramname"><em>_rule</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RuleChangeType</td>          <td class="paramname"><span class="paramname"><em>operation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Name</td>          <td class="paramname"><span class="paramname"><em>table_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Name</td>          <td class="paramname"><span class="paramname"><em>chain_name</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a260e5c2b8d200e315481e9a0581f1bdf" name="a260e5c2b8d200e315481e9a0581f1bdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a260e5c2b8d200e315481e9a0581f1bdf">&#9670;&#160;</a></span>manage_table()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void manage_table </td>
+          <td>(</td>
+          <td class="paramtype">TableT *</td>          <td class="paramname"><span class="paramname"><em>_table</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TableChangeType</td>          <td class="paramname"><span class="paramname"><em>operation</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a81257186eaae88db7721d83bd8e9e944" name="a81257186eaae88db7721d83bd8e9e944"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81257186eaae88db7721d83bd8e9e944">&#9670;&#160;</a></span>match_instantiate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatchResult match_instantiate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d2/db6/structMatch.html">Match</a> *</td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *</td>          <td class="paramname"><span class="paramname"><em>argument</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a35a660ba473edb23ccf614326278073f" name="a35a660ba473edb23ccf614326278073f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35a660ba473edb23ccf614326278073f">&#9670;&#160;</a></span>rule_instantiate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rule_instantiate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d7a/structRule.html">Rule</a> *</td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d8f/structArgument.html">Argument</a> *</td>          <td class="paramname"><span class="paramname"><em>argument</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d9/d9d/structReturnT.html">ReturnT</a> *</td>          <td class="paramname"><span class="paramname"><em>ret</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -497,14 +836,14 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
 
 </div>
 </div>
-<a id="a00cb5321dc14d84ece7f512072778dde" name="a00cb5321dc14d84ece7f512072778dde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00cb5321dc14d84ece7f512072778dde">&#9670;&#160;</a></span>verdict_instantiate()</h2>
+<a id="af92346db083c1348d4268b144298593f" name="af92346db083c1348d4268b144298593f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af92346db083c1348d4268b144298593f">&#9670;&#160;</a></span>verdict_stmt_instantiate()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void verdict_instantiate </td>
+          <td class="memname">void verdict_stmt_instantiate </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a> *</td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
         </tr>
@@ -521,6 +860,29 @@ $(function(){initNavTree('d5/dc4/core_8h.html','../../'); initResizable(true); }
       </table>
 </div><div class="memdoc">
 <p>Used to initialize <code><a class="el" href="../../d5/d0e/structVerdictStmt.html">VerdictStmt</a></code>. </p>
+
+</div>
+</div>
+<h2 class="groupheader">变量说明</h2>
+<a id="ad51c309d4917e28ece52a80a88bea754" name="ad51c309d4917e28ece52a80a88bea754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad51c309d4917e28ece52a80a88bea754">&#9670;&#160;</a></span>g_table_list_head</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct list_head g_table_list_head</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

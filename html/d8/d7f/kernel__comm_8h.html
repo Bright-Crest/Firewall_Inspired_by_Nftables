@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Firewall: kernel/include/kernel_comm.h 文件参考</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../clipboard.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../cookie.js"></script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Firewall
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "../../search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(1); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('../../',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('d8/d7f/kernel__comm_8h.html','../../'); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">函数</a>  </div>
+  <div class="headertitle"><div class="title">kernel_comm.h 文件参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Kernel-space communication API based on Netlink.  
+<a href="#details">更多...</a></p>
+<div class="textblock"><code>#include &quot;share.h&quot;</code><br />
+<code>#include &quot;comm_protocol.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dc/d54/common_8h_source.html">common.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/dc4/core_8h_source.html">core.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d9/d3e/rules_8h_source.html">rules.h</a>&quot;</code><br />
+<code>#include &lt;linux/time.h&gt;</code><br />
+<code>#include &lt;linux/timer.h&gt;</code><br />
+<code>#include &lt;linux/jiffies.h&gt;</code><br />
+<code>#include &lt;linux/kernel.h&gt;</code><br />
+<code>#include &lt;linux/init.h&gt;</code><br />
+<code>#include &lt;linux/module.h&gt;</code><br />
+<code>#include &lt;linux/version.h&gt;</code><br />
+<code>#include &lt;linux/skbuff.h&gt;</code><br />
+<code>#include &lt;linux/netfilter.h&gt;</code><br />
+<code>#include &lt;linux/netfilter_ipv4.h&gt;</code><br />
+<code>#include &lt;linux/ip.h&gt;</code><br />
+<code>#include &lt;linux/tcp.h&gt;</code><br />
+<code>#include &lt;linux/udp.h&gt;</code><br />
+<code>#include &lt;linux/icmp.h&gt;</code><br />
+<code>#include &lt;linux/spinlock.h&gt;</code><br />
+</div>
+<p><a href="../../d8/d7f/kernel__comm_8h_source.html">浏览该文件的源代码.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+函数</h2></td></tr>
+<tr class="memitem:a915377482526138f09a8a1beb13963c8" id="r_a915377482526138f09a8a1beb13963c8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a915377482526138f09a8a1beb13963c8">send</a> (unsigned int pid, void *data, unsigned int len)</td></tr>
+<tr class="memdesc:a915377482526138f09a8a1beb13963c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data from kernel to user using Netlink  <br /></td></tr>
+<tr class="separator:a915377482526138f09a8a1beb13963c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb04c17b4be37938556aa4354a63ec1" id="r_a0fb04c17b4be37938556aa4354a63ec1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fb04c17b4be37938556aa4354a63ec1">receive</a> (struct sk_buff *skb)</td></tr>
+<tr class="memdesc:a0fb04c17b4be37938556aa4354a63ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send header and body from kernel to user using Netlink  <br /></td></tr>
+<tr class="separator:a0fb04c17b4be37938556aa4354a63ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16ccadf8ab590089675979a8eafcaf63" id="r_a16ccadf8ab590089675979a8eafcaf63"><td class="memItemLeft" align="right" valign="top">struct sock *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16ccadf8ab590089675979a8eafcaf63">netlink_init</a> (void)</td></tr>
+<tr class="memdesc:a16ccadf8ab590089675979a8eafcaf63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize Netlink socket  <br /></td></tr>
+<tr class="separator:a16ccadf8ab590089675979a8eafcaf63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9754a558992770f57353859f0e333867" id="r_a9754a558992770f57353859f0e333867"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9754a558992770f57353859f0e333867">netlink_release</a> (void)</td></tr>
+<tr class="memdesc:a9754a558992770f57353859f0e333867"><td class="mdescLeft">&#160;</td><td class="mdescRight">:释放套接字  <br /></td></tr>
+<tr class="separator:a9754a558992770f57353859f0e333867"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96627b4f4844623021bc4b7a0a19f88b" id="r_a96627b4f4844623021bc4b7a0a19f88b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96627b4f4844623021bc4b7a0a19f88b">process_user_request</a> (unsigned int pid, void *data, unsigned int len)</td></tr>
+<tr class="separator:a96627b4f4844623021bc4b7a0a19f88b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3df536d85200254b90a31521a58a2f8d" id="r_a3df536d85200254b90a31521a58a2f8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3df536d85200254b90a31521a58a2f8d">process_manage</a> (unsigned int pid, Manage *manage)</td></tr>
+<tr class="separator:a3df536d85200254b90a31521a58a2f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83551bd6a58b897abb808d1bc272717b" id="r_a83551bd6a58b897abb808d1bc272717b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83551bd6a58b897abb808d1bc272717b">manage_usr_req</a> (unsigned int pid, struct UsrReq *req)</td></tr>
+<tr class="separator:a83551bd6a58b897abb808d1bc272717b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc0295b3f42503c5479b312d715db1b1" id="r_abc0295b3f42503c5479b312d715db1b1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc0295b3f42503c5479b312d715db1b1">sendmsg</a> (unsigned int pid, const char *msg)</td></tr>
+<tr class="memdesc:abc0295b3f42503c5479b312d715db1b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">:发送消息到用户层  <br /></td></tr>
+<tr class="separator:abc0295b3f42503c5479b312d715db1b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>Kernel-space communication API based on Netlink. </p>
+<dl class="section author"><dt>作者</dt><dd>Bright-Crest (<a href="#" onclick="location.href='mai'+'lto:'+'ste'+'ph'+'enz'+'hu'+'200'+'4@'+'163'+'.c'+'om'; return false;">steph<span class="obfuscator">.nosp@m.</span>enzh<span class="obfuscator">.nosp@m.</span>u2004<span class="obfuscator">.nosp@m.</span>@163<span class="obfuscator">.nosp@m.</span>.com</a>) </dd></dl>
+<dl class="section date"><dt>日期</dt><dd>2024/07 </dd></dl>
+</div><h2 class="groupheader">函数说明</h2>
+<a id="a83551bd6a58b897abb808d1bc272717b" name="a83551bd6a58b897abb808d1bc272717b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83551bd6a58b897abb808d1bc272717b">&#9670;&#160;</a></span>manage_usr_req()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void manage_usr_req </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>pid</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct UsrReq *</td>          <td class="paramname"><span class="paramname"><em>req</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a16ccadf8ab590089675979a8eafcaf63" name="a16ccadf8ab590089675979a8eafcaf63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16ccadf8ab590089675979a8eafcaf63">&#9670;&#160;</a></span>netlink_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct sock * netlink_init </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize Netlink socket </p>
+<p>Will be called when the kernel module is inserted </p>
+<p>struct netlink_kernel_cfg, in the path linux/include/linux/netlink.h line 44</p>
+<p>函数的第一个参数 net 是指定关联的网络命名空间，一般使用 &amp;init_net。 第二个参数用于标识 netlink 套接字的协议类型，这里使用自定义的协议。 第三个参数nl_conf是一个指向netlink_kernel_cfg结构体的指针，用于配置netlink套接字的行为。</p>
+
+</div>
+</div>
+<a id="a9754a558992770f57353859f0e333867" name="a9754a558992770f57353859f0e333867"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9754a558992770f57353859f0e333867">&#9670;&#160;</a></span>netlink_release()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void netlink_release </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>:释放套接字 </p>
+
+</div>
+</div>
+<a id="a3df536d85200254b90a31521a58a2f8d" name="a3df536d85200254b90a31521a58a2f8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3df536d85200254b90a31521a58a2f8d">&#9670;&#160;</a></span>process_manage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void process_manage </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>pid</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Manage *</td>          <td class="paramname"><span class="paramname"><em>manage</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a96627b4f4844623021bc4b7a0a19f88b" name="a96627b4f4844623021bc4b7a0a19f88b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96627b4f4844623021bc4b7a0a19f88b">&#9670;&#160;</a></span>process_user_request()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int process_user_request </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>pid</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>len</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>consists of header and body. Header is <code>UserMsgHeader</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>total length of the kernel response </dd></dl>
+
+</div>
+</div>
+<a id="a0fb04c17b4be37938556aa4354a63ec1" name="a0fb04c17b4be37938556aa4354a63ec1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fb04c17b4be37938556aa4354a63ec1">&#9670;&#160;</a></span>receive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void receive </td>
+          <td>(</td>
+          <td class="paramtype">struct sk_buff *</td>          <td class="paramname"><span class="paramname"><em>skb</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send header and body from kernel to user using Netlink </p>
+<p>Receive data from user in kernel based on Netlink </p><dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">struct</td><td>sk_buff *skb，in the path linux/include/linux/skbuff.h line 687 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a915377482526138f09a8a1beb13963c8" name="a915377482526138f09a8a1beb13963c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a915377482526138f09a8a1beb13963c8">&#9670;&#160;</a></span>send()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int send </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>pid</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>len</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send data from kernel to user using Netlink </p>
+
+</div>
+</div>
+<a id="abc0295b3f42503c5479b312d715db1b1" name="abc0295b3f42503c5479b312d715db1b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc0295b3f42503c5479b312d715db1b1">&#9670;&#160;</a></span>sendmsg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sendmsg </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>pid</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>msg</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>:发送消息到用户层 </p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">:pid，用户进程id</td><td></td></tr>
+    <tr><td class="paramname">:msg，发送的消息</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>:内核响应长度 </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_dc43877d82dd332f9fb2071fcca799d6.html">kernel</a></li><li class="navelem"><a class="el" href="../../dir_009f605b833ac4622acd6c3c0c26c0f0.html">include</a></li><li class="navelem"><a class="el" href="../../d8/d7f/kernel__comm_8h.html">kernel_comm.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

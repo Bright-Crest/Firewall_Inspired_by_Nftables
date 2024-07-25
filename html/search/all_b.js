@@ -1,14 +1,22 @@
 var searchData=
 [
-  ['state_0',['state',['../d3/d5f/structPacket.html#a40a26bb3a58c38ac83483171f1684945',1,'Packet::state'],['../d9/d9d/structReturnT.html#a73d2b85f5b48dbc1b1118d4e0f4fdeee',1,'ReturnT::state']]],
-  ['stmt_1',['Stmt',['../df/d9f/structStmt.html',1,'Stmt'],['../d5/dc4/core_8h.html#a8d06b072dd455e686bfe1d436dce286c',1,'Stmt:&#160;core.h']]],
-  ['stmt_2',['stmt',['../df/d9f/structStmt.html#a66840a4e1db7123f0c28d0f7397fa4cd',1,'Stmt']]],
-  ['stmt_5fconntrack_3',['STMT_CONNTRACK',['../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba05757ec543b6c4ecaf09f64cdf19e4ab',1,'core.h']]],
-  ['stmt_5fcounter_4',['STMT_COUNTER',['../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba353bf4936aa48a73160f70293d317ad4',1,'core.h']]],
-  ['stmt_5fhead_5',['stmt_head',['../dc/d7a/structRule.html#a430af0666e4b3fb5062b3cfd96cb83e2',1,'Rule']]],
-  ['stmt_5finstantiate_6',['stmt_instantiate',['../d6/de7/core_8c.html#afdb1cda47e61c0e58c3640ac31afd4f2',1,'stmt_instantiate(Stmt *self, Argument *argument, ReturnT *ret):&#160;core.c'],['../d5/dc4/core_8h.html#a270c6fcee6938f18462f45a6bbf4874e',1,'stmt_instantiate(Stmt *self, Argument *, ReturnT *):&#160;core.c']]],
-  ['stmt_5flog_7',['STMT_LOG',['../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba565b4ee1d9da45bcf95019acf9fe2636',1,'core.h']]],
-  ['stmt_5fnat_8',['STMT_NAT',['../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba348b58cefe92314264699ebc89eedd2c',1,'core.h']]],
-  ['stmt_5fverdict_9',['STMT_VERDICT',['../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3dba1d5c41f5363945e19731c95246d9d766',1,'core.h']]],
-  ['stmttype_10',['StmtType',['../d5/dc4/core_8h.html#a9c1bfaf3c0a28d12826afa7bd1b0a3db',1,'core.h']]]
+  ['name_0',['name',['../d9/d9d/structReturnT.html#ae5e2b88bbf8233f5a82fd7f52c8c0662',1,'ReturnT::name'],['../dc/dcb/structTable.html#a1931fca4112d5ee079ee126051183aea',1,'Table::name'],['../d8/d03/structChain.html#a005a1e773424ac94036eead4d74611b3',1,'Chain::name'],['../d5/d4a/structFilterRule.html#a570d5dbc7a58be4ce91c970629995875',1,'FilterRule::name'],['../dd/db9/structFTRule__Chain.html#a92eecbc58f47c717e14c990af5e47989',1,'FTRule_Chain::name'],['../d5/db8/structftrule.html#a9468490957066802b33f74eb97612ab3',1,'ftrule::name']]],
+  ['name_5ffor_5fjump_5for_5fgoto_1',['name_for_jump_or_goto',['../d5/d0e/structVerdictStmt.html#a1f1a502a436adfc23a0d28948f317adb',1,'VerdictStmt']]],
+  ['natrule_2',['natrule',['../df/d18/structnatrule.html',1,'']]],
+  ['netlink_5finit_3',['netlink_init',['../dc/d5f/kernel__comm_8c.html#a16ccadf8ab590089675979a8eafcaf63',1,'netlink_init(void):&#160;kernel_comm.c'],['../d8/d7f/kernel__comm_8h.html#a16ccadf8ab590089675979a8eafcaf63',1,'netlink_init(void):&#160;kernel_comm.c']]],
+  ['netlink_5frelease_4',['netlink_release',['../dc/d5f/kernel__comm_8c.html#a9754a558992770f57353859f0e333867',1,'netlink_release(void):&#160;kernel_comm.c'],['../d8/d7f/kernel__comm_8h.html#a9754a558992770f57353859f0e333867',1,'netlink_release(void):&#160;kernel_comm.c']]],
+  ['next_5',['next',['../d5/d4a/structFilterRule.html#ab73c0d408bc9f4e0b25eecfdd4ed4b76',1,'FilterRule::next'],['../dd/db9/structFTRule__Chain.html#a938301948102d37be583c42e4615abea',1,'FTRule_Chain::next']]],
+  ['nf_5fhkforward_6',['NF_HKForward',['../db/d98/kernel__main_8c.html#a9282c8741d106c531c0cda5a5b6e9e8f',1,'kernel_main.c']]],
+  ['nf_5fhklocalin_7',['NF_HKLocalIn',['../db/d98/kernel__main_8c.html#a2332549c6adefa0348e8ffdbbc13a6ca',1,'kernel_main.c']]],
+  ['nf_5fhklocalout_8',['NF_HKLocalOut',['../db/d98/kernel__main_8c.html#a4ea81f95bc960f1ea91b1a2be3c0d0b0',1,'kernel_main.c']]],
+  ['nf_5fhkpostrouting_9',['NF_HKPostRouting',['../db/d98/kernel__main_8c.html#abd3852ce6db786e5634537ee3f80d261',1,'kernel_main.c']]],
+  ['nf_5fhkpostrouting2_10',['NF_HKPostRouting2',['../db/d98/kernel__main_8c.html#ab83e94914dca80ca0d766905edd720d5',1,'kernel_main.c']]],
+  ['nf_5fhkprerouting_11',['NF_HKPreRouting',['../db/d98/kernel__main_8c.html#acc8f789fc6a342ac1e7f0256dae04b00',1,'kernel_main.c']]],
+  ['nf_5fhkprerouting2_12',['NF_HKPreRouting2',['../db/d98/kernel__main_8c.html#a3d2a46ed375ac25ce7c54c28348d2100',1,'kernel_main.c']]],
+  ['nfhookforward_13',['NfHookForward',['../d9/d20/hook__func_8c.html#a80f2c6062b53fb26de4b1602010389a3',1,'NfHookForward(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c'],['../d0/da1/hook__func_8h.html#a80f2c6062b53fb26de4b1602010389a3',1,'NfHookForward(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c']]],
+  ['nfhooklocalin_14',['NfHookLocalIn',['../d9/d20/hook__func_8c.html#a103df9d27e9853260b4fb4258248383b',1,'NfHookLocalIn(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c'],['../d0/da1/hook__func_8h.html#a103df9d27e9853260b4fb4258248383b',1,'NfHookLocalIn(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c']]],
+  ['nfhooklocalout_15',['NfHookLocalOut',['../d9/d20/hook__func_8c.html#a052ebdb5303ab45f9912f3dd4f9ea885',1,'NfHookLocalOut(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c'],['../d0/da1/hook__func_8h.html#a052ebdb5303ab45f9912f3dd4f9ea885',1,'NfHookLocalOut(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c']]],
+  ['nfhookpostrouting_16',['NfHookPostRouting',['../d9/d20/hook__func_8c.html#acdad108a7a5d8c2bbf436b2df8d8ae23',1,'NfHookPostRouting(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c'],['../d0/da1/hook__func_8h.html#acdad108a7a5d8c2bbf436b2df8d8ae23',1,'NfHookPostRouting(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c']]],
+  ['nfhookprerouting_17',['NfHookPreRouting',['../d9/d20/hook__func_8c.html#afff4a4ae5724baa311d49b8745caaf59',1,'NfHookPreRouting(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c'],['../d0/da1/hook__func_8h.html#afff4a4ae5724baa311d49b8745caaf59',1,'NfHookPreRouting(void *priv, struct sk_buff *skb, const struct nf_hook_state *state):&#160;hook_func.c']]],
+  ['nl_5fsock_18',['nl_sock',['../dc/d5f/kernel__comm_8c.html#a2bf0602c49b4e02a000dc2473f0df0e3',1,'kernel_comm.c']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['max_5fcomment_5flength_0',['MAX_COMMENT_LENGTH',['../dc/d54/common_8h.html#a1646240195ba8bc8c0871a99bfa36f2b',1,'common.h']]],
-  ['max_5fname_5flength_1',['MAX_NAME_LENGTH',['../dc/d54/common_8h.html#a0c397a708cec89c74029582574516b30',1,'common.h']]]
+  ['default_5faction_0',['DEFAULT_ACTION',['../d9/d3e/rules_8h.html#aa9c5801f99f566bc1ceca7b2fc1bbe00',1,'rules.h']]]
 ];

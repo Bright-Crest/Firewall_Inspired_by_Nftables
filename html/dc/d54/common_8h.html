@@ -99,12 +99,15 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
   <div class="summary">
 <a href="#nested-classes">类</a> &#124;
 <a href="#define-members">宏定义</a> &#124;
-<a href="#typedef-members">类型定义</a> &#124;
 <a href="#enum-members">枚举</a>  </div>
   <div class="headertitle"><div class="title">common.h 文件参考</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>Common macros and structs used in the kernel module  
+<a href="#details">更多...</a></p>
+<div class="textblock"><code>#include &quot;share.h&quot;</code><br />
+</div>
 <p><a href="../../dc/d54/common_8h_source.html">浏览该文件的源代码.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -126,25 +129,14 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
 <tr class="separator:a1da04959fa015f4dbd2b7dd88606d56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f32e80cefd5c688ba264d20ff69c011" id="r_a0f32e80cefd5c688ba264d20ff69c011"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f32e80cefd5c688ba264d20ff69c011">FIREWALL_ERR</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:a0f32e80cefd5c688ba264d20ff69c011"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3558ac8ba00b962a73f95ccfd1480cdb" id="r_a3558ac8ba00b962a73f95ccfd1480cdb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3558ac8ba00b962a73f95ccfd1480cdb">PRINT_INFO</a>(fmt,  args...)</td></tr>
-<tr class="separator:a3558ac8ba00b962a73f95ccfd1480cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b7e26bb727a722ca100ed856b4e1d98" id="r_a1b7e26bb727a722ca100ed856b4e1d98"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b7e26bb727a722ca100ed856b4e1d98">PRINT_DEBUG</a>(fmt,  args...)</td></tr>
-<tr class="separator:a1b7e26bb727a722ca100ed856b4e1d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5708f9f686e1e378de1ce6a652aa77bc" id="r_a5708f9f686e1e378de1ce6a652aa77bc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5708f9f686e1e378de1ce6a652aa77bc">PRINT_WARN</a>(fmt,  args...)</td></tr>
-<tr class="separator:a5708f9f686e1e378de1ce6a652aa77bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a827f90529ba0e67983eea44fcdb246e3" id="r_a827f90529ba0e67983eea44fcdb246e3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a827f90529ba0e67983eea44fcdb246e3">PRINT_ERR</a>(fmt,  args...)</td></tr>
-<tr class="separator:a827f90529ba0e67983eea44fcdb246e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c397a708cec89c74029582574516b30" id="r_a0c397a708cec89c74029582574516b30"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c397a708cec89c74029582574516b30">MAX_NAME_LENGTH</a>&#160;&#160;&#160;30</td></tr>
-<tr class="separator:a0c397a708cec89c74029582574516b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1646240195ba8bc8c0871a99bfa36f2b" id="r_a1646240195ba8bc8c0871a99bfa36f2b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1646240195ba8bc8c0871a99bfa36f2b">MAX_COMMENT_LENGTH</a>&#160;&#160;&#160;100</td></tr>
-<tr class="separator:a1646240195ba8bc8c0871a99bfa36f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-类型定义</h2></td></tr>
-<tr class="memitem:a821d19489ba18d7377849aff65357771" id="r_a821d19489ba18d7377849aff65357771"><td class="memItemLeft" align="right" valign="top">typedef char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a821d19489ba18d7377849aff65357771">Name</a>[<a class="el" href="#a0c397a708cec89c74029582574516b30">MAX_NAME_LENGTH</a>]</td></tr>
-<tr class="separator:a821d19489ba18d7377849aff65357771"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b6191db88859f404248792e978c5d9f" id="r_a7b6191db88859f404248792e978c5d9f"><td class="memItemLeft" align="right" valign="top">typedef char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b6191db88859f404248792e978c5d9f">Comment</a>[<a class="el" href="#a1646240195ba8bc8c0871a99bfa36f2b">MAX_COMMENT_LENGTH</a>]</td></tr>
-<tr class="separator:a7b6191db88859f404248792e978c5d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99a21845a1d6f6afbdf41df2f7c815e7" id="r_a99a21845a1d6f6afbdf41df2f7c815e7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99a21845a1d6f6afbdf41df2f7c815e7">PRINTK_INFO</a>(fmt,  args...)</td></tr>
+<tr class="separator:a99a21845a1d6f6afbdf41df2f7c815e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42186b086b5d5e7b463871817b6839f" id="r_ae42186b086b5d5e7b463871817b6839f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae42186b086b5d5e7b463871817b6839f">PRINTK_DEBUG</a>(fmt,  args...)</td></tr>
+<tr class="separator:ae42186b086b5d5e7b463871817b6839f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba0418b5e85bece0b2d8b1faa239dc0" id="r_a1ba0418b5e85bece0b2d8b1faa239dc0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ba0418b5e85bece0b2d8b1faa239dc0">PRINTK_WARN</a>(fmt,  args...)</td></tr>
+<tr class="separator:a1ba0418b5e85bece0b2d8b1faa239dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75c6327910ca911761dd0dde22ce4aed" id="r_a75c6327910ca911761dd0dde22ce4aed"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75c6327910ca911761dd0dde22ce4aed">PRINTK_ERR</a>(fmt,  args...)</td></tr>
+<tr class="separator:a75c6327910ca911761dd0dde22ce4aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 枚举</h2></td></tr>
@@ -160,7 +152,11 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
  }</td></tr>
 <tr class="separator:aa8f137f19095e0bdcf4f521e901f88bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">宏定义说明</h2>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>Common macros and structs used in the kernel module </p>
+<dl class="section author"><dt>作者</dt><dd>Bright-Crest (<a href="#" onclick="location.href='mai'+'lto:'+'ste'+'ph'+'enz'+'hu'+'200'+'4@'+'163'+'.c'+'om'; return false;">steph<span class="obfuscator">.nosp@m.</span>enzh<span class="obfuscator">.nosp@m.</span>u2004<span class="obfuscator">.nosp@m.</span>@163<span class="obfuscator">.nosp@m.</span>.com</a>) </dd></dl>
+<dl class="section date"><dt>日期</dt><dd>2024/07 </dd></dl>
+</div><h2 class="groupheader">宏定义说明</h2>
 <a id="a3d5538954bcbdc809823f9753995b4fb" name="a3d5538954bcbdc809823f9753995b4fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3d5538954bcbdc809823f9753995b4fb">&#9670;&#160;</a></span>FIREWALL_DEBUG</h2>
 
@@ -218,42 +214,14 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
 
 </div>
 </div>
-<a id="a1646240195ba8bc8c0871a99bfa36f2b" name="a1646240195ba8bc8c0871a99bfa36f2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1646240195ba8bc8c0871a99bfa36f2b">&#9670;&#160;</a></span>MAX_COMMENT_LENGTH</h2>
+<a id="ae42186b086b5d5e7b463871817b6839f" name="ae42186b086b5d5e7b463871817b6839f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae42186b086b5d5e7b463871817b6839f">&#9670;&#160;</a></span>PRINTK_DEBUG</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAX_COMMENT_LENGTH&#160;&#160;&#160;100</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0c397a708cec89c74029582574516b30" name="a0c397a708cec89c74029582574516b30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c397a708cec89c74029582574516b30">&#9670;&#160;</a></span>MAX_NAME_LENGTH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MAX_NAME_LENGTH&#160;&#160;&#160;30</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1b7e26bb727a722ca100ed856b4e1d98" name="a1b7e26bb727a722ca100ed856b4e1d98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b7e26bb727a722ca100ed856b4e1d98">&#9670;&#160;</a></span>PRINT_DEBUG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PRINT_DEBUG</td>
+          <td class="memname">#define PRINTK_DEBUG</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>fmt</em></span>, </td>
         </tr>
@@ -266,21 +234,21 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
 </div><div class="memdoc">
 <b>值:</b><div class="fragment"><div class="line">                                       <span class="keywordflow">do</span>{\</div>
 <div class="line">                                       if (<a class="code hl_define" href="#a3d5538954bcbdc809823f9753995b4fb">FIREWALL_DEBUG</a>) {\</div>
-<div class="line">                                         printk(<span class="stringliteral">&quot;[FIREWALL_DEBUG] %s: %d: &quot;</span>fmt, __FILE__, __LINE__, ##args);\</div>
+<div class="line">                                         printk(<span class="stringliteral">&quot;[FIREWALL_DEBUG] &quot;</span>fmt, ##args);\</div>
 <div class="line">                                       }\</div>
 <div class="line">                                     }<span class="keywordflow">while</span>(0)</div>
-<div class="ttc" id="acommon_8h_html_a3d5538954bcbdc809823f9753995b4fb"><div class="ttname"><a href="#a3d5538954bcbdc809823f9753995b4fb">FIREWALL_DEBUG</a></div><div class="ttdeci">#define FIREWALL_DEBUG</div><div class="ttdef"><b>定义</b> common.h:11</div></div>
+<div class="ttc" id="acommon_8h_html_a3d5538954bcbdc809823f9753995b4fb"><div class="ttname"><a href="#a3d5538954bcbdc809823f9753995b4fb">FIREWALL_DEBUG</a></div><div class="ttdeci">#define FIREWALL_DEBUG</div><div class="ttdef"><b>定义</b> common.h:20</div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a827f90529ba0e67983eea44fcdb246e3" name="a827f90529ba0e67983eea44fcdb246e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a827f90529ba0e67983eea44fcdb246e3">&#9670;&#160;</a></span>PRINT_ERR</h2>
+<a id="a75c6327910ca911761dd0dde22ce4aed" name="a75c6327910ca911761dd0dde22ce4aed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75c6327910ca911761dd0dde22ce4aed">&#9670;&#160;</a></span>PRINTK_ERR</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define PRINT_ERR</td>
+          <td class="memname">#define PRINTK_ERR</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>fmt</em></span>, </td>
         </tr>
@@ -293,21 +261,21 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
 </div><div class="memdoc">
 <b>值:</b><div class="fragment"><div class="line">                                       <span class="keywordflow">do</span>{\</div>
 <div class="line">                                       if (<a class="code hl_define" href="#a0f32e80cefd5c688ba264d20ff69c011">FIREWALL_ERR</a>) {\</div>
-<div class="line">                                         printk(<span class="stringliteral">&quot;[FIREWALL_ERR] %s: %d: &quot;</span>fmt, __FILE__, __LINE__, ##args);\</div>
+<div class="line">                                         printk(<span class="stringliteral">&quot;[FIREWALL_ERR] &quot;</span>fmt, ##args);\</div>
 <div class="line">                                       }\</div>
 <div class="line">                                     }<span class="keywordflow">while</span>(0)</div>
-<div class="ttc" id="acommon_8h_html_a0f32e80cefd5c688ba264d20ff69c011"><div class="ttname"><a href="#a0f32e80cefd5c688ba264d20ff69c011">FIREWALL_ERR</a></div><div class="ttdeci">#define FIREWALL_ERR</div><div class="ttdef"><b>定义</b> common.h:17</div></div>
+<div class="ttc" id="acommon_8h_html_a0f32e80cefd5c688ba264d20ff69c011"><div class="ttname"><a href="#a0f32e80cefd5c688ba264d20ff69c011">FIREWALL_ERR</a></div><div class="ttdeci">#define FIREWALL_ERR</div><div class="ttdef"><b>定义</b> common.h:26</div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a3558ac8ba00b962a73f95ccfd1480cdb" name="a3558ac8ba00b962a73f95ccfd1480cdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3558ac8ba00b962a73f95ccfd1480cdb">&#9670;&#160;</a></span>PRINT_INFO</h2>
+<a id="a99a21845a1d6f6afbdf41df2f7c815e7" name="a99a21845a1d6f6afbdf41df2f7c815e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99a21845a1d6f6afbdf41df2f7c815e7">&#9670;&#160;</a></span>PRINTK_INFO</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define PRINT_INFO</td>
+          <td class="memname">#define PRINTK_INFO</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>fmt</em></span>, </td>
         </tr>
@@ -323,18 +291,18 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
 <div class="line">                                         printk(<span class="stringliteral">&quot;[FIREWALL_INFO] &quot;</span>fmt, ##args);\</div>
 <div class="line">                                       }\</div>
 <div class="line">                                     }<span class="keywordflow">while</span>(0)</div>
-<div class="ttc" id="acommon_8h_html_a330a7dc2a801a47346f86954c621103c"><div class="ttname"><a href="#a330a7dc2a801a47346f86954c621103c">FIREWALL_INFO</a></div><div class="ttdeci">#define FIREWALL_INFO</div><div class="ttdef"><b>定义</b> common.h:8</div></div>
+<div class="ttc" id="acommon_8h_html_a330a7dc2a801a47346f86954c621103c"><div class="ttname"><a href="#a330a7dc2a801a47346f86954c621103c">FIREWALL_INFO</a></div><div class="ttdeci">#define FIREWALL_INFO</div><div class="ttdef"><b>定义</b> common.h:17</div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a5708f9f686e1e378de1ce6a652aa77bc" name="a5708f9f686e1e378de1ce6a652aa77bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5708f9f686e1e378de1ce6a652aa77bc">&#9670;&#160;</a></span>PRINT_WARN</h2>
+<a id="a1ba0418b5e85bece0b2d8b1faa239dc0" name="a1ba0418b5e85bece0b2d8b1faa239dc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ba0418b5e85bece0b2d8b1faa239dc0">&#9670;&#160;</a></span>PRINTK_WARN</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define PRINT_WARN</td>
+          <td class="memname">#define PRINTK_WARN</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>fmt</em></span>, </td>
         </tr>
@@ -347,40 +315,11 @@ $(function(){initNavTree('dc/d54/common_8h.html','../../'); initResizable(true);
 </div><div class="memdoc">
 <b>值:</b><div class="fragment"><div class="line">                                       <span class="keywordflow">do</span>{\</div>
 <div class="line">                                       if (<a class="code hl_define" href="#a1da04959fa015f4dbd2b7dd88606d56f">FIREWALL_WARN</a>) {\</div>
-<div class="line">                                         printk(<span class="stringliteral">&quot;[FIREWALL_WARN] %s: %d: &quot;</span>fmt, __FILE__, __LINE__, ##args);\</div>
+<div class="line">                                         printk(<span class="stringliteral">&quot;[FIREWALL_WARN] &quot;</span>fmt, ##args);\</div>
 <div class="line">                                       }\</div>
 <div class="line">                                     }<span class="keywordflow">while</span>(0)</div>
-<div class="ttc" id="acommon_8h_html_a1da04959fa015f4dbd2b7dd88606d56f"><div class="ttname"><a href="#a1da04959fa015f4dbd2b7dd88606d56f">FIREWALL_WARN</a></div><div class="ttdeci">#define FIREWALL_WARN</div><div class="ttdef"><b>定义</b> common.h:14</div></div>
+<div class="ttc" id="acommon_8h_html_a1da04959fa015f4dbd2b7dd88606d56f"><div class="ttname"><a href="#a1da04959fa015f4dbd2b7dd88606d56f">FIREWALL_WARN</a></div><div class="ttdeci">#define FIREWALL_WARN</div><div class="ttdef"><b>定义</b> common.h:23</div></div>
 </div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">类型定义说明</h2>
-<a id="a7b6191db88859f404248792e978c5d9f" name="a7b6191db88859f404248792e978c5d9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b6191db88859f404248792e978c5d9f">&#9670;&#160;</a></span>Comment</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef char Comment[<a class="el" href="#a1646240195ba8bc8c0871a99bfa36f2b">MAX_COMMENT_LENGTH</a>]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a821d19489ba18d7377849aff65357771" name="a821d19489ba18d7377849aff65357771"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a821d19489ba18d7377849aff65357771">&#9670;&#160;</a></span>Name</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef char Name[<a class="el" href="#a0c397a708cec89c74029582574516b30">MAX_NAME_LENGTH</a>]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 </div>
 </div>
 <h2 class="groupheader">枚举类型说明</h2>

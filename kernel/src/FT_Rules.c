@@ -138,6 +138,7 @@ unsigned int filter_op(void *priv,struct sk_buff *skb,const struct nf_hook_state
 
 unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
 {
+    PRINTK_DEBUG("Start adding rule %s to chain %s.\n", rule.name, chain_name);
     struct FilterRule *new_rule, *tmp, *chain_head;
     struct FTRule_Chain *chain_tmp;
 
@@ -149,12 +150,13 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
 
     if (new_rule == NULL)
     {
-        printk(KERN_WARNING "no memory for new filter rule.\n");
+        PRINTK_ERR("No memory for new filter rule.\n");
         return 10;
     }
     memcpy(new_rule, &rule, sizeof(struct FilterRule));
     if (new_rule == NULL)
     {
+        PRINTK_DEBUG("New rule is NULL");
         kfree(new_rule);
         return NULL;
     }
@@ -162,14 +164,17 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
     write_lock(&RuleLock);
     if (strlen(chain_name)==0)
     {
-        printk(KERN_INFO "no chain name provided.\n");
+        PRINTK_WARN("No chain name provided.\n");
         chain_name="default";
     }
 
+    PRINTK_DEBUG("Start searching for chain %s.\n", chain_name);
     for (chain_tmp = Table_head; chain_tmp != NULL; chain_tmp = chain_tmp->next)
     {
+        PRINTK_DEBUG("Chain name to search: %s. Current chain name: %s.\n", chain_name, chain_tmp->name);
         if (strcmp(chain_tmp->name, chain_name) == 0)
         {
+            PRINTK_DEBUG("Find chain %s when adding a rule.\n", chain_name);
             chain_head=chain_tmp->chain_head;
             // 如果前序规则名为空
             if (strlen(after) == 0)
@@ -177,6 +182,7 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
                 new_rule->next = chain_head;
                 chain_head = new_rule;
                 write_unlock(&RuleLock);
+                PRINTK_DEBUG("Add rule %s successfully (no front rule name).\n", rule.name);
                 return 1;
             }
             // 插入前序规则名之后
@@ -187,15 +193,14 @@ unsigned int add_rule(char chain_name[], char after[], struct FilterRule rule)
                     new_rule->next = tmp->next;
                     tmp->next = new_rule;
                     write_unlock(&RuleLock);
+                    PRINTK_DEBUG("Add rule %s successfully after rule %s.\n", rule.name, after);
                     return 1;
                 }
             }    
         }
     }
 
-
-    
-    printk(KERN_INFO "add filter rule failed.\n");
+    PRINTK_WARN("Add filter rule failed.\n");
     // 添加失败
     write_unlock(&RuleLock);
     kfree(new_rule);

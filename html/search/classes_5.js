@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['returnt_0',['ReturnT',['../d9/d9d/structReturnT.html',1,'']]],
-  ['rule_1',['Rule',['../dc/d7a/structRule.html',1,'']]]
+  ['natrule_0',['natrule',['../df/d18/structnatrule.html',1,'']]]
 ];
